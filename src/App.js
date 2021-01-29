@@ -1,7 +1,12 @@
+import React from 'react';
+import axios from 'axios';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom'
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  axios.get('http://localhost:5000/hello')
+  .then(res => res)
   return (
     <div className="App">
       <header className="App-header">
