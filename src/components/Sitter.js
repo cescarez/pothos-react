@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {useRouteMatch} from 'react-router-dom';
+import {useRouteMatch, Link} from 'react-router-dom';
 import {Table} from 'react-bootstrap';
 import Moment from 'moment';
 
@@ -38,6 +38,7 @@ const Sitter = ({loadUserData, sitter}) => {
         <div>
             <h3>Sitter</h3>
             {showSitterData()}
+            <Link to={'/sitters'}>Return to All Sitters</Link>
         </div>
     )
 }
