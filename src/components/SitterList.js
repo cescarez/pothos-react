@@ -3,7 +3,6 @@ import {Table} from 'react-bootstrap';
 
 const SitterList = ({ sitterList }) => {
     const showSitters = () => {
-        console.log(sitterList)
         return(
             <Table striped bordered hover>
                 <thead>
@@ -16,9 +15,8 @@ const SitterList = ({ sitterList }) => {
                 </thead>
                 <tbody>
                     {(sitterList).map((sitter) => {
-                        console.log(sitter)
                         return(
-                            <tr>
+                            <tr key={sitter.user_id}>
                                 <td>{sitter.name}</td>
                                 <td>{sitter.email}</td>
                                 <td>{sitter.phone}</td>
