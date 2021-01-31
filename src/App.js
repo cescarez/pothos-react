@@ -16,17 +16,18 @@ const BASE_URL = 'http://localhost:5000'
 function App() {
   const [sitterList, setSitterList] = useState([]);
   const [sitter, setSitter] = useState({});
+  const [owner, setOwner] = useState({})
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(()=>{
     axios.get(BASE_URL + '/sitters')
     .then((response) => {
-      const newSitterList = Object.values(response.data)
+      const apiSitterList = Object.values(response.data)
       const userIDs = Object.keys(response.data)
       for(let i in userIDs) {
-        newSitterList[i].user_id = userIDs[i];
+        apiSitterList[i].user_id = userIDs[i];
       }
-      setSitterList(newSitterList)
+      setSitterList(apiSitterList)
     })
     .catch((error) => {
       const message=`There was an error with your request. ${error.message}.`;
@@ -38,8 +39,12 @@ function App() {
   const loadUserDataCallback = (userType, userId) => {
     axios.get(`${BASE_URL}/${userType}/${userId}`)
     .then((response) => {
-      const newSitter = response.data
-      setSitter(newSitter)
+      const apiUser = response.data
+      if(userType === 'sitters') {
+        setSitter(apiUser);
+      } else if (userType === 'owners') {
+        setOwner(apiUser);
+      }
     })
     .catch((error) => {
       const message=`There was an error with your request. ${error.message}.`;
@@ -53,9 +58,18 @@ function App() {
       <Router>
         <Switch>
           <Route exact path='/'><Home /></Route>
+          <Route path='/dashboard'>
+            {
+              //include some ternary to render OwnerDashboard or SitterDashboard based on logged in user
+              //use Bootstrap tabs?
+            }
+          </Route>
+          <Route path='/owners/:id'>
+            <Owner owner={owner} loadUserData={loadUserDataCallback}/>
+          </Route>      
           <Route path='/sitters/:id'>
             <Sitter sitter={sitter} loadUserData={loadUserDataCallback} />
-          </Route>
+          </Route>      
           <Route path='/sitters'>
             <SitterList sitterList={sitterList} />
           </Route>

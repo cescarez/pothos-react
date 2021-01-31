@@ -7,6 +7,7 @@ const Sitter = ({loadUserData, sitter}) => {
     const match = useRouteMatch('/sitters/:id');
     const sitterId = match.params.id
     
+    //maybe use async and await instead?
     useEffect(() => {
         loadUserData('sitters', sitterId)
     }, [loadUserData, sitterId])
