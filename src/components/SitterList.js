@@ -1,5 +1,6 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
+import Moment from 'moment';
 
 const SitterList = ({ sitterList }) => {
     const showSitters = () => {
@@ -20,7 +21,7 @@ const SitterList = ({ sitterList }) => {
                                 <td>{sitter.name}</td>
                                 <td>{sitter.email}</td>
                                 <td>{sitter.phone}</td>
-                                <td>{sitter.date_joined}</td>
+                                <td>{Moment(sitter.date_joined).format('MM-DD-YYYY')}</td>
                             </tr>
                         )
                     })}
