@@ -5,7 +5,7 @@ const SitterList = ({ sitterList }) => {
     const showSitters = () => {
         console.log(sitterList)
         return(
-            <Table>
+            <Table striped bordered hover>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -15,7 +15,8 @@ const SitterList = ({ sitterList }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.values(sitterList).forEach((sitter) => {
+                    {(sitterList).map((sitter) => {
+                        console.log(sitter)
                         return(
                             <tr>
                                 <td>{sitter.name}</td>
@@ -32,7 +33,7 @@ const SitterList = ({ sitterList }) => {
 
     return (
         <div className='sitter-list'>
-            {showSitters}
+            {showSitters()}
         </div>
     )
 }
