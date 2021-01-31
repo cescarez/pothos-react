@@ -3,7 +3,7 @@ import {Table} from 'react-bootstrap';
 import Moment from 'moment';
 
 const SitterList = ({ sitterList }) => {
-    const showSitters = () => {
+    const indexSitters = () => {
         return(
             <Table striped bordered hover>
                 <thead>
@@ -32,7 +32,7 @@ const SitterList = ({ sitterList }) => {
 
     return (
         <div className='sitter-list'>
-            {showSitters()}
+            {indexSitters()}
         </div>
     )
 }
