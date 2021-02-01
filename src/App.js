@@ -57,9 +57,9 @@ function App() {
   }
 
   return (
-    <AuthProvider>
     <div className="App">
       <Router>
+        {/* <AuthProvider>   */}
           <Navbar fixed='top' bg="dark" variant="dark">
             <Nav className="mr-auto">
               <Nav.Link as={Link} to='/'>Home</Nav.Link>
@@ -96,9 +96,10 @@ function App() {
               </Container>
             </Route>
           </Switch>
+        {/* </AuthProvider> */}
       </Router>
     </div>
-    </AuthProvider>
+    
   );
 }
 
