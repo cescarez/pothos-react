@@ -59,13 +59,13 @@ function App() {
   return (
     <div className="App">
       <Router>
-        {/* <AuthProvider>   */}
+        <AuthProvider>  
           <Navbar fixed='top' bg="dark" variant="dark">
             <Nav className="mr-auto">
               <Nav.Link as={Link} to='/'>Home</Nav.Link>
               <Nav.Link as={Link} to='/sitters'>Plant Sitters</Nav.Link>
             </Nav>
-            <Button variant="outline-info" as={Link} to='login'>Log In</Button>
+            <Button variant="outline-info" as={Link} to='signup'>Sign Up</Button>
           </Navbar>
 
           <Switch>
@@ -85,7 +85,7 @@ function App() {
             <Route path='/sitters'>
               <SitterList sitterList={sitterList} />
             </Route>
-            <Route path='/login'>
+            <Route path='/signup'>
               <Container 
                 className='d-flex align-items-center justify-content-center'
                 style={{ minHeight: '100vh' }}
@@ -96,7 +96,7 @@ function App() {
               </Container>
             </Route>
           </Switch>
-        {/* </AuthProvider> */}
+        </AuthProvider>
       </Router>
     </div>
     
