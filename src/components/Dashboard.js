@@ -14,7 +14,7 @@ const Dashboard = ({baseURL}) => {
 
     //CHANGE THIS. THIS IS JUST A TEST TO GET USER DATA FROM DB TO FRONT END
     useEffect(() => {
-        axios.get(`${baseURL}/users/test/${currentUser.email}`)
+        axios.get(`${baseURL}/users/current/${currentUser.uid}`)
             .then((response) => {
                 const apiUser = Object.values(response.data)[0]
                 setUser(apiUser);
