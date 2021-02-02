@@ -9,7 +9,7 @@ const Sitter = ({loadUserData, sitter}) => {
     
     //maybe use async and await instead?
     useEffect(() => {
-        loadUserData('sitters', sitterId)
+        loadUserData(sitterId)
     }, [loadUserData, sitterId])
 
     const showSitterData = () => {
@@ -25,9 +25,9 @@ const Sitter = ({loadUserData, sitter}) => {
                 </thead>
                 <tbody>
                     <tr key={sitter.user_id}>
-                        <td>{sitter.name}</td>
+                        <td>{sitter.full_name}</td>
                         <td>{sitter.email}</td>
-                        <td>{sitter.phone}</td>
+                        <td>{sitter.phone_number}</td>
                         <td>{Moment(sitter.date_joined).format('MM-DD-YYYY')}</td>
                     </tr>
                 </tbody>

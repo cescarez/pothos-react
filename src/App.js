@@ -32,7 +32,6 @@ function App() {
       for(let i in userIDs) {
         apiSitterList[i].user_id = userIDs[i];
       }
-      console.log(apiSitterList)
       setSitterList(apiSitterList)
     })
     .catch((error) => {
@@ -46,11 +45,6 @@ function App() {
     axios.get(`${BASE_URL}/users/${userId}`)
     .then((response) => {
       const apiUser = response.data
-      // if apiUser.sitter {
-      //   setSitter(apiUser)
-      // } else if apiUser.owner {
-      //   setOwner(apiUser)
-      // }
       setUser(apiUser);
     })
     .catch((error) => {
@@ -80,12 +74,12 @@ function App() {
                 //use Bootstrap tabs?
               }
             </Route>
-            {/* <Route path='/owners/:id'>
+            <Route path='/owners/:id'>
               <Owner owner={user} loadUserData={loadUserDataCallback}/>
             </Route>      
             <Route path='/sitters/:id'>
               <Sitter sitter={user} loadUserData={loadUserDataCallback} />
-            </Route>       */}
+            </Route>      
             <Route path='/users/:id'>
               <User user={user} loadUserData={loadUserDataCallback} />
             </Route>
