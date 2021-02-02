@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom'
-import { Navbar, Nav, Button, Container } from 'react-bootstrap';
+import { Navbar, Nav, Button, Container, Jumbotron, Tabs, Tab } from 'react-bootstrap';
 import { AuthProvider } from './contexts/AuthContext';
 
 import Home from './components/Home'
@@ -11,6 +11,7 @@ import User from './components/User'
 
 import './App.css';
 import OwnerDashboard from './components/OwnerDashboard';
+import SitterDashboard from './components/SitterDashboard';
 
 const BASE_URL = 'http://localhost:5000'
 
@@ -27,13 +28,24 @@ function App() {
             <Button variant="outline-info" as={Link} to='signup'>Sign Up</Button>
           </Navbar>
 
+          <Jumbotron>
+              <h1>Welcome back!</h1>
+              <p>This is your Plant Owner Dashboard. See below for a list of all available Sitters.</p>
+          </Jumbotron>
           <Switch>
             <Route path='/dashboard'>
               {
                 //include some ternary to render OwnerDashboard or SitterDashboard based on logged in user
                 //use Bootstrap tabs?
               }
-              <OwnerDashboard baseURL={BASE_URL}  />
+              <Tabs>
+                <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
+                  <OwnerDashboard baseURL={BASE_URL}  />
+                </Tab>
+                <Tab eventKey='sitterDashboard' title='SitterDashboard'>
+                  <SitterDashboard baseURL={BASE_URL}  />
+                </Tab>
+              </Tabs>
             </Route>
             <Route path='/users/:id'>
               <User baseURL={BASE_URL} />
