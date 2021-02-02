@@ -19,34 +19,33 @@ const BASE_URL = 'http://localhost:5000'
 
 function App() {
 
-  return (
-    <div className="App">
-      <Router>
-        <AuthProvider>  
-          <Navigation baseURL={BASE_URL} />
-          <Switch>
-            <Route exact path='/'>
-                <Home baseURL={BASE_URL} />
-            </Route>
-            <PrivateRoute path='/dashboard'>
-              <Dashboard baseURL={BASE_URL} />
-            </PrivateRoute>     
-            <Route path='/users/:id'>
-              <User baseURL={BASE_URL} />
-            </Route>
-            <Route path='/sitters'>
-              <SitterList baseURL={BASE_URL} />
-            </Route>
-            <Route path='/signup' component={Signup} />
-            <Route path='/login' component={Login} />
-            <Route path ='/forgot-password' component={ForgotPassword} />
-            <Route path='/createprofile' component={UserForm} />
-          </Switch>
-        </AuthProvider>
-      </Router>
-    </div>
-    
-  );
+    return (
+        <div className="App">
+            <Router>
+                <AuthProvider>  
+                    <Navigation baseURL={BASE_URL} />
+                    <Switch>
+                        <Route exact path='/'>
+                            <Home baseURL={BASE_URL} />
+                        </Route>
+                        <PrivateRoute path='/dashboard'>
+                        <Dashboard baseURL={BASE_URL} />
+                        </PrivateRoute>     
+                        <Route path='/users/:id'>
+                        <User baseURL={BASE_URL} />
+                        </Route>
+                        <Route path='/sitters'>
+                        <SitterList baseURL={BASE_URL} />
+                        </Route>
+                        <Route path='/signup' component={Signup} />
+                        <Route path='/login' component={Login} />
+                        <Route path ='/forgot-password' component={ForgotPassword} />
+                        <Route path='/createprofile' component={UserForm} />
+                    </Switch>
+                </AuthProvider>
+            </Router>
+        </div>
+    );
 }
 
 export default App;
