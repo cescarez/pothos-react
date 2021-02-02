@@ -79,6 +79,7 @@ const User = ({baseURL}) => {
         <div>
             <h3>User</h3>
             { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showUserData()}
+            <Link to={'/dashboard'}>Return to Dashboard</Link><br/>
             <Link to={'/sitters'}>Return to All Sitters</Link>
         </div>
     )

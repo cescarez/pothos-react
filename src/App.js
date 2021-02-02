@@ -10,6 +10,7 @@ import Signup from './components/Signup'
 import User from './components/User'
 
 import './App.css';
+import OwnerDashboard from './components/OwnerDashboard';
 
 const BASE_URL = 'http://localhost:5000'
 
@@ -32,6 +33,7 @@ function App() {
                 //include some ternary to render OwnerDashboard or SitterDashboard based on logged in user
                 //use Bootstrap tabs?
               }
+              <OwnerDashboard baseURL={BASE_URL}  />
             </Route>
             <Route path='/users/:id'>
               <User baseURL={BASE_URL} />
