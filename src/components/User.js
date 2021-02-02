@@ -51,22 +51,32 @@ const User = ({baseURL}) => {
                 </Card.Body>
                 {user.sitter ? 
                     <Card.Footer className='bg-plant'>
-                        <Row>
-                            <Col>Water per Plant:</Col>
-                            <Col>${user.price_rate.water_by_plant.toFixed(2)}</Col>
-                        </Row> 
-                        <Row>
-                            <Col>Water per 30min:</Col>
-                            <Col>${user.price_rate.water_by_time.toFixed(2)}</Col>
-                        </Row> 
-                        <Row>
-                            <Col>Repot per Plant:</Col>
-                            <Col>${user.price_rate.repot_by_plant.toFixed(2)}</Col>
-                        </Row> 
-                        <Row>
-                            <Col>Repot per 30min:</Col>
-                            <Col>${user.price_rate.repot_by_time.toFixed(2)}</Col>
-                        </Row> 
+                            <Table className='my-0' borderless size='sm'>
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Water by Plant</td>
+                                    <td>${user.price_rate.water_by_plant.toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <td>Water per 30min:</td>
+                                    <td>${user.price_rate.water_by_time.toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <td>Repot per Plant:</td>
+                                    <td>${user.price_rate.repot_by_plant.toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <td>Repot per 30min:</td>
+                                    <td>${user.price_rate.repot_by_time.toFixed(2)}</td>
+                                </tr>
+                            </tbody>
+                        </Table>
                     </Card.Footer>
                 : null}
             </Card>
