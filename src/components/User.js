@@ -13,17 +13,18 @@ const User = ({baseURL}) => {
     const userId = match.params.id
     
     //maybe use async and await instead?
+    //NOTE: code is duplicated in Dashboard.js
     useEffect(() => {
         axios.get(`${baseURL}/users/${userId}`)
-        .then((response) => {
-            const apiUser = response.data
-            setUser(apiUser);
-        })
-        .catch((error) => {
-            const message=`There was an error with your request. ${error.message}.`;
-            setError({variant: 'danger', message: message});
-            console.log(message);
-        })
+            .then((response) => {
+                const apiUser = response.data
+                setUser(apiUser);
+            })
+            .catch((error) => {
+                const message=`There was an error with your request. ${error.message}.`;
+                setError({variant: 'danger', message: message});
+                console.log(message);
+            })
     }, [baseURL, userId])
 
     const showUserData = () => {
@@ -77,10 +78,8 @@ const User = ({baseURL}) => {
 
     return (
         <div>
-            <h3>User</h3>
             { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showUserData()}
-            <Link to={'/dashboard'}>Return to Dashboard</Link><br/>
-            <Link to={'/sitters'}>Return to All Sitters</Link>
+            <Link to={'/'}>Return to Dashboard</Link><br/>
         </div>
     )
 }
