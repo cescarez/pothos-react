@@ -2,10 +2,13 @@
 /* make the customizations */
 $theme-colors: (
     "plant": #baf2c1,
-    // "plant-medium": #c8f4c9,
     "plant-dark": #5b8a6b,
     "plant-yellow": #91c4a2,
 );
 
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
+
+// @import "~bootswatch/dist/minty/variables";
+// @import "~bootstrap/scss/bootstrap";
+// @import "~bootswatch/dist/minty/bootswatch";

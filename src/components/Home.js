@@ -8,7 +8,8 @@ const Home = ({baseURL}) => {
     return (
         <div>
             { currentUser ? 
-                <Dashboard baseURL={baseURL} /> :
+                <Dashboard baseURL={baseURL} /> 
+            :
                 <Login />
             }
         </div>

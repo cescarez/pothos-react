@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Jumbotron, Tabs, Tab } from 'react-bootstrap';
+import { Alert, Jumbotron, Tabs, Tab, Container } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
+import {Link}  from 'react-router-dom';
 
 import OwnerDashboard from './OwnerDashboard';
 import SitterDashboard from './SitterDashboard';
@@ -25,24 +26,34 @@ const Dashboard = ({baseURL}) => {
             })
     }, [baseURL, currentUser])
 
+    //create useEffect to retrieve a user's list of chat threads -- pass that data for rendering to OwnerDashboard/SitterDashboard
+
+    //create useEffect to retrieve a user's list of requests -- pass that data for rendering to OwnerDashboard/SitterDashboard
+
     return (
         <div className='dashboard'>
-            <Jumbotron className='bg-plant-yellow'>
-                <h1>Welcome back {user.full_name}!</h1>
-                <p>This is your Plant Owner Dashboard. See below for a list of all available Sitters.</p>
-            </Jumbotron>
-            <Tabs>
-            {user.owner ? 
-                <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
-                    <OwnerDashboard baseURL={baseURL}  />
-                </Tab>
-            : null }
-            {user.sitter ? 
-                <Tab eventKey='sitterDashboard' title='Sitter Dashboard'>
-                    <SitterDashboard baseURL={baseURL}  />
-                </Tab>
-            : null }
-            </Tabs>
+            <Container>
+                <Jumbotron className='bg-plant-yellow'>
+                    <h1>Welcome Back<br/><Link to='/users/{user.user_id}'>{user.full_name}</Link>!</h1>
+                    <p>This is your dashboard.</p>
+                </Jumbotron>
+            </Container>
+            { error.message ? 
+                <Alert variant={error.variant}>{error.message}</Alert> 
+            :
+                <Tabs>
+                {user.owner ? 
+                    <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
+                        <OwnerDashboard baseURL={baseURL}  />
+                    </Tab>
+                : null }
+                {user.sitter ? 
+                    <Tab eventKey='sitterDashboard' title='Sitter Dashboard'>
+                        <SitterDashboard baseURL={baseURL}  />
+                    </Tab>
+                : null }
+                </Tabs>
+            }
         </div>
     )
 }

@@ -32,9 +32,11 @@ const SitterList = ({ baseURL }) => {
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Username</th>
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Date Joined</th>
+                        <th>Rating</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,9 +44,11 @@ const SitterList = ({ baseURL }) => {
                         return(
                             <tr key={sitter.user_id}>
                                 <td><Link to={`/users/${sitter.user_id}`}>{sitter.full_name}</Link></td>
+                                <td>{sitter.username}</td>
                                 <td>{sitter.email}</td>
                                 <td>{sitter.phone_number}</td>
                                 <td>{Moment(sitter.date_joined).format('MM-DD-YYYY')}</td>
+                                <td>{ sitter.rating ? sitter.rating : 'N/A'}</td>
                             </tr>
                         )
                     })}
