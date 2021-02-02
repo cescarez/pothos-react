@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Card, Button, Alert, Link } from 'react-bootstrap'
+import { Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 
 export default function Dashboard() {
     const [error, setError] = useState('')

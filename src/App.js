@@ -69,7 +69,8 @@ function App() {
               <Nav.Link as={Link} to='/'>Home</Nav.Link>
               <Nav.Link as={Link} to='/sitters'>Plant Sitters</Nav.Link>
             </Nav>
-            {/* {currentUser && <Button variant="outline-info" as={Link} to='signup'>Log Out</Button>} */}
+            {/* {currentUser ? <Button variant="outline-info" as={Link} >Log Out</Button> : 
+            <Button variant="outline-info" as={Link} to='/signup'>Sign Up</Button>} */}
             <Button variant="outline-info" as={Link} to='/signup'>Sign Up</Button>
           </Navbar>
 
