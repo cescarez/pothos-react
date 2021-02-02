@@ -28,16 +28,16 @@ function App() {
             <Button variant="outline-info" as={Link} to='signup'>Sign Up</Button>
           </Navbar>
 
-          <Jumbotron>
-              <h1>Welcome back!</h1>
-              <p>This is your Plant Owner Dashboard. See below for a list of all available Sitters.</p>
-          </Jumbotron>
           <Switch>
             <Route path='/dashboard'>
               {
                 //include some ternary to render OwnerDashboard or SitterDashboard based on logged in user
                 //use Bootstrap tabs?
               }
+              <Jumbotron>
+                  <h1>Welcome back!</h1>
+                  <p>This is your Plant Owner Dashboard. See below for a list of all available Sitters.</p>
+              </Jumbotron>
               <Tabs>
                 <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
                   <OwnerDashboard baseURL={BASE_URL}  />
