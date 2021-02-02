@@ -1,8 +1,10 @@
 // Override default variables before the import
 /* make the customizations */
 $theme-colors: (
-    // "plant": rgb(64, 136, 92),
-    "plant": #c8f4c9,
+    "plant": #baf2c1,
+    // "plant-medium": #c8f4c9,
+    "plant-dark": #5b8a6b,
+    "plant-yellow": #91c4a2,
 );
 
 // Import Bootstrap and its default variables
