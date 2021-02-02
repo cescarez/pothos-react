@@ -31,21 +31,40 @@ export default function UserForm() {
     })
 
     const handleChange = (event) => {
-        const nested_name = event.target.name
-        const address_parts = ['street', 'city', 'state', 'postal_code', 'country']
-        const price_parts = ['water_by_plant', 'water_by_time', 'repot_by_plant', 'repot_by_time']
+        const newInput = event.target.name
+        const newValue = event.target.value
+        const addressParts = ['street', 'city', 'state', 'postal_code', 'country']
+        const priceParts = ['water_by_plant', 'water_by_time', 'repot_by_plant', 'repot_by_time']
         console.log(user)
-        if (address_parts.includes(nested_name)){
-            setUser({address:{[event.target.name]: event.target.value}})
-        }else if (price_parts.includes(nested_name)){
-            setUser({price_rate:{[event.target.name]: event.target.value}})
+        if (addressParts.includes(newInput)) {
+            setUser({
+                ...user,
+                address: {
+                    ...user.address,
+                    [newInput]: newValue,
+                }
+            })
+        }else if (priceParts.includes(newInput)){
+            setUser({
+                ...user,
+                price_rate: { 
+                    ...user.price_rate, 
+                    [newInput]: newValue,
+                }
+            })
         }else {
-            setUser({[event.target.name]: event.target.value});
+            setUser({
+                ...user, 
+                [newInput]: newValue,
+            });
         }
     }
 
     const handleCheck = (event) => {
-        setUser({[event.target.name]: !user[event.target.name]});
+        setUser({
+            ...user,
+            [event.target.name]: !user[event.target.name]
+        });
     }
 
     const handleSubmit = (event) => {

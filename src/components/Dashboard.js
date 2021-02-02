@@ -34,7 +34,7 @@ const Dashboard = ({baseURL}) => {
         <div className='dashboard'>
             <Container>
                 <Jumbotron >
-                    <h1>Welcome Back<br/><Link to='/users/{user.user_id}'>{user.full_name}</Link>!</h1>
+                    <h1>Welcome Back<br/><Link to={`/users/${user.user_id}`}>{user.full_name}</Link>!</h1>
                     <p>This is your dashboard.</p>
                 </Jumbotron>
             </Container>
