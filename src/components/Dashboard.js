@@ -33,7 +33,7 @@ const Dashboard = ({baseURL}) => {
     return (
         <div className='dashboard'>
             <Container>
-                <Jumbotron className='bg-plant-yellow'>
+                <Jumbotron >
                     <h1>Welcome Back<br/><Link to='/users/{user.user_id}'>{user.full_name}</Link>!</h1>
                     <p>This is your dashboard.</p>
                 </Jumbotron>
@@ -41,7 +41,7 @@ const Dashboard = ({baseURL}) => {
             { error.message ? 
                 <Alert variant={error.variant}>{error.message}</Alert> 
             :
-                <Tabs>
+                <Tabs border='primary'>
                 {user.owner ? 
                     <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
                         <OwnerDashboard baseURL={baseURL}  />

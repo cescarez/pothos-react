@@ -32,8 +32,15 @@ const User = ({baseURL}) => {
             <Card className='mx-auto w-50' border='plant'>
                 <Card.Img variant='bottom' src={pothosPic} rounded />
                 <Card.Header className='bg-plant'>
-                    <Card.Title className='font-weight-bolder mb-1'>{user.full_name}</Card.Title>
-                    <Card.Subtitle className='text-muted font-weight-lighter'>{user.username}</Card.Subtitle>
+                    <Row>
+                        <Col>
+                            <Card.Title className='font-weight-bolder mb-1'>{user.full_name}</Card.Title>
+                            <Card.Subtitle className='text-muted font-weight-lighter'>{user.username}</Card.Subtitle>
+                        </Col>
+                        <Col xs='auto'>
+                            <Button variant='outline-secondary btn-sm'>Send Request</Button>
+                        </Col>
+                    </Row>
                 </Card.Header>
                 <Card.Body className='py-2'>
                     <Card.Text className='mb-2'>
@@ -48,7 +55,7 @@ const User = ({baseURL}) => {
                             <Col className='text-muted mt-2'>{user.bio}</Col>
                         </Row>
                     </Card.Text>
-                    <Button variant='outline-success btn-sm'>Request</Button>
+
                 </Card.Body>
                 {user.sitter ? 
                     <Card.Footer className='bg-plant'>
@@ -72,6 +79,7 @@ const User = ({baseURL}) => {
                         </Container>
                     </Card.Footer>
                 : null}
+                <Button variant='secondary' as={Link} to={'/'}>Return to Dashboard</Button><br/>
             </Card>
         )
     }
@@ -79,7 +87,6 @@ const User = ({baseURL}) => {
     return (
         <div>
             { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showUserData()}
-            <Link to={'/'}>Return to Dashboard</Link><br/>
         </div>
     )
 }

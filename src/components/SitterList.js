@@ -3,6 +3,9 @@ import {Alert, Table} from 'react-bootstrap';
 import Moment from 'moment';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import { render } from '@testing-library/react';
+
+import './SitterList.css'
 
 const SitterList = ({ baseURL }) => {
   const [sitterList, setSitterList] = useState([]);
@@ -25,10 +28,9 @@ const SitterList = ({ baseURL }) => {
             })
     }, [baseURL])
 
-
     const showSitterList = () => {
         return(
-            <Table striped bordered hover>
+            <Table className='sitter-list__table'>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -43,12 +45,36 @@ const SitterList = ({ baseURL }) => {
                     {(sitterList).map((sitter) => {
                         return(
                             <tr key={sitter.user_id}>
-                                <td><Link to={`/users/${sitter.user_id}`}>{sitter.full_name}</Link></td>
-                                <td>{sitter.username}</td>
-                                <td>{sitter.email}</td>
-                                <td>{sitter.phone_number}</td>
-                                <td>{Moment(sitter.date_joined).format('MM-DD-YYYY')}</td>
-                                <td>{ sitter.rating ? sitter.rating : 'N/A'}</td>
+                                <td>
+                                    <Link to={`/users/${sitter.user_id}`}>
+                                        {sitter.full_name}
+                                    </Link>
+                                </td>
+                                <td>
+                                    <Link to={`/users/${sitter.user_id}`}>
+                                        {sitter.username}
+                                    </Link>
+                                </td>
+                                <td>
+                                    <Link to={`/users/${sitter.user_id}`}>
+                                        {sitter.email}
+                                    </Link>
+                                </td>
+                                <td>
+                                    <Link to={`/users/${sitter.user_id}`}>
+                                        {sitter.phone_number}
+                                    </Link>
+                                </td>
+                                <td>
+                                    <Link to={`/users/${sitter.user_id}`}>
+                                        {Moment(sitter.date_joined).format('MM-DD-YYYY')}
+                                    </Link>
+                                </td>
+                                <td>
+                                    <Link to={`/users/${sitter.user_id}`}>
+                                        { sitter.rating ? sitter.rating : 'N/A'}
+                                    </Link>
+                                </td>
                             </tr>
                         )
                     })}

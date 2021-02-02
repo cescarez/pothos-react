@@ -21,13 +21,13 @@ const Navigation = () => {
 
     return (
         <div className='navigation'>
-            <Navbar fixed='top' bg='plant-dark' variant='dark'>
+            <Navbar fixed='top' bg='primary' variant='dark'>
                 <Nav className='mr-auto'>
                     <Nav.Link as={Link} to='/'>Home</Nav.Link>
                 </Nav>
                 {currentUser ? 
-                    <Button variant='outline-plant' as={Link} onClick={handleLogout}>Log Out</Button> : 
-                    <Button variant='outline-plant' as={Link} to='/signup'>Sign Up</Button>
+                    <Button variant='secondary' as={Link} onClick={handleLogout}>Log Out</Button> : 
+                    <Button variant='secondary' as={Link} to='/signup'>Sign Up</Button>
                 } 
             </Navbar>
             {error && <Alert variant='danger'>{error}</Alert>}
