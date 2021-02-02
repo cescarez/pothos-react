@@ -1,12 +1,33 @@
 import React, { Component } from 'react'
 import { Form, Button, Container, Card } from 'react-bootstrap'
 
+
 class UserForm extends Component {
+
     constructor(props) {
         super(props);
         this.state = { 
             username: '', 
             full_name: '',
+            phone_number: '',
+            avatar_url: '',
+            sitter: false,
+            owner: false,
+            bio: '',
+            address: {
+                street: '',
+                city: '',
+                state: '',
+                postal_code: '',
+                country: ''
+            },
+            email: '',
+            price_rate: {
+                water_by_plant: '',
+                water_by_time: '',
+                repot_by_plant: '',
+                repot_by_time: ''
+            }
         };
     }
 
