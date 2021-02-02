@@ -6,10 +6,11 @@ import { AuthProvider } from './contexts/AuthContext';
 
 import Home from './components/Home'
 import SitterList from './components/SitterList'
-import Sitter from './components/Sitter'
-import Owner from './components/Owner'
 import Signup from './components/Signup'
 
+import User from './components/User'
+import Sitter from './components/Sitter'
+import Owner from './components/Owner'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -18,8 +19,9 @@ const BASE_URL = 'http://localhost:5000'
 
 function App() {
   const [sitterList, setSitterList] = useState([]);
-  const [sitter, setSitter] = useState({});
-  const [owner, setOwner] = useState({})
+  const [user, setUser] = useState({});
+  // const [owner, setOwner] = useState({})
+  // const [sitter, setSitter] = useState({})
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(()=>{
@@ -30,6 +32,7 @@ function App() {
       for(let i in userIDs) {
         apiSitterList[i].user_id = userIDs[i];
       }
+      console.log(apiSitterList)
       setSitterList(apiSitterList)
     })
     .catch((error) => {
@@ -39,15 +42,16 @@ function App() {
     })
   }, [])
   
-  const loadUserDataCallback = (userType, userId) => {
-    axios.get(`${BASE_URL}/${userType}/${userId}`)
+  const loadUserDataCallback = (userId) => {
+    axios.get(`${BASE_URL}/users/${userId}`)
     .then((response) => {
       const apiUser = response.data
-      if(userType === 'sitters') {
-        setSitter(apiUser);
-      } else if (userType === 'owners') {
-        setOwner(apiUser);
-      }
+      // if apiUser.sitter {
+      //   setSitter(apiUser)
+      // } else if apiUser.owner {
+      //   setOwner(apiUser)
+      // }
+      setUser(apiUser);
     })
     .catch((error) => {
       const message=`There was an error with your request. ${error.message}.`;
@@ -76,12 +80,15 @@ function App() {
                 //use Bootstrap tabs?
               }
             </Route>
-            <Route path='/owners/:id'>
-              <Owner owner={owner} loadUserData={loadUserDataCallback}/>
+            {/* <Route path='/owners/:id'>
+              <Owner owner={user} loadUserData={loadUserDataCallback}/>
             </Route>      
             <Route path='/sitters/:id'>
-              <Sitter sitter={sitter} loadUserData={loadUserDataCallback} />
-            </Route>      
+              <Sitter sitter={user} loadUserData={loadUserDataCallback} />
+            </Route>       */}
+            <Route path='/users/:id'>
+              <User user={user} loadUserData={loadUserDataCallback} />
+            </Route>
             <Route path='/sitters'>
               <SitterList sitterList={sitterList} />
             </Route>
