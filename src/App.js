@@ -7,10 +7,8 @@ import { AuthProvider } from './contexts/AuthContext';
 import Home from './components/Home'
 import SitterList from './components/SitterList'
 import Signup from './components/Signup'
-
 import User from './components/User'
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 const BASE_URL = 'http://localhost:5000'
@@ -29,7 +27,6 @@ function App() {
           </Navbar>
 
           <Switch>
-            <Route exact path='/'><Home /></Route>
             <Route path='/dashboard'>
               {
                 //include some ternary to render OwnerDashboard or SitterDashboard based on logged in user

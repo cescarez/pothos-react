@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import {useRouteMatch, Link} from 'react-router-dom';
-import {Table, Alert} from 'react-bootstrap';
+import {Card, Button, Container, Table, Row, Col, Alert} from 'react-bootstrap';
 import Moment from 'moment';
 import axios from 'axios';
+import pothosPic from '../images/pothos.png'
 
 const User = ({baseURL}) => {
     const [user, setUser] = useState({});
@@ -27,24 +28,48 @@ const User = ({baseURL}) => {
 
     const showUserData = () => {
         return (
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Date Joined</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr key={user.user_id}>
-                        <td>{user.full_name}</td>
-                        <td>{user.email}</td>
-                        <td>{user.phone_number}</td>
-                        <td>{Moment(user.date_joined).format('MM-DD-YYYY')}</td>
-                    </tr>
-                </tbody>
-            </Table>
+            <Card className='mx-auto w-50' border='plant'>
+                <Card.Img variant='bottom' src={pothosPic} rounded />
+                <Card.Header className='bg-plant'>
+                    <Card.Title className='font-weight-bolder mb-1'>{user.full_name}</Card.Title>
+                    <Card.Subtitle className='text-muted font-weight-lighter'>{user.username}</Card.Subtitle>
+                </Card.Header>
+                <Card.Body className='py-2'>
+                    <Card.Text className='mb-2'>
+                        <Row>
+                            <Col className='text-muted text-right'>Member Since:</Col>
+                            <Col className='text-left'>{Moment(user.date_joined).format('MMMM Do, YYYY')}</Col>
+                        </Row>
+                        <Row>
+                            <Col>{user.email}</Col>
+                        </Row>
+                        <Row>
+                            <Col className='text-muted mt-2'>{user.bio}</Col>
+                        </Row>
+                    </Card.Text>
+                    <Button variant='outline-success'>Request</Button>
+                </Card.Body>
+                {user.sitter ? 
+                    <Card.Footer className='bg-plant'>
+                        <Row>
+                            <Col>Water per Plant:</Col>
+                            <Col>${user.price_rate.water_by_plant.toFixed(2)}</Col>
+                        </Row> 
+                        <Row>
+                            <Col>Water per 30min:</Col>
+                            <Col>${user.price_rate.water_by_time.toFixed(2)}</Col>
+                        </Row> 
+                        <Row>
+                            <Col>Repot per Plant:</Col>
+                            <Col>${user.price_rate.repot_by_plant.toFixed(2)}</Col>
+                        </Row> 
+                        <Row>
+                            <Col>Repot per 30min:</Col>
+                            <Col>${user.price_rate.repot_by_time.toFixed(2)}</Col>
+                        </Row> 
+                    </Card.Footer>
+                : null}
+            </Card>
         )
     }
 
