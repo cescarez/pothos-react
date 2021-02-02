@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom'
-import { Navbar, Nav, Button, Container } from 'react-bootstrap';
+import { Navbar, Nav, Button } from 'react-bootstrap';
 import { AuthProvider } from './contexts/AuthContext';
 
 import Home from './components/Home'
@@ -9,10 +9,12 @@ import SitterList from './components/SitterList'
 import Sitter from './components/Sitter'
 import Owner from './components/Owner'
 import Signup from './components/Signup'
+import Login from './components/Login'
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import Dashboard from './components/Dashboard';
 
 const BASE_URL = 'http://localhost:5000'
 
@@ -75,6 +77,7 @@ function App() {
                 //include some ternary to render OwnerDashboard or SitterDashboard based on logged in user
                 //use Bootstrap tabs?
               }
+              <Dashboard />
             </Route>
             <Route path='/owners/:id'>
               <Owner owner={owner} loadUserData={loadUserDataCallback}/>
@@ -86,14 +89,10 @@ function App() {
               <SitterList sitterList={sitterList} />
             </Route>
             <Route path='/signup'>
-              <Container 
-                className='d-flex align-items-center justify-content-center'
-                style={{ minHeight: '100vh' }}
-              >
-                <div className='w-100' style={{ maxWidth: '400px'}}>
-                  <Signup />
-                </div>
-              </Container>
+              <Signup />
+            </Route>
+            <Route path='/login'>
+              <Login />
             </Route>
           </Switch>
         </AuthProvider>

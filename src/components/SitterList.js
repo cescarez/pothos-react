@@ -19,9 +19,9 @@ const SitterList = ({ sitterList }) => {
                     {(sitterList).map((sitter) => {
                         return(
                             <tr key={sitter.user_id}>
-                                <td><Link to={`/sitters/${sitter.user_id}`}>{sitter.name}</Link></td>
+                                <td><Link to={`/sitters/${sitter.user_id}`}>{sitter.full_name}</Link></td>
                                 <td>{sitter.email}</td>
-                                <td>{sitter.phone}</td>
+                                <td>{sitter.phone_number}</td>
                                 <td>{Moment(sitter.date_joined).format('MM-DD-YYYY')}</td>
                             </tr>
                         )
