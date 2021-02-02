@@ -13,7 +13,7 @@ class UserForm extends Component {
 
     handleSubmit = (event) => {
         alert('A form was submitted: ' + this.state);
-        fetch('https://your-node-server-here.com/api/endpoint', {
+        fetch('https://localhost:5000/users', {
             method: 'POST',
             // We convert the React state to JSON and send it as the POST body
             body: JSON.stringify(this.state)
