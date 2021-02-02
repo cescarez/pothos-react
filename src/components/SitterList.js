@@ -1,9 +1,31 @@
-import React from 'react';
-import {Table} from 'react-bootstrap';
+import React, {useState, useEffect} from 'react';
+import {Alert, Table} from 'react-bootstrap';
 import Moment from 'moment';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 
-const SitterList = ({ sitterList }) => {
+const SitterList = ({ baseURL }) => {
+  const [sitterList, setSitterList] = useState([]);
+  const [error, setError] = useState({variant: '', message: ''});
+
+    useEffect(()=>{
+        axios.get(baseURL + '/sitters')
+        .then((response) => {
+            const apiSitterList = Object.values(response.data)
+            const userIDs = Object.keys(response.data)
+            for(let i in userIDs) {
+            apiSitterList[i].user_id = userIDs[i];
+            }
+            setSitterList(apiSitterList)
+        })
+        .catch((error) => {
+            const message=`There was an error with your request. ${error.message}.`;
+            setError({variant: 'danger', message: message});
+            console.log(message);
+        })
+    }, [baseURL])
+
+
     const showSitterList = () => {
         console.log(sitterList)
         return(
@@ -34,7 +56,7 @@ const SitterList = ({ sitterList }) => {
 
     return (
         <div className='sitter-list'>
-            {showSitterList()}
+            { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showSitterList()}
         </div>
     )
 }

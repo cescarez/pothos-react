@@ -9,8 +9,6 @@ import SitterList from './components/SitterList'
 import Signup from './components/Signup'
 
 import User from './components/User'
-import Sitter from './components/Sitter'
-import Owner from './components/Owner'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -18,42 +16,6 @@ import './App.css';
 const BASE_URL = 'http://localhost:5000'
 
 function App() {
-  const [sitterList, setSitterList] = useState([]);
-  const [user, setUser] = useState({});
-  // const [owner, setOwner] = useState({})
-  // const [sitter, setSitter] = useState({})
-  const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(()=>{
-    axios.get(BASE_URL + '/sitters')
-    .then((response) => {
-      const apiSitterList = Object.values(response.data)
-      const userIDs = Object.keys(response.data)
-      for(let i in userIDs) {
-        apiSitterList[i].user_id = userIDs[i];
-      }
-      setSitterList(apiSitterList)
-    })
-    .catch((error) => {
-      const message=`There was an error with your request. ${error.message}.`;
-      setErrorMessage(message);
-      console.log(message);
-    })
-  }, [])
-  
-  const loadUserDataCallback = (userId) => {
-    axios.get(`${BASE_URL}/users/${userId}`)
-    .then((response) => {
-      const apiUser = response.data
-      setUser(apiUser);
-    })
-    .catch((error) => {
-      const message=`There was an error with your request. ${error.message}.`;
-      setErrorMessage(message);
-      console.log(message);
-    })
-  }
-
   return (
     <div className="App">
       <Router>
@@ -74,17 +36,11 @@ function App() {
                 //use Bootstrap tabs?
               }
             </Route>
-            <Route path='/owners/:id'>
-              <Owner owner={user} loadUserData={loadUserDataCallback}/>
-            </Route>      
-            <Route path='/sitters/:id'>
-              <Sitter sitter={user} loadUserData={loadUserDataCallback} />
-            </Route>      
             <Route path='/users/:id'>
-              <User user={user} loadUserData={loadUserDataCallback} />
+              <User baseURL={BASE_URL} />
             </Route>
             <Route path='/sitters'>
-              <SitterList sitterList={sitterList} />
+              <SitterList baseURL={BASE_URL} />
             </Route>
             <Route path='/signup'>
               <Container 

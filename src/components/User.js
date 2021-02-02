@@ -1,16 +1,29 @@
 import React, {useState, useEffect} from 'react'
 import {useRouteMatch, Link} from 'react-router-dom';
-import {Table} from 'react-bootstrap';
+import {Table, Alert} from 'react-bootstrap';
 import Moment from 'moment';
+import axios from 'axios';
 
-const User = ({loadUserData, user}) => {
+const User = ({baseURL}) => {
+    const [user, setUser] = useState({});
+    const [error, setError] = useState('');
+
     const match = useRouteMatch('/users/:id');
     const userId = match.params.id
     
     //maybe use async and await instead?
     useEffect(() => {
-        loadUserData(userId)
-    }, [loadUserData, userId])
+        axios.get(`${baseURL}/users/${userId}`)
+        .then((response) => {
+            const apiUser = response.data
+            setUser(apiUser);
+        })
+        .catch((error) => {
+            const message=`There was an error with your request. ${error.message}.`;
+            setError({variant: 'danger', message: message});
+            console.log(message);
+        })
+    }, [baseURL, userId])
 
     const showUserData = () => {
         return (
@@ -38,7 +51,7 @@ const User = ({loadUserData, user}) => {
     return (
         <div>
             <h3>User</h3>
-            {showUserData()}
+            { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showUserData()}
             <Link to={'/sitters'}>Return to All Sitters</Link>
         </div>
     )
