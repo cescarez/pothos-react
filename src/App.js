@@ -13,6 +13,7 @@ import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import PrivateRoute from './components/PrivateRoute'
 import UserForm from './components/UserForm'
+import ForgotPassword from './components/ForgotPassword'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -93,15 +94,10 @@ function App() {
             <Route path='/sitters'>
               <SitterList sitterList={sitterList} />
             </Route>
-            <Route path='/signup'>
-              <Signup />
-            </Route>
-            <Route path='/login'>
-              <Login />
-            </Route>
-            <Route path='/createprofile'>
-              <UserForm />
-            </Route>
+            <Route path='/signup' component={Signup} />
+            <Route path='/login' component={Login} />
+            <Route path ='/forgot-password' component={ForgotPassword} />
+            <Route path='/createprofile' component={UserForm} />
           </Switch>
         </AuthProvider>
       </Router>
