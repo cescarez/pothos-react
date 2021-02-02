@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import { Form, Button, Container, Card } from 'react-bootstrap'
 
-class UserForm extends React.Component {
+class UserForm extends Component {
     constructor(props) {
         super(props);
         this.state = { name: '' };
@@ -25,13 +26,43 @@ class UserForm extends React.Component {
 
     render() {
         return (
-        <form onSubmit={this.handleSubmit}>
-            <label>
-            Name:
-            <input type="text" value={this.state.value} name="name" onChange={this.handleChange} />
-            </label>
-            <input type="submit" value="Submit" />
-        </form>
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Name:
+                    <input type="text" value={this.state.value} name="name" onChange={this.handleChange} />
+                </label>
+                <input type="submit" value="Submit" />
+            </form>
+            // <Container 
+            // className='d-flex align-items-center justify-content-center'
+            // style={{ minHeight: '100vh' }}
+            // >
+            //     <div className='w-100' style={{ maxWidth: '400px'}}>
+            //         <Card>
+            //             <Card.Body>
+            //                 <Form onSubmit={this.handleSubmit}>
+            //                     <Form.Group id='username'>
+            //                         <Form.Label>Username</Form.Label>
+            //                         <Form.Control type='username' required />
+            //                     </Form.Group>
+            //                     <Form.Group id='full_name'>
+            //                         <Form.Label>Full Name</Form.Label>
+            //                         <Form.Control type='username' required />
+            //                     </Form.Group>
+            //                     <label>
+            //                         Name:
+            //                         <input type="text" value={this.state.value} name="name" onChange={this.handleChange} />
+            //                     </label>
+            //                     <Button variant='primary' type="submit">
+            //                         Submit
+            //                     </Button>
+            //                 </Form>
+            //             </Card.Body>
+            //         </Card>
+            //     </div>
+            // </Container>
         );
     }
 }
+
+export default UserForm;

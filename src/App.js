@@ -10,8 +10,9 @@ import Sitter from './components/Sitter'
 import Owner from './components/Owner'
 import Signup from './components/Signup'
 import Login from './components/Login'
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/Dashboard'
 import PrivateRoute from './components/PrivateRoute'
+import UserForm from './components/UserForm'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -97,6 +98,9 @@ function App() {
             </Route>
             <Route path='/login'>
               <Login />
+            </Route>
+            <Route path='/createprofile'>
+              <UserForm />
             </Route>
           </Switch>
         </AuthProvider>
