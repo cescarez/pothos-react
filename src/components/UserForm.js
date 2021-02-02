@@ -4,8 +4,10 @@ import { Form, Button, Container, Card } from 'react-bootstrap'
 class UserForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { username: '' };
-        this.state = { full_name: '' };
+        this.state = { 
+            username: '', 
+            full_name: '',
+        };
     }
 
     handleChange = (event) => {
@@ -29,12 +31,12 @@ class UserForm extends Component {
             <form onSubmit={this.handleSubmit}>
                 <label>
                     Full Name:
-                    <input type="text" value={this.state.value} full_name="full_name" onChange={this.handleChange} />
+                    <input type="text" full_name={this.state.full_name} onChange={this.handleChange} />
                 </label>
                 <br />
                 <label>
                     Username:
-                    <input type="text" value={this.state.value} username="username" onChange={this.handleChange} />
+                    <input type="text" username={this.state.username} onChange={this.handleChange} />
                 </label>
                 <br />
                 <input type="submit" value="Submit" />
