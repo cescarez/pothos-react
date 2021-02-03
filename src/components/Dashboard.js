@@ -6,6 +6,7 @@ import {Link}  from 'react-router-dom';
 
 import OwnerDashboard from './OwnerDashboard';
 import SitterDashboard from './SitterDashboard';
+import UserForm from './UserForm';
 
 const Dashboard = ({baseURL}) => {
     const [user, setUser] = useState({});
@@ -17,8 +18,12 @@ const Dashboard = ({baseURL}) => {
             axios.get(`${baseURL}/users/current/${currentUser.uid}`)
                 .then((response) => {
                     const apiUser = Object.values(response.data)[0]
-                    apiUser.userID = Object.keys(response.data)[0]
-                    setUser(apiUser);
+                    if (Object.keys(response.data)[0] !== 'message') {
+                        apiUser.userID = Object.keys(response.data)[0]
+                        setUser(apiUser);
+                    } else {
+                        setError({variant: 'warning', message: apiUser})
+                    }
                 })
                 .catch((error) => {
                     const message=`There was an error with your request. ${error.message}.`;
@@ -43,18 +48,22 @@ const Dashboard = ({baseURL}) => {
             { error.message ? 
                 <Alert variant={error.variant}>{error.message}</Alert> 
             :
-                <Tabs border='primary'>
-                {user.owner ? 
-                    <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
-                        <OwnerDashboard baseURL={baseURL}  />
-                    </Tab>
-                : null }
-                {user.sitter ? 
-                    <Tab eventKey='sitterDashboard' title='Sitter Dashboard'>
-                        <SitterDashboard baseURL={baseURL}  />
-                    </Tab>
-                : null }
-                </Tabs>
+                (user ? 
+                    <Tabs border='primary'>
+                        {user.owner  &&
+                            <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
+                                <OwnerDashboard baseURL={baseURL}  />
+                            </Tab>
+                        }
+                        {user.sitter &&
+                            <Tab eventKey='sitterDashboard' title='Sitter Dashboard'>
+                                <SitterDashboard baseURL={baseURL}  />
+                            </Tab>
+                        }
+                    </Tabs>
+                : 
+                    <UserForm />
+                )
             }
         </div>
     )
