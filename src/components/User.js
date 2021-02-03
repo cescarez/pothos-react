@@ -12,8 +12,6 @@ const User = ({baseURL}) => {
     const match = useRouteMatch('/users/:id');
     const userId = match.params.id
     
-    //maybe use async and await instead?
-    //NOTE: code is duplicated in Dashboard.js
     useEffect(() => {
         axios.get(`${baseURL}/users/${userId}`)
             .then((response) => {
@@ -29,7 +27,7 @@ const User = ({baseURL}) => {
 
     const showUserData = () => {
         return (
-            <Card className='mx-auto w-50' border='plant'>
+            <Card className='mx-auto w-50 h-75 d-inline-block' border='plant'>
                 <Card.Img variant='bottom' src={pothosPic} rounded />
                 <Card.Header className='bg-plant'>
                     <Row>
@@ -57,7 +55,7 @@ const User = ({baseURL}) => {
                     </Card.Text>
 
                 </Card.Body>
-                {user.sitter ? 
+                {user.sitter &&
                     <Card.Footer className='bg-plant'>
                         <Container>
                             <Row>
@@ -78,8 +76,8 @@ const User = ({baseURL}) => {
                             </Row> 
                         </Container>
                     </Card.Footer>
-                : null}
-                <Button variant='secondary' as={Link} to={'/'}>Return to Dashboard</Button><br/>
+                }
+                <Button variant='secondary w-100' as={Link} to={'/'}>Return to Dashboard</Button><br/>
             </Card>
         )
     }

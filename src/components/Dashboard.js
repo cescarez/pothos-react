@@ -12,11 +12,11 @@ const Dashboard = ({baseURL}) => {
     const [error, setError] = useState({});
     const { currentUser } = useAuth();
 
-    //CHANGE THIS. THIS IS JUST A TEST TO GET USER DATA FROM DB TO FRONT END
     useEffect(() => {
         axios.get(`${baseURL}/users/current/${currentUser.uid}`)
             .then((response) => {
                 const apiUser = Object.values(response.data)[0]
+                apiUser.userID = Object.keys(response.data)[0]
                 setUser(apiUser);
             })
             .catch((error) => {
@@ -34,7 +34,7 @@ const Dashboard = ({baseURL}) => {
         <div className='dashboard'>
             <Container>
                 <Jumbotron >
-                    <h1>Welcome Back<br/><Link to={`/users/${user.user_id}`}>{user.full_name}</Link>!</h1>
+                    <h1>Welcome Back<br/><Link to={`/users/${user.userID}`}>{user.full_name}</Link>!</h1>
                     <p>This is your dashboard.</p>
                 </Jumbotron>
             </Container>

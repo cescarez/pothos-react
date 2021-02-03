@@ -1,18 +1,17 @@
- table.sitter-list__table > tbody > tr > td, table.sitter-list__table > thead > tr > th, table.sitter-list__table {
+table.sitter-list__table > tbody > tr > td, table.sitter-list__table > thead > tr > th, table.sitter-list__table {
   border: 1px dotted #56cc9d;
 }
 
 table.sitter-list__table > tbody > tr:hover {
     background-color: #f3969a;
     color: whitesmoke;
-    /* cursor: pointer; */
 }
 
 table.sitter-list__table > tbody > tr > td > a {
   display: block;
   width: 100%;
   height: inherit;
-  padding: 10px;
+  padding: 6px;
   margin: 0px;
   text-decoration: none;
   color:inherit;
