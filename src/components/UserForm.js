@@ -39,7 +39,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
         const newValue = event.target.value
         const addressParts = ['street', 'city', 'state', 'postal_code', 'country']
         const priceParts = ['water_by_plant', 'water_by_time', 'repot_by_plant', 'repot_by_time']
-        console.log(user)
         if (addressParts.includes(newInput)) {
             setUser({
                 ...user,
