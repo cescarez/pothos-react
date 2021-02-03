@@ -37,6 +37,7 @@ export default function UserForm() {
         const newValue = event.target.value
         const addressParts = ['street', 'city', 'state', 'postal_code', 'country']
         const priceParts = ['water_by_plant', 'water_by_time', 'repot_by_plant', 'repot_by_time']
+        console.log(user)
         if (addressParts.includes(newInput)) {
             setUser({
                 ...user,
@@ -70,13 +71,37 @@ export default function UserForm() {
 
     const handleSubmit = (event) => {
         alert('A form was submitted.');
-        axios.post('https://localhost:5000/users', user)
-        // fetch('https://localhost:5000/users', {
+        axios.post('http://localhost:5000/users', user)
+        // fetch('http://localhost:5000/users', {
         //     method: 'POST',
         //     body: JSON.stringify(user)
         .then((response) => {
             console.log(response)
-            return response.json();
+            setUser({
+                auth_id: currentUser.uid,
+                username: '', 
+                full_name: '',
+                phone_number: '',
+                avatar_url: currentUser.photoURL,
+                sitter: false,
+                owner: false,
+                bio: '',
+                address: {
+                    street: '',
+                    city: '',
+                    state: '',
+                    postal_code: '',
+                    country: ''
+                },
+                email: currentUser.email,
+                price_rate: {
+                    water_by_plant: '',
+                    water_by_time: '',
+                    repot_by_plant: '',
+                    repot_by_time: ''
+                }
+            })
+            return response;
         });
         event.preventDefault();
     }
@@ -109,23 +134,23 @@ export default function UserForm() {
             <br />
             <label>
                 Street:
-                <input type="text" name='street' value={user.street} onChange={handleChange} />
+                <input type="text" name='street' value={user.address.street} onChange={handleChange} />
             </label>
             <label>
                 City:
-                <input type="text" name='city' value={user.city} onChange={handleChange} />
+                <input type="text" name='city' value={user.address.city} onChange={handleChange} />
             </label>
             <label>
                 State:
-                <input type="text" name='state' value={user.state} onChange={handleChange} />
+                <input type="text" name='state' value={user.address.state} onChange={handleChange} />
             </label>
             <label>
                 Country:
-                <input type="text" name='country' value={user.country} onChange={handleChange} />
+                <input type="text" name='country' value={user.address.country} onChange={handleChange} />
             </label>
             <label>
                 Postal Code:
-                <input type="text" name='postal_code' value={user.postal_code} onChange={handleChange} />
+                <input type="text" name='postal_code' value={user.address.postal_code} onChange={handleChange} />
             </label>
             <br />
             <label>
@@ -137,22 +162,22 @@ export default function UserForm() {
                 <div>
                     <label>
                         Water by Plant Rate:
-                        <input type="text" name='water_by_plant' value={user.water_by_plant} onChange={handleChange} />
+                        <input type="text" name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange} />
                     </label>
                     <br />
                     <label>
                         Water by Time Rate:
-                        <input type="text" name='water_by_time' value={user.water_by_time} onChange={handleChange} />
+                        <input type="text" name='water_by_time' value={user.price_rate.water_by_time} onChange={handleChange} />
                     </label>
                     <br />
                     <label>
                         Repot by Plant Rate:
-                        <input type="text" name='repot_by_plant' value={user.repot_by_plant} onChange={handleChange} />
+                        <input type="text" name='repot_by_plant' value={user.price_rate.repot_by_plant} onChange={handleChange} />
                     </label>
                     <br />
                     <label>
                         Repot by Time Rate:
-                        <input type="text" name='repot_by_time' value={user.repot_by_time} onChange={handleChange} />
+                        <input type="text" name='repot_by_time' value={user.price_rate.repot_by_time} onChange={handleChange} />
                     </label>
                     <br />
                 </div>
