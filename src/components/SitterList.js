@@ -17,7 +17,7 @@ const SitterList = ({ baseURL }) => {
                 const apiSitterList = Object.values(response.data)
                 const userIDs = Object.keys(response.data)
                 for(let i in userIDs) {
-                apiSitterList[i].user_id = userIDs[i];
+                    apiSitterList[i].user_id = userIDs[i];
                 }
                 setSitterList(apiSitterList)
             })
