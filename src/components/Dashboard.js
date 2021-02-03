@@ -45,11 +45,12 @@ const Dashboard = ({baseURL}) => {
                     <p>This is your dashboard.</p>
                 </Jumbotron>
             </Container>
-            { error.message ? 
-                <Alert variant={error.variant}>{error.message}</Alert> 
-            :
-                (user ? 
+            { (Object.keys(user).length ? 
+                error.message ? 
+                    <Alert variant={error.variant}>{error.message}</Alert> 
+                :
                     <Tabs border='primary'>
+                        {console.log(user)}
                         {user.owner  &&
                             <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
                                 <OwnerDashboard baseURL={baseURL}  />
@@ -61,10 +62,9 @@ const Dashboard = ({baseURL}) => {
                             </Tab>
                         }
                     </Tabs>
-                : 
-                    <UserForm />
-                )
-            }
+            : 
+                <UserForm />
+            )}
         </div>
     )
 }

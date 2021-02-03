@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { Form, Button, Container, Card, Col } from 'react-bootstrap'
+import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios'
 
 
-export default function UserForm() {
+export default function UserForm({baseURL}) {
     const { currentUser } = useAuth();
+
+    const [error, setError] = useState('');
 
     const [user, setUser] = useState({
         auth_id: currentUser.uid,
@@ -30,7 +32,7 @@ export default function UserForm() {
             repot_by_plant: '',
             repot_by_time: ''
         }
-    })
+    });
 
     const handleChange = (event) => {
         const newInput = event.target.name
@@ -46,7 +48,8 @@ export default function UserForm() {
                     [newInput]: newValue,
                 }
             })
-        }else if (priceParts.includes(newInput)){
+        } else if (priceParts.includes(newInput)){
+            if (typeof(parseFloat(newValue))) {
             setUser({
                 ...user,
                 price_rate: { 
@@ -54,7 +57,10 @@ export default function UserForm() {
                     [newInput]: newValue,
                 }
             })
-        }else {
+            } else {
+                setError({variant: 'warning', message: 'Please enter valid numbers for all price rates.'});
+            }
+        } else {
             setUser({
                 ...user, 
                 [newInput]: newValue,
@@ -70,37 +76,45 @@ export default function UserForm() {
     }
 
     const handleSubmit = (event) => {
-        alert('A form was submitted.');
-        axios.post('http://localhost:5000/users', user)
-        .then((response) => {
-            console.log(response)
-            setUser({
-                auth_id: currentUser.uid,
-                username: '', 
-                full_name: '',
-                phone_number: '',
-                avatar_url: currentUser.photoURL,
-                sitter: false,
-                owner: false,
-                bio: '',
-                address: {
-                    street: '',
-                    city: '',
-                    state: '',
-                    postal_code: '',
-                    country: ''
-                },
-                email: currentUser.email,
-                price_rate: {
-                    water_by_plant: '',
-                    water_by_time: '',
-                    repot_by_plant: '',
-                    repot_by_time: ''
-                }
-            })
-            return response;
-        });
         event.preventDefault();
+        if (user.sitter || user.owner) {
+            // alert('A form was submitted.');
+            axios.post(baseURL + '/users', user)
+            .then((response) => {
+                setUser({
+                    auth_id: currentUser.uid,
+                    username: '', 
+                    full_name: '',
+                    phone_number: '',
+                    avatar_url: currentUser.photoURL,
+                    sitter: false,
+                    owner: false,
+                    bio: '',
+                    address: {
+                        street: '',
+                        city: '',
+                        state: '',
+                        postal_code: '',
+                        country: ''
+                    },
+                    email: currentUser.email,
+                    price_rate: {
+                        water_by_plant: '',
+                        water_by_time: '',
+                        repot_by_plant: '',
+                        repot_by_time: ''
+                    }
+                })
+                setError({variant:'success', message: response.data.message});
+            })
+            .catch((error) => {
+                const message=`There was an error with your request. User profile was not saved. ${error.message}.`;
+                setError({variant: 'danger', message: message});
+                console.log(message);
+            });
+        } else {
+            setError({variant: 'warning', message: 'You must set your profile to "Sitter", "Owner", or both.'})
+        }
     }
 
     return (
@@ -109,6 +123,7 @@ export default function UserForm() {
             style={{ minHeight: '100vh' }}
         >
             <div className='w-100' style={{ maxWidth: '800px'}}>
+                {error.message && <Alert variant={error.variant}>{error.message}</Alert>}
                 <Card>
                     <Card.Body>
                         <Form onSubmit={handleSubmit}>
@@ -159,7 +174,7 @@ export default function UserForm() {
                             </Form.Row>
                             <Form.Group>
                                 <Form.Label>About Me</Form.Label>
-                                <Form.Control  name='bio' value={user.bio} onChange={handleChange} />
+                                <Form.Control  name='bio' value={user.bio} onChange={handleChange} as='textarea' />
                             </Form.Group>
                             { user.sitter &&
                                 <Card>

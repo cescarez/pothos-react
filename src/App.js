@@ -38,7 +38,9 @@ function App() {
                         <Route path='/signup' component={Signup} />
                         <Route path='/login' component={Login} />
                         <Route path ='/forgot-password' component={ForgotPassword} />
-                        <Route path='/create-profile' component={UserForm} />
+                        <Route path='/create-profile'>
+                            <UserForm baseURL={BASE_URL} />
+                        </Route>
                         <Route path='/update-profile' component={UpdateProfile} />
                         {/* removed 'exact' from home path so all invalid endpoints will redirect to Home*/}
                         <Route path='/'>
