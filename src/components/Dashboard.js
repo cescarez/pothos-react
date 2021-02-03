@@ -73,7 +73,7 @@ const Dashboard = ({baseURL}) => {
                         }
                     </Tabs>
             : 
-                <UserForm baseURL={baseURL} setUserCallback={setUserCallback} />
+                <UserForm baseURL={baseURL} setDashboardUser={setUserCallback} />
             )}
         </div>
     )
