@@ -13,17 +13,19 @@ const Dashboard = ({baseURL}) => {
     const { currentUser } = useAuth();
 
     useEffect(() => {
-        axios.get(`${baseURL}/users/current/${currentUser.uid}`)
-            .then((response) => {
-                const apiUser = Object.values(response.data)[0]
-                apiUser.userID = Object.keys(response.data)[0]
-                setUser(apiUser);
-            })
-            .catch((error) => {
-                const message=`There was an error with your request. ${error.message}.`;
-                setError({variant: 'danger', message: message});
-                console.log(message);
-            })
+        currentUser && 
+            axios.get(`${baseURL}/users/current/${currentUser.uid}`)
+                .then((response) => {
+                    const apiUser = Object.values(response.data)[0]
+                    apiUser.userID = Object.keys(response.data)[0]
+                    setUser(apiUser);
+                })
+                .catch((error) => {
+                    const message=`There was an error with your request. ${error.message}.`;
+                    setError({variant: 'danger', message: message});
+                    console.log(message);
+                })
+        
     }, [baseURL, currentUser])
 
     //create useEffect to retrieve a user's list of chat threads -- pass that data for rendering to OwnerDashboard/SitterDashboard
