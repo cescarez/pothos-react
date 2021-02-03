@@ -15,11 +15,15 @@ const SitterList = ({ baseURL }) => {
         axios.get(baseURL + '/sitters')
             .then((response) => {
                 const apiSitterList = Object.values(response.data)
-                const userIDs = Object.keys(response.data)
-                for(let i in userIDs) {
-                    apiSitterList[i].user_id = userIDs[i];
+                if (Object.keys(response.data)[0] !== 'message') {
+                    const userIDs = Object.keys(response.data)
+                    for(let i in userIDs) {
+                        apiSitterList[i].user_id = userIDs[i];
+                    }
+                    setSitterList(apiSitterList)
+                } else {
+                    setError({variant: 'warning', message: Object.values(response.data)[0]})
                 }
-                setSitterList(apiSitterList)
             })
             .catch((error) => {
                 const message=`There was an error with your request. ${error.message}.`;

@@ -72,9 +72,6 @@ export default function UserForm() {
     const handleSubmit = (event) => {
         alert('A form was submitted.');
         axios.post('http://localhost:5000/users', user)
-        // fetch('http://localhost:5000/users', {
-        //     method: 'POST',
-        //     body: JSON.stringify(user)
         .then((response) => {
             console.log(response)
             setUser({
