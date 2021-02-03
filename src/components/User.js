@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useRouteMatch, Link} from 'react-router-dom';
-import {Card, Button, Container, Table, Row, Col, Alert} from 'react-bootstrap';
+import {Card, Button, Container, Row, Col, Alert} from 'react-bootstrap';
 import Moment from 'moment';
 import axios from 'axios';
 import pothosPic from '../images/pothos.png'
