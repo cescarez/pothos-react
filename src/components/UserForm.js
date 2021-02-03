@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Button, Container, Card } from 'react-bootstrap'
+import { Form, Button, Container, Card, Row, Col, Collapse } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios'
 
@@ -107,110 +107,93 @@ export default function UserForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Sitter:
-                <input type="checkbox" name='sitter' value={user.sitter} onChange={handleCheck} />
-            </label>
-            <label>
-                Owner:
-                <input type="checkbox" name='owner' value={user.owner} onChange={handleCheck} />
-            </label>
-            <br/>
-            <label>
-                Full Name:
-                <input type="text" name='full_name' value={user.full_name} onChange={handleChange} />
-            </label>
-            <br />
-            <label>
-                Username:
-                <input type="text" name='username' value={user.username} onChange={handleChange} />
-            </label>
-            <br />
-            <label>
-                Phone Number:
-                <input type="text" name='phone_number' value={user.phone_number} onChange={handleChange} />
-            </label>
-            <br />
-            <label>
-                Street:
-                <input type="text" name='street' value={user.address.street} onChange={handleChange} />
-            </label>
-            <label>
-                City:
-                <input type="text" name='city' value={user.address.city} onChange={handleChange} />
-            </label>
-            <label>
-                State:
-                <input type="text" name='state' value={user.address.state} onChange={handleChange} />
-            </label>
-            <label>
-                Country:
-                <input type="text" name='country' value={user.address.country} onChange={handleChange} />
-            </label>
-            <label>
-                Postal Code:
-                <input type="text" name='postal_code' value={user.address.postal_code} onChange={handleChange} />
-            </label>
-            <br />
-            <label>
-                About Me:
-                <input type="text" name='bio' value={user.bio} onChange={handleChange} />
-            </label>
-            <br />
-            { user.sitter &&
-                <div>
-                    <label>
-                        Water by Plant Rate:
-                        <input type="text" name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange} />
-                    </label>
-                    <br />
-                    <label>
-                        Water by Time Rate:
-                        <input type="text" name='water_by_time' value={user.price_rate.water_by_time} onChange={handleChange} />
-                    </label>
-                    <br />
-                    <label>
-                        Repot by Plant Rate:
-                        <input type="text" name='repot_by_plant' value={user.price_rate.repot_by_plant} onChange={handleChange} />
-                    </label>
-                    <br />
-                    <label>
-                        Repot by Time Rate:
-                        <input type="text" name='repot_by_time' value={user.price_rate.repot_by_time} onChange={handleChange} />
-                    </label>
-                    <br />
-                </div>
-            }
-            <input type="submit" value="Submit" />
-        </form>
+        <Container 
+            className='d-flex justify-content-center'
+            style={{ minHeight: '100vh' }}
+        >
+            <div className='w-100' style={{ maxWidth: '800px'}}>
+                <Card>
+                    <Card.Body>
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Row>
+                                <Form.Group as={Col} >
+                                    <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck}/>
+                                </Form.Group>
+                                <Form.Group as={Col} >
+                                    <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck}/>
+                                </Form.Group>
+                            </Form.Row>
+                            <Form.Group>
+                                <Form.Label>Full Name:</Form.Label>
+                                <Form.Control type="text" name='full_name' value={user.full_name} onChange={handleChange} />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Username:</Form.Label>
+                                <Form.Control type="text" name='username' value={user.username} onChange={handleChange} />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Phone Number:</Form.Label>
+                                <Form.Control type = "text" name='phone_number' value={user.phone_number} onChange={handleChange} />
+                            </Form.Group>
+                            <Form.Row>
+                                <Form.Group as={Col} controlId="formGridAddress1" > 
+                                    <Form.Label>Street:</Form.Label>
+                                    <Form.Control  name='street' value={user.address.street} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group as={Col} controlId='formGridCity' >
+                                    <Form.Label>City:</Form.Label>
+                                    <Form.Control  name='city' value={user.address.city} onChange={handleChange} />
+                                </Form.Group>
+                            </Form.Row>
+                            <Form.Row>
+                                <Form.Group as={Col} controlId="formGridState" >
+                                    <Form.Label>State:</Form.Label>
+                                    <Form.Control  name='state' value={user.address.state} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group as={Col} controlId="formGridCountry" >
+                                    <Form.Label>Country:</Form.Label>
+                                    <Form.Control  name='country' value={user.address.country} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group as={Col} controlId="formGridZip" >
+                                    <Form.Label>Postal Code:</Form.Label>
+                                    <Form.Control  name='postal_code' value={user.address.postal_code} onChange={handleChange} />
+                                </Form.Group>
+                            </Form.Row>
+                            <Form.Group>
+                                <Form.Label>About Me:</Form.Label>
+                                <Form.Control  name='bio' value={user.bio} onChange={handleChange} />
+                            </Form.Group>
+                            { user.sitter &&
+                                <div>
+                                    <Form.Row>
+                                        <Form.Group as={Col} >
+                                            <Form.Label>Watering / Plant:</Form.Label>
+                                            <Form.Control  name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange} />
+                                        </Form.Group>
+                                        <Form.Group as={Col} >
+                                            <Form.Label>Watering / 30 min:</Form.Label>
+                                            <Form.Control  name='water_by_time' value={user.price_rate.water_by_time} onChange={handleChange} />
+                                        </Form.Group>
+                                    </Form.Row>
+                                    <Form.Row>
+                                        <Form.Group as={Col} >
+                                            <Form.Label>Repotting / Plant:</Form.Label>
+                                            <Form.Control  name='repot_by_plant' value={user.price_rate.repot_by_plant} onChange={handleChange} />
+                                        </Form.Group>
+                                        <Form.Group as={Col} >
+                                            <Form.Label>Repotting / 30 min:</Form.Label>
+                                            <Form.Control  name='repot_by_time' value={user.price_rate.repot_by_time} onChange={handleChange} />
+                                        </Form.Group>
+                                    </Form.Row>
+                                </div>
+                            }
+                            <Button variant='primary' type="submit" value="submit">
+                                Submit
+                            </Button>
+                        </Form>
+                    </Card.Body>
+                </Card>
+            </div>
+        </Container>
     )
-            // <Container 
-            // className='d-flex align-items-center justify-content-center'
-            // style={{ minHeight: '100vh' }}
-            // >
-            //     <div className='w-100' style={{ maxWidth: '400px'}}>
-            //         <Card>
-            //             <Card.Body>
-            //                 <Form onSubmit={this.handleSubmit}>
-            //                     <Form.Group id='username'>
-            //                         <Form.Label>Username</Form.Label>
-            //                         <Form.Control type='username' required />
-            //                     </Form.Group>
-            //                     <Form.Group id='full_name'>
-            //                         <Form.Label>Full Name</Form.Label>
-            //                         <Form.Control type='username' required />
-            //                     </Form.Group>
-            //                     <label>
-            //                         Name:
-            //                         <input type="text" value={this.state.value} name="name" onChange={this.handleChange} />
-            //                     </label>
-            //                     <Button variant='primary' type="submit">
-            //                         Submit
-            //                     </Button>
-            //                 </Form>
-            //             </Card.Body>
-            //         </Card>
-            //     </div>
-            // </Container>
 }
