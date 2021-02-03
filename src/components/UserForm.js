@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Button, Container, Card, Row, Col, Collapse } from 'react-bootstrap'
+import { Form, Button, Container, Card, Col } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios'
 
@@ -115,6 +115,7 @@ export default function UserForm() {
                 <Card>
                     <Card.Body>
                         <Form onSubmit={handleSubmit}>
+                            <h2 className='text-center mb-4'>Create Profile</h2>
                             <Form.Row>
                                 <Form.Group as={Col} >
                                     <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck}/>
@@ -124,68 +125,71 @@ export default function UserForm() {
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group>
-                                <Form.Label>Full Name:</Form.Label>
+                                <Form.Label>Full Name</Form.Label>
                                 <Form.Control type="text" name='full_name' value={user.full_name} onChange={handleChange} />
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label>Username:</Form.Label>
+                                <Form.Label>Username</Form.Label>
                                 <Form.Control type="text" name='username' value={user.username} onChange={handleChange} />
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label>Phone Number:</Form.Label>
+                                <Form.Label>Phone Number</Form.Label>
                                 <Form.Control type = "text" name='phone_number' value={user.phone_number} onChange={handleChange} />
                             </Form.Group>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridAddress1" > 
-                                    <Form.Label>Street:</Form.Label>
+                                    <Form.Label>Street</Form.Label>
                                     <Form.Control  name='street' value={user.address.street} onChange={handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId='formGridCity' >
-                                    <Form.Label>City:</Form.Label>
+                                    <Form.Label>City</Form.Label>
                                     <Form.Control  name='city' value={user.address.city} onChange={handleChange} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridState" >
-                                    <Form.Label>State:</Form.Label>
+                                    <Form.Label>State</Form.Label>
                                     <Form.Control  name='state' value={user.address.state} onChange={handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridCountry" >
-                                    <Form.Label>Country:</Form.Label>
+                                    <Form.Label>Country</Form.Label>
                                     <Form.Control  name='country' value={user.address.country} onChange={handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridZip" >
-                                    <Form.Label>Postal Code:</Form.Label>
+                                    <Form.Label>Postal Code</Form.Label>
                                     <Form.Control  name='postal_code' value={user.address.postal_code} onChange={handleChange} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group>
-                                <Form.Label>About Me:</Form.Label>
+                                <Form.Label>About Me</Form.Label>
                                 <Form.Control  name='bio' value={user.bio} onChange={handleChange} />
                             </Form.Group>
                             { user.sitter &&
-                                <div>
-                                    <Form.Row>
-                                        <Form.Group as={Col} >
-                                            <Form.Label>Watering / Plant:</Form.Label>
-                                            <Form.Control  name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange} />
-                                        </Form.Group>
-                                        <Form.Group as={Col} >
-                                            <Form.Label>Watering / 30 min:</Form.Label>
-                                            <Form.Control  name='water_by_time' value={user.price_rate.water_by_time} onChange={handleChange} />
-                                        </Form.Group>
-                                    </Form.Row>
-                                    <Form.Row>
-                                        <Form.Group as={Col} >
-                                            <Form.Label>Repotting / Plant:</Form.Label>
-                                            <Form.Control  name='repot_by_plant' value={user.price_rate.repot_by_plant} onChange={handleChange} />
-                                        </Form.Group>
-                                        <Form.Group as={Col} >
-                                            <Form.Label>Repotting / 30 min:</Form.Label>
-                                            <Form.Control  name='repot_by_time' value={user.price_rate.repot_by_time} onChange={handleChange} />
-                                        </Form.Group>
-                                    </Form.Row>
-                                </div>
+                                <Card>
+                                    <Card.Body>
+                                        <h3 className='text-center mb-4'>Rates</h3>
+                                        <Form.Row>
+                                            <Form.Group as={Col} >
+                                                <Form.Label>Watering / Plant</Form.Label>
+                                                <Form.Control  name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange} />
+                                            </Form.Group>
+                                            <Form.Group as={Col} >
+                                                <Form.Label>Watering / 30 min</Form.Label>
+                                                <Form.Control  name='water_by_time' value={user.price_rate.water_by_time} onChange={handleChange} />
+                                            </Form.Group>
+                                        </Form.Row>
+                                        <Form.Row>
+                                            <Form.Group as={Col} >
+                                                <Form.Label>Repotting / Plant</Form.Label>
+                                                <Form.Control  name='repot_by_plant' value={user.price_rate.repot_by_plant} onChange={handleChange} />
+                                            </Form.Group>
+                                            <Form.Group as={Col} >
+                                                <Form.Label>Repotting / 30 min</Form.Label>
+                                                <Form.Control  name='repot_by_time' value={user.price_rate.repot_by_time} onChange={handleChange} />
+                                            </Form.Group>
+                                        </Form.Row>
+                                    </Card.Body>
+                                </Card>
                             }
                             <Button variant='primary' type="submit" value="submit">
                                 Submit

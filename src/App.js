@@ -12,6 +12,7 @@ import PrivateRoute from './components/PrivateRoute'
 import UserForm from './components/UserForm'
 import ForgotPassword from './components/ForgotPassword'
 import User from './components/User'
+import UpdateProfile from './components/UpdateProfile'
 
 import './App.css';
 
@@ -29,18 +30,19 @@ function App() {
                             <Home baseURL={BASE_URL} />
                         </Route>
                         <PrivateRoute path='/dashboard'>
-                        <Dashboard baseURL={BASE_URL} />
+                            <Dashboard baseURL={BASE_URL} />
                         </PrivateRoute>     
                         <Route path='/users/:id'>
-                        <User baseURL={BASE_URL} />
+                            <User baseURL={BASE_URL} />
                         </Route>
                         <Route path='/sitters'>
-                        <SitterList baseURL={BASE_URL} />
+                            <SitterList baseURL={BASE_URL} />
                         </Route>
                         <Route path='/signup' component={Signup} />
                         <Route path='/login' component={Login} />
                         <Route path ='/forgot-password' component={ForgotPassword} />
-                        <Route path='/createprofile' component={UserForm} />
+                        <Route path='/create-profile' component={UserForm} />
+                        <Route path='/update-profile' component={UpdateProfile} />
                     </Switch>
                 </AuthProvider>
             </Router>
