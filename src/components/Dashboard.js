@@ -13,7 +13,7 @@ const Dashboard = ({baseURL}) => {
     const [error, setError] = useState({});
     const { currentUser } = useAuth();
 
-    useEffect(() => {
+    const loadUserData = () => {
         currentUser && 
             axios.get(`${baseURL}/users/current/${currentUser.uid}`)
                 .then((response) => {
@@ -30,8 +30,16 @@ const Dashboard = ({baseURL}) => {
                     setError({variant: 'danger', message: message});
                     console.log(message);
                 })
-        
-    }, [baseURL, currentUser])
+    }
+
+    useEffect(() => {
+        loadUserData();
+    }, [user])
+
+    const setUserCallback = (user) => {
+        const newUser = {...user}
+        setUser(newUser);
+    }
 
     //create useEffect to retrieve a user's list of chat threads -- pass that data for rendering to OwnerDashboard/SitterDashboard
 
@@ -41,7 +49,9 @@ const Dashboard = ({baseURL}) => {
         <div className='dashboard'>
             <Container>
                 <Jumbotron >
-                    <h1>Welcome Back<br/><Link to={`/users/${user.userID}`}>{user.full_name}</Link>!</h1>
+                    <h1>Welcome Back 
+                        {Object.keys(user).length ? <><br/><Link to={`/users/${user.userID}`}>{user.full_name}</Link></> : null}
+                    !</h1>
                     <p>This is your dashboard.</p>
                 </Jumbotron>
             </Container>
@@ -63,7 +73,7 @@ const Dashboard = ({baseURL}) => {
                         }
                     </Tabs>
             : 
-                <UserForm />
+                <UserForm baseURL={baseURL} setUserCallback={setUserCallback} />
             )}
         </div>
     )

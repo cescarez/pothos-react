@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios'
 
 
-export default function UserForm({baseURL}) {
+export default function UserForm({baseURL, setUserCallback}) {
     const { currentUser } = useAuth();
 
     const [error, setError] = useState('');
@@ -81,6 +81,7 @@ export default function UserForm({baseURL}) {
             // alert('A form was submitted.');
             axios.post(baseURL + '/users', user)
             .then((response) => {
+                setUserCallback && setUserCallback(user);
                 setUser({
                     auth_id: currentUser.uid,
                     username: '', 
