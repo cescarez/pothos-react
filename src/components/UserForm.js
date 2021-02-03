@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Form, Button, Container, Card } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios'
 
 
 export default function UserForm() {
@@ -36,7 +37,6 @@ export default function UserForm() {
         const newValue = event.target.value
         const addressParts = ['street', 'city', 'state', 'postal_code', 'country']
         const priceParts = ['water_by_plant', 'water_by_time', 'repot_by_plant', 'repot_by_time']
-        console.log(user)
         if (addressParts.includes(newInput)) {
             setUser({
                 ...user,
@@ -70,10 +70,11 @@ export default function UserForm() {
 
     const handleSubmit = (event) => {
         alert('A form was submitted.');
-        fetch('https://localhost:5000/users', {
-            method: 'POST',
-            body: JSON.stringify(user)
-        }).then(function(response) {
+        axios.post('https://localhost:5000/users', user)
+        // fetch('https://localhost:5000/users', {
+        //     method: 'POST',
+        //     body: JSON.stringify(user)
+        .then((response) => {
             console.log(response)
             return response.json();
         });
