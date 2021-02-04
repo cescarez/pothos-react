@@ -6,7 +6,7 @@ import axios from 'axios'
 export default function UpdateProfile({baseURL}) {
     const { currentUser } = useAuth();
     const [error, setError] = useState('');
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(null);
 
     const loadUserData = () => {
         currentUser && 
@@ -75,7 +75,8 @@ export default function UpdateProfile({baseURL}) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (user.sitter || user.owner) {
-            axios.patch(baseURL + '/users/' + user.userID, user)
+            // axios.put(baseURL + '/users/' + user.userID, user)
+            axios.put('http://localhost:5000/users/-MSivC7WbDKTcQhI5B_W', user)
             .then((response) => {
                 //success response
                 setError({variant:'success', message: response.data.message});
@@ -89,7 +90,12 @@ export default function UpdateProfile({baseURL}) {
             setError({variant: 'warning', message: 'You must set your profile to "Sitter", "Owner", or both.'})
         }
     }
-
+    if (!user) {
+        return(
+            <div></div>
+        )
+    }
+    console.log(user)
     return (
         <Container 
             className='d-flex justify-content-center'
@@ -121,7 +127,7 @@ export default function UpdateProfile({baseURL}) {
                                 <Form.Label>Phone Number</Form.Label>
                                 <Form.Control type = "text" name='phone_number' value={user.phone_number} onChange={handleChange} />
                             </Form.Group>
-                            {/* <Form.Row>
+                            <Form.Row>
                                 <Form.Group as={Col} controlId="formGridAddress1" > 
                                     <Form.Label>Street</Form.Label>
                                     <Form.Control  name='street' value={user.address.street} onChange={handleChange} />
@@ -144,7 +150,7 @@ export default function UpdateProfile({baseURL}) {
                                     <Form.Label>Postal Code</Form.Label>
                                     <Form.Control  name='postal_code' value={user.address.postal_code} onChange={handleChange} />
                                 </Form.Group>
-                            </Form.Row> */}
+                            </Form.Row>
                             <Form.Group>
                                 <Form.Label>About Me</Form.Label>
                                 <Form.Control  name='bio' value={user.bio} onChange={handleChange} defaultValue={currentUser.bio} as='textarea' />
@@ -153,26 +159,26 @@ export default function UpdateProfile({baseURL}) {
                                 <Card>
                                     <Card.Body>
                                         <h3 className='text-center mb-4'>Rates</h3>
-                                        {/* <Form.Row>
+                                        <Form.Row>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Watering / Plant</Form.Label>
-                                                <Form.Control  name='water_by_plant' value={user.price_rate.water_by_plant} defaultValue={currentUser.price_rate.water_by_plant} onChange={handleChange} />
+                                                <Form.Control  name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange} />
                                             </Form.Group>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Watering / 30 min</Form.Label>
-                                                <Form.Control  name='water_by_time' value={user.price_rate.water_by_time} defaultValue={currentUser.price_rate.water_by_time} onChange={handleChange} />
+                                                <Form.Control  name='water_by_time' value={user.price_rate.water_by_time} onChange={handleChange} />
                                             </Form.Group>
                                         </Form.Row>
                                         <Form.Row>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Repotting / Plant</Form.Label>
-                                                <Form.Control  name='repot_by_plant' value={user.price_rate.repot_by_plant} defaultValue={currentUser.price_rate.repot_by_plant} onChange={handleChange} />
+                                                <Form.Control  name='repot_by_plant' value={user.price_rate.repot_by_plant} onChange={handleChange} />
                                             </Form.Group>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Repotting / 30 min</Form.Label>
-                                                <Form.Control  name='repot_by_time' value={user.price_rate.repot_by_time} defaultValue={currentUser.price_rate.repot_by_time} onChange={handleChange} />
+                                                <Form.Control  name='repot_by_time' value={user.price_rate.repot_by_time} onChange={handleChange} />
                                             </Form.Group>
-                                        </Form.Row> */}
+                                        </Form.Row>
                                     </Card.Body>
                                 </Card>
                             }

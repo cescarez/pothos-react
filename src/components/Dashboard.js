@@ -34,7 +34,7 @@ const Dashboard = ({baseURL}) => {
 
     useEffect(() => {
         loadUserData();
-    }, [user])
+    }, [])
 
     const setUserCallback = (user) => {
         const newUser = {...user}
