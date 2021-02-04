@@ -3,13 +3,12 @@ import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios'
 
-export default function UpdateProfile({baseURL, setDashboardUser}) {
+export default function UpdateProfile({baseURL}) {
     const { currentUser } = useAuth();
     const [error, setError] = useState('');
     const [user, setUser] = useState({});
 
     const loadUserData = () => {
-        console.log(currentUser)
         currentUser && 
             axios.get(`${baseURL}/users/current/${currentUser.uid}`)
                 .then((response) => {
@@ -30,14 +29,14 @@ export default function UpdateProfile({baseURL, setDashboardUser}) {
 
     useEffect(() => {
         loadUserData();
-    }, [user])
+    }, [])
 
     const handleChange = (event) => {
+        console.log(user)
         const newInput = event.target.name
         const newValue = event.target.value
         const addressParts = ['street', 'city', 'state', 'postal_code', 'country']
         const priceParts = ['water_by_plant', 'water_by_time', 'repot_by_plant', 'repot_by_time']
-        console.log(user)
         if (addressParts.includes(newInput)) {
             setUser({
                 ...user,
@@ -76,33 +75,9 @@ export default function UpdateProfile({baseURL, setDashboardUser}) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (user.sitter || user.owner) {
-            axios.patch(baseURL + currentUser.id, user)
+            axios.patch(baseURL + '/users/' + user.userID, user)
             .then((response) => {
-                setDashboardUser && setDashboardUser(user);
-                setUser({
-                    auth_id: currentUser.uid,
-                    username: '', 
-                    full_name: '',
-                    phone_number: '',
-                    avatar_url: currentUser.photoURL,
-                    sitter: false,
-                    owner: false,
-                    bio: '',
-                    address: {
-                        street: '',
-                        city: '',
-                        state: '',
-                        postal_code: '',
-                        country: ''
-                    },
-                    email: currentUser.email,
-                    price_rate: {
-                        water_by_plant: '',
-                        water_by_time: '',
-                        repot_by_plant: '',
-                        repot_by_time: ''
-                    }
-                })
+                //success response
                 setError({variant:'success', message: response.data.message});
             })
             .catch((error) => {
@@ -136,38 +111,38 @@ export default function UpdateProfile({baseURL, setDashboardUser}) {
                             </Form.Row>
                             <Form.Group>
                                 <Form.Label>Full Name</Form.Label>
-                                <Form.Control type="text" name='full_name' defaultValue={user.full_name} onChange={handleChange} />
+                                <Form.Control type="text" name='full_name' value={user.full_name} onChange={handleChange} />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" name='username' defaultValue={user.username} onChange={handleChange} />
+                                <Form.Control type="text" name='username' value={user.username} onChange={handleChange} />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Phone Number</Form.Label>
-                                <Form.Control type = "text" name='phone_number' value={user.phone_number} defaultValue={user.phone_number} onChange={handleChange} />
+                                <Form.Control type = "text" name='phone_number' value={user.phone_number} onChange={handleChange} />
                             </Form.Group>
                             {/* <Form.Row>
                                 <Form.Group as={Col} controlId="formGridAddress1" > 
                                     <Form.Label>Street</Form.Label>
-                                    <Form.Control  name='street' value={user.address.street} defaultValue={currentUser.address.street} onChange={handleChange} />
+                                    <Form.Control  name='street' value={user.address.street} onChange={handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId='formGridCity' >
                                     <Form.Label>City</Form.Label>
-                                    <Form.Control  name='city' value={user.address.city} defaultValue={currentUser.address.city} onChange={handleChange} />
+                                    <Form.Control  name='city' value={user.address.city} onChange={handleChange} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridState" >
                                     <Form.Label>State</Form.Label>
-                                    <Form.Control  name='state' value={user.address.state} defaultValue={currentUser.address.state} onChange={handleChange} />
+                                    <Form.Control  name='state' value={user.address.state} onChange={handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridCountry" >
                                     <Form.Label>Country</Form.Label>
-                                    <Form.Control  name='country' value={user.address.country} defaultValue={currentUser.address.country} onChange={handleChange} />
+                                    <Form.Control  name='country' value={user.address.country} onChange={handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridZip" >
                                     <Form.Label>Postal Code</Form.Label>
-                                    <Form.Control  name='postal_code' value={user.address.postal_code} defaultValue={currentUser.address.postal_code} onChange={handleChange} />
+                                    <Form.Control  name='postal_code' value={user.address.postal_code} onChange={handleChange} />
                                 </Form.Group>
                             </Form.Row> */}
                             <Form.Group>
