@@ -11,6 +11,7 @@ import ForgotPassword from './components/ForgotPassword'
 import User from './components/User'
 import UpdateEmailPassword from './components/UpdateEmailPassword'
 import UpdateProfile from './components/UpdateProfile'
+import Footer from './components/Footer'
 
 import './App.css';
 
@@ -42,6 +43,7 @@ function App() {
                             <Home baseURL={BASE_URL} />
                         </Route>
                     </Switch>
+                    <Footer />
                 </AuthProvider>
             </Router>
         </div>
