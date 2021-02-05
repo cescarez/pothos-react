@@ -15,7 +15,7 @@ import Footer from './components/Footer'
 
 import './App.css';
 
-const BASE_URL = 'http://pothos-api.herokuapp.com'
+const BASE_URL = 'https://pothos-api.herokuapp.com'
 
 function App() {
 
