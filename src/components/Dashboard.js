@@ -37,6 +37,7 @@ const Dashboard = ({baseURL}) => {
     }, [])
 
     const loadUserCallback = (user) => {
+        //TODO: load user from returned POST in userForm
         loadUserData(user.auth_id);
     }
 
