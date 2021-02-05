@@ -59,7 +59,12 @@ const User = ({baseURL}) => {
                 "owner": currentOwner.userID,
                 "sitter": userId
             }
-        )
+        ).then((response) => {
+            setError({variant:'success', message: 'Request successfully sent'});
+        }).catch((error) => {
+            const message=`There was an error with your request. Request not sent. ${error.message}.`;
+            setError({variant: 'danger', message: message});
+        })
     }
 
     //write method to display the number of emoji stars as a rounding up? of the user rating
