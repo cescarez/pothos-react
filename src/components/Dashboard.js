@@ -68,12 +68,12 @@ const Dashboard = ({baseURL}) => {
                         {console.log(user)}
                         {user.owner  &&
                             <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
-                                <OwnerDashboard baseURL={baseURL}  />
+                                <OwnerDashboard baseURL={baseURL} />
                             </Tab>
                         }
                         {user.sitter &&
                             <Tab eventKey='sitterDashboard' title='Sitter Dashboard'>
-                                <SitterDashboard baseURL={baseURL}  />
+                                <SitterDashboard baseURL={baseURL} />
                             </Tab>
                         }
                     </Tabs>

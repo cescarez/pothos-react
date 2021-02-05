@@ -7,6 +7,8 @@ import axios from 'axios';
 export default function UserForm({baseURL, setDashboardUser}) {
     const { currentUser } = useAuth();
 
+    const [isSitter, setIsSitter] = useState(false);
+    const [isOwner, setIsOwner] = useState(false);
     const [error, setError] = useState('');
 
     const [user, setUser] = useState({
@@ -15,8 +17,8 @@ export default function UserForm({baseURL, setDashboardUser}) {
         full_name: currentUser.displayName,
         phone_number: '',
         avatar_url: currentUser.photoURL,
-        sitter: false,
-        owner: false,
+        // sitter: false,
+        // owner: false,
         bio: '',
         address: {
             street: '',
@@ -49,7 +51,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
                 }
             })
         } else if (priceParts.includes(newInput)){
-            if (typeof(parseFloat(newValue))) {
             setUser({
                 ...user,
                 price_rate: { 
@@ -57,9 +58,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
                     [newInput]: newValue,
                 }
             })
-            } else {
-                setError({variant: 'warning', message: 'Please enter valid numbers for all price rates.'});
-            }
         } else {
             setUser({
                 ...user, 
@@ -131,10 +129,10 @@ export default function UserForm({baseURL, setDashboardUser}) {
                             <h2 className='text-center mb-4'>Create Profile</h2>
                             <Form.Row>
                                 <Form.Group as={Col} >
-                                    <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck}/>
+                                    <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck} checked={user.sitter ? true : false }/>
                                 </Form.Group>
                                 <Form.Group as={Col} >
-                                    <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck}/>
+                                    <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck} checked={user.owner ? true : false }/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group>
