@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap'
+import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
-import axios from 'axios'
+import axios from 'axios';
 
 
 export default function UserForm({baseURL, setDashboardUser}) {

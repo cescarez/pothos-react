@@ -45,6 +45,11 @@ const Dashboard = ({baseURL}) => {
 
     //create useEffect to retrieve a user's list of requests -- pass that data for rendering to OwnerDashboard/SitterDashboard
 
+    if (!user) {
+        return(
+            <div></div>
+        )
+    }
     return (
         <div className='dashboard'>
             <Container>

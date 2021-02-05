@@ -95,7 +95,6 @@ export default function UpdateProfile({baseURL}) {
             <div></div>
         )
     }
-    console.log(user)
     return (
         <Container 
             className='d-flex justify-content-center'
