@@ -25,6 +25,8 @@ const User = ({baseURL}) => {
             })
     }, [baseURL, userId])
 
+    //write method to display the number of emoji stars as a rounding up? of the user rating
+
     const showUserData = () => {
         return (
             <Container className='container-lg'>
@@ -36,9 +38,11 @@ const User = ({baseURL}) => {
                                 <Card.Title className='font-weight-bolder mb-1'>{user.full_name}</Card.Title>
                                 <Card.Subtitle className='text-muted font-weight-lighter'>{user.username}</Card.Subtitle>
                             </Col>
-                            <Col xs='auto'>
-                                <Button variant='outline-secondary btn-sm'>Send Request</Button>
-                            </Col>
+                            { user.sitter &&
+                                <Col xs='auto'>
+                                    <Button variant='outline-secondary btn-sm'>Send Request</Button>
+                                </Col>
+                            }
                         </Row>
                     </Card.Header>
                     <Card.Body className='py-2'>
@@ -48,7 +52,8 @@ const User = ({baseURL}) => {
                                 <Col className='text-left'>{Moment(user.date_joined).format('MMMM Do, YYYY')}</Col>
                             </Row>
                             <Row>
-                                <Col>{user.email}</Col>
+                                <Col className='text-right'>Rating:</Col>
+                                <Col className='text-left'>{user.rating ? user.rating : 'N/A'}</Col>
                             </Row>
                             <Row>
                                 <Col className='text-muted mt-2'><small>{user.bio}</small></Col>

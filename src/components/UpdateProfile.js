@@ -46,7 +46,6 @@ export default function UpdateProfile({baseURL}) {
                 }
             })
         } else if (priceParts.includes(newInput)){
-            if (typeof(parseFloat(newValue))) {
             setUser({
                 ...user,
                 price_rate: { 
@@ -54,9 +53,6 @@ export default function UpdateProfile({baseURL}) {
                     [newInput]: newValue,
                 }
             })
-            } else {
-                setError({variant: 'warning', message: 'Please enter valid numbers for all price rates.'});
-            }
         } else {
             setUser({
                 ...user, 
@@ -75,17 +71,16 @@ export default function UpdateProfile({baseURL}) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (user.sitter || user.owner) {
-            // axios.put(baseURL + '/users/' + user.userID, user)
-            axios.put('http://localhost:5000/users/-MSivC7WbDKTcQhI5B_W', user)
-            .then((response) => {
-                //success response
-                setError({variant:'success', message: response.data.message});
-            })
-            .catch((error) => {
-                const message=`There was an error with your request. User profile was not saved. ${error.message}.`;
-                setError({variant: 'danger', message: message});
-                console.log(message);
-            });
+            axios.put(baseURL + '/users/' + user.userID, user)
+                .then((response) => {
+                    //success response
+                    setError({variant:'success', message: response.data.message});
+                })
+                .catch((error) => {
+                    const message=`There was an error with your request. User profile was not saved. ${error.message}.`;
+                    setError({variant: 'danger', message: message});
+                    console.log(message);
+                });
         } else {
             setError({variant: 'warning', message: 'You must set your profile to "Sitter", "Owner", or both.'})
         }
@@ -95,7 +90,6 @@ export default function UpdateProfile({baseURL}) {
             <div></div>
         )
     }
-    console.log(user)
     return (
         <Container 
             className='d-flex justify-content-center'
@@ -109,10 +103,10 @@ export default function UpdateProfile({baseURL}) {
                             <h2 className='text-center mb-4'>Update User Profile</h2>
                             <Form.Row>
                                 <Form.Group as={Col} >
-                                    <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck}/>
+                                    <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck} checked={user.sitter ? true : false } />
                                 </Form.Group>
                                 <Form.Group as={Col} >
-                                    <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck}/>
+                                    <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck} checked={user.owner ? true : false } />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group>
@@ -153,7 +147,7 @@ export default function UpdateProfile({baseURL}) {
                             </Form.Row>
                             <Form.Group>
                                 <Form.Label>About Me</Form.Label>
-                                <Form.Control  name='bio' value={user.bio} onChange={handleChange} defaultValue={currentUser.bio} as='textarea' />
+                                <Form.Control  name='bio' value={user.bio} onChange={handleChange} as='textarea' />
                             </Form.Group>
                             { user.sitter &&
                                 <Card>
