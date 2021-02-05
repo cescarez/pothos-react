@@ -36,9 +36,11 @@ const User = ({baseURL}) => {
                                 <Card.Title className='font-weight-bolder mb-1'>{user.full_name}</Card.Title>
                                 <Card.Subtitle className='text-muted font-weight-lighter'>{user.username}</Card.Subtitle>
                             </Col>
-                            <Col xs='auto'>
-                                <Button variant='outline-secondary btn-sm'>Send Request</Button>
-                            </Col>
+                            { user.sitter &&
+                                <Col xs='auto'>
+                                    <Button variant='outline-secondary btn-sm'>Send Request</Button>
+                                </Col>
+                            }
                         </Row>
                     </Card.Header>
                     <Card.Body className='py-2'>
