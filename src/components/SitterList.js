@@ -3,7 +3,6 @@ import {Alert, Table} from 'react-bootstrap';
 import Moment from 'moment';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-// import { render } from '@testing-library/react';
 
 import './SitterList.css'
 

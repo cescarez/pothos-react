@@ -9,7 +9,7 @@ import SitterDashboard from './SitterDashboard';
 import UserForm from './UserForm';
 
 const Dashboard = ({baseURL}) => {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(null);
     const [error, setError] = useState({});
     const { currentUser } = useAuth();
 
@@ -55,12 +55,12 @@ const Dashboard = ({baseURL}) => {
             <Container>
                 <Jumbotron >
                     <h1>Welcome Back 
-                        {Object.keys(user).length ? <><br/><Link to={`/users/${user.userID}`}>{user.full_name}</Link></> : null}
+                        { user ? <><br/><Link to={`/users/${user.userID}`}>{user.full_name}</Link></> : null}
                     !</h1>
                     <p>This is your dashboard.</p>
                 </Jumbotron>
             </Container>
-            { (Object.keys(user).length ? 
+            { user ? 
                 error.message ? 
                     <Alert variant={error.variant}>{error.message}</Alert> 
                 :
@@ -79,7 +79,7 @@ const Dashboard = ({baseURL}) => {
                     </Tabs>
             : 
                 <UserForm baseURL={baseURL} setDashboardUser={setUserCallback} />
-            )}
+            }
         </div>
     )
 }

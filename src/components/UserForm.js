@@ -7,34 +7,9 @@ import axios from 'axios';
 export default function UserForm({baseURL, setDashboardUser}) {
     const { currentUser } = useAuth();
 
-    const [isSitter, setIsSitter] = useState(false);
-    const [isOwner, setIsOwner] = useState(false);
     const [error, setError] = useState('');
 
-    const [user, setUser] = useState({
-        auth_id: currentUser.uid,
-        username: '', 
-        full_name: currentUser.displayName,
-        phone_number: '',
-        avatar_url: currentUser.photoURL,
-        // sitter: false,
-        // owner: false,
-        bio: '',
-        address: {
-            street: '',
-            city: '',
-            state: '',
-            postal_code: '',
-            country: ''
-        },
-        email: currentUser.email,
-        price_rate: {
-            water_by_plant: '',
-            water_by_time: '',
-            repot_by_plant: '',
-            repot_by_time: ''
-        }
-    });
+    const [user, setUser] = useState(null);
 
     const handleChange = (event) => {
         const newInput = event.target.name
@@ -76,7 +51,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (user.sitter || user.owner) {
-            // alert('A form was submitted.');
             axios.post(baseURL + '/users', user)
             .then((response) => {
                 setDashboardUser && setDashboardUser(user);
@@ -96,7 +70,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
                         postal_code: '',
                         country: ''
                     },
-                    email: currentUser.email,
                     price_rate: {
                         water_by_plant: '',
                         water_by_time: '',
@@ -116,6 +89,9 @@ export default function UserForm({baseURL, setDashboardUser}) {
         }
     }
 
+    if (!user) {
+        return(<div></div>)
+    }
     return (
         <Container 
             className='d-flex justify-content-center'
