@@ -15,6 +15,7 @@ const Dashboard = ({baseURL}) => {
 
     const loadUserData = () => {
         currentUser && 
+            // #add five second delay to let the data POST to the backend
             axios.get(`${baseURL}/users/current/${currentUser.uid}`)
                 .then((response) => {
                     const apiUser = Object.values(response.data)[0]
@@ -45,11 +46,6 @@ const Dashboard = ({baseURL}) => {
 
     //create useEffect to retrieve a user's list of requests -- pass that data for rendering to OwnerDashboard/SitterDashboard
 
-    if (!user) {
-        return(
-            <div></div>
-        )
-    }
     return (
         <div className='dashboard'>
             <Container>

@@ -9,7 +9,29 @@ export default function UserForm({baseURL, setDashboardUser}) {
 
     const [error, setError] = useState('');
 
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({
+        auth_id: currentUser.uid,
+        username: '', 
+        full_name: currentUser.displayName,
+        phone_number: '',
+        avatar_url: currentUser.photoURL,
+        sitter: false,
+        owner: false,
+        bio: '',
+        address: {
+            street: '',
+            city: '',
+            state: '',
+            postal_code: '',
+            country: ''
+        },
+        price_rate: {
+            water_by_plant: '',
+            water_by_time: '',
+            repot_by_plant: '',
+            repot_by_time: ''
+        }
+    });
 
     const handleChange = (event) => {
         const newInput = event.target.name
@@ -89,9 +111,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
         }
     }
 
-    if (!user) {
-        return(<div></div>)
-    }
     return (
         <Container 
             className='d-flex justify-content-center'

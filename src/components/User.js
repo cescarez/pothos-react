@@ -25,6 +25,8 @@ const User = ({baseURL}) => {
             })
     }, [baseURL, userId])
 
+    //write method to display the number of emoji stars as a rounding up? of the user rating
+
     const showUserData = () => {
         return (
             <Container className='container-lg'>
@@ -50,7 +52,8 @@ const User = ({baseURL}) => {
                                 <Col className='text-left'>{Moment(user.date_joined).format('MMMM Do, YYYY')}</Col>
                             </Row>
                             <Row>
-                                <Col>{user.email}</Col>
+                                <Col className='text-right'>Rating:</Col>
+                                <Col className='text-left'>{user.rating ? user.rating : 'N/A'}</Col>
                             </Row>
                             <Row>
                                 <Col className='text-muted mt-2'><small>{user.bio}</small></Col>

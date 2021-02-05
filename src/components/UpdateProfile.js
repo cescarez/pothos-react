@@ -147,7 +147,7 @@ export default function UpdateProfile({baseURL}) {
                             </Form.Row>
                             <Form.Group>
                                 <Form.Label>About Me</Form.Label>
-                                <Form.Control  name='bio' value={user.bio} onChange={handleChange} defaultValue={currentUser.bio} as='textarea' />
+                                <Form.Control  name='bio' value={user.bio} onChange={handleChange} as='textarea' />
                             </Form.Group>
                             { user.sitter &&
                                 <Card>

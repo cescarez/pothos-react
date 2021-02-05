@@ -7,7 +7,7 @@ import axios from 'axios';
 import './SitterList.css'
 
 const SitterList = ({ baseURL }) => {
-    const [sitterList, setSitterList] = useState([]);
+    const [sitterList, setSitterList] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
 
     useEffect(()=>{
@@ -39,7 +39,6 @@ const SitterList = ({ baseURL }) => {
                     <tr>
                         <th>Name</th>
                         <th>Username</th>
-                        <th>Email</th>
                         <th>Phone</th>
                         <th>Date Joined</th>
                         <th>Rating</th>
@@ -57,11 +56,6 @@ const SitterList = ({ baseURL }) => {
                                 <td>
                                     <Link to={`/users/${sitter.user_id}`}>
                                         {sitter.username}
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/users/${sitter.user_id}`}>
-                                        {sitter.email}
                                     </Link>
                                 </td>
                                 <td>
@@ -85,6 +79,10 @@ const SitterList = ({ baseURL }) => {
                 </tbody>
             </Table>
         )
+    }
+
+    if (!sitterList) {
+        return <div></div>;
     }
 
     return (
