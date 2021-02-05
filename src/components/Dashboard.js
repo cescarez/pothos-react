@@ -13,32 +13,31 @@ const Dashboard = ({baseURL}) => {
     const [error, setError] = useState({});
     const { currentUser } = useAuth();
 
-    const loadUserData = () => {
-        currentUser && 
-            axios.get(`${baseURL}/users/current/${currentUser.uid}`)
-                .then((response) => {
-                    const apiUser = Object.values(response.data)[0]
-                    if (Object.keys(response.data)[0] !== 'message') {
-                        apiUser.userID = Object.keys(response.data)[0]
-                        setUser(apiUser);
-                    } else {
-                        setError({variant: 'warning', message: apiUser})
-                    }
-                })
-                .catch((error) => {
-                    const message=`There was an error with your request. ${error.message}.`;
-                    setError({variant: 'danger', message: message});
-                    console.log(message);
-                })
+    const loadUserData = (auth_id) => {
+        // console.log(`loading backend user profile with frontend auth_id: ${auth_id}`)
+        axios.get(`${baseURL}/users/current/${auth_id}`)
+            .then((response) => {
+                const apiUser = Object.values(response.data)[0]
+                if (Object.keys(response.data)[0] !== 'message') {
+                    apiUser.userID = Object.keys(response.data)[0]
+                    setUser(apiUser);
+                } else {
+                    setError({variant: 'warning', message: apiUser})
+                }
+            })
+            .catch((error) => {
+                const message=`There was an error with your request. ${error.message}.`;
+                setError({variant: 'danger', message: message});
+                console.log(message);
+            })
     }
 
     useEffect(() => {
-        loadUserData();
+        loadUserData(currentUser.uid);
     }, [])
 
-    const setUserCallback = (user) => {
-        const newUser = {...user}
-        setUser(newUser);
+    const loadUserCallback = (user) => {
+        loadUserData(user.auth_id);
     }
 
     //create useEffect to retrieve a user's list of chat threads -- pass that data for rendering to OwnerDashboard/SitterDashboard
@@ -73,7 +72,7 @@ const Dashboard = ({baseURL}) => {
                             }
                         </Tabs>
                 : 
-                    <UserForm baseURL={baseURL} setDashboardUser={setUserCallback} />
+                    <UserForm baseURL={baseURL} setDashboardUser={loadUserCallback} />
                 }
             </div>
         )
