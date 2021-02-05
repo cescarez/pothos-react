@@ -1,16 +1,42 @@
 import React, {useState, useEffect} from 'react'
 import {useRouteMatch, Link} from 'react-router-dom';
 import {Card, Button, Container, Row, Col, Alert} from 'react-bootstrap';
+import { useAuth } from '../contexts/AuthContext';
 import Moment from 'moment';
 import axios from 'axios';
 import pothosPic from '../images/pothos.png'
 
 const User = ({baseURL}) => {
+    const { currentUser } = useAuth();
     const [user, setUser] = useState({});
     const [error, setError] = useState('');
+    const [currentOwner, setCurrentOwner] = useState('');
 
     const match = useRouteMatch('/users/:id');
     const userId = match.params.id
+
+    const loadUserData = () => {
+        currentUser && 
+            axios.get(`${baseURL}/users/current/${currentUser.uid}`)
+                .then((response) => {
+                    const apiUser = Object.values(response.data)[0]
+                    if (Object.keys(response.data)[0] !== 'message') {
+                        apiUser.userID = Object.keys(response.data)[0]
+                        setCurrentOwner(apiUser);
+                    } else {
+                        setError({variant: 'warning', message: apiUser})
+                    }
+                })
+                .catch((error) => {
+                    const message=`There was an error with your request. ${error.message}.`;
+                    setError({variant: 'danger', message: message});
+                    console.log(message);
+                })
+    }
+
+    useEffect(() => {
+        loadUserData();
+    }, [])
     
     useEffect(() => {
         axios.get(`${baseURL}/users/${userId}`)
@@ -24,6 +50,17 @@ const User = ({baseURL}) => {
                 console.log(message);
             })
     }, [baseURL, userId])
+
+    const submitRequest = (event) => {
+        event.preventDefault();
+        axios.post(
+            baseURL + '/requests', 
+            {
+                "owner": currentOwner.userID,
+                "sitter": userId
+            }
+        )
+    }
 
     //write method to display the number of emoji stars as a rounding up? of the user rating
 
@@ -40,7 +77,9 @@ const User = ({baseURL}) => {
                             </Col>
                             { user.sitter &&
                                 <Col xs='auto'>
-                                    <Button variant='outline-secondary btn-sm'>Send Request</Button>
+                                    <Button variant='outline-secondary btn-sm' onClick={submitRequest}>
+                                        Send Request
+                                    </Button>
                                 </Col>
                             }
                         </Row>
