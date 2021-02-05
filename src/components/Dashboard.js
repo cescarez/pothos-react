@@ -15,7 +15,6 @@ const Dashboard = ({baseURL}) => {
 
     const loadUserData = () => {
         currentUser && 
-            // #add five second delay to let the data POST to the backend
             axios.get(`${baseURL}/users/current/${currentUser.uid}`)
                 .then((response) => {
                     const apiUser = Object.values(response.data)[0]
@@ -45,39 +44,42 @@ const Dashboard = ({baseURL}) => {
     //create useEffect to retrieve a user's list of chat threads -- pass that data for rendering to OwnerDashboard/SitterDashboard
 
     //create useEffect to retrieve a user's list of requests -- pass that data for rendering to OwnerDashboard/SitterDashboard
-
-    return (
-        <div className='dashboard'>
-            <Container>
-                <Jumbotron >
-                    <h1>Welcome Back 
-                        { user ? <><br/><Link to={`/users/${user.userID}`}>{user.full_name}</Link></> : null}
-                    !</h1>
-                    <p>This is your dashboard.</p>
-                </Jumbotron>
-            </Container>
-            { user ? 
-                error.message ? 
-                    <Alert variant={error.variant}>{error.message}</Alert> 
-                :
-                    <Tabs border='primary'>
-                        {console.log(user)}
-                        {user.owner  &&
-                            <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
-                                <OwnerDashboard baseURL={baseURL} />
-                            </Tab>
-                        }
-                        {user.sitter &&
-                            <Tab eventKey='sitterDashboard' title='Sitter Dashboard'>
-                                <SitterDashboard baseURL={baseURL} />
-                            </Tab>
-                        }
-                    </Tabs>
-            : 
-                <UserForm baseURL={baseURL} setDashboardUser={setUserCallback} />
-            }
-        </div>
-    )
+    if (user || error.message) {
+        return (
+            <div className='dashboard'>
+                <Container>
+                    <Jumbotron >
+                        <h1>Welcome Back 
+                            { user ? <><br/><Link to={`/users/${user.userID}`}>{user.full_name}</Link></> : null}
+                        !</h1>
+                        <p>This is your dashboard.</p>
+                    </Jumbotron>
+                </Container>
+                { user ? 
+                    error.message ? 
+                        <Alert variant={error.variant}>{error.message}</Alert> 
+                    :
+                        <Tabs border='primary'>
+                            {console.log(user)}
+                            {user.owner  &&
+                                <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
+                                    <OwnerDashboard baseURL={baseURL} />
+                                </Tab>
+                            }
+                            {user.sitter &&
+                                <Tab eventKey='sitterDashboard' title='Sitter Dashboard'>
+                                    <SitterDashboard baseURL={baseURL} />
+                                </Tab>
+                            }
+                        </Tabs>
+                : 
+                    <UserForm baseURL={baseURL} setDashboardUser={setUserCallback} />
+                }
+            </div>
+        )
+    } else {
+        return null;
+    }
 }
 
 export default Dashboard;
