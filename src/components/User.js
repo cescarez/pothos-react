@@ -135,7 +135,8 @@ const User = ({baseURL}) => {
 
     return (
         <div>
-            { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showUserData()}
+            { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
+            {showUserData()}
         </div>
     )
 }
