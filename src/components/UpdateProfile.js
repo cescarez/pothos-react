@@ -75,8 +75,7 @@ export default function UpdateProfile({baseURL}) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (user.sitter || user.owner) {
-            // axios.put(baseURL + '/users/' + user.userID, user)
-            axios.put('http://localhost:5000/users/-MSivC7WbDKTcQhI5B_W', user)
+            axios.put(baseURL + '/users/' + user.userID, user)
             .then((response) => {
                 //success response
                 setError({variant:'success', message: response.data.message});
