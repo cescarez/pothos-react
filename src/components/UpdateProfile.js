@@ -34,7 +34,6 @@ export default function UpdateProfile({baseURL}) {
     }, [])
 
     const handleChange = (event) => {
-        console.log(user)
         const newInput = event.target.name
         const newValue = event.target.value
         const addressParts = ['street', 'city', 'state', 'postal_code', 'country']
@@ -70,20 +69,33 @@ export default function UpdateProfile({baseURL}) {
         });
     }
 
+    //checks if price rates are number inputs
+    const checkPriceRates = () => {
+        const rates = Object.values(user.price_rate)
+        return (rates.every((rate) => {
+            return (Number.parseFloat(rate) && 
+            (Number.parseFloat(rate).length === rate.length))
+        }))
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         if (user.sitter || user.owner) {
-            axios.put(baseURL + '/users/' + user.userID, user)
-                .then((response) => {
-                    //success response
-                    setError({variant:'success', message: response.data.message});
-                    history.push('/');
-                })
-                .catch((error) => {
-                    const message=`There was an error with your request. User profile was not saved. ${error.message}.`;
-                    setError({variant: 'danger', message: message});
-                    console.log(message);
-                });
+            if (checkPriceRates()) {
+                axios.put(baseURL + '/users/' + user.userID, user)
+                    .then((response) => {
+                        //success response
+                        setError({variant:'success', message: response.data.message});
+                        history.push('/');
+                    })
+                    .catch((error) => {
+                        const message=`There was an error with your request. User profile was not saved. ${error.message}.`;
+                        setError({variant: 'danger', message: message});
+                        console.log(message);
+                    });
+            } else {
+                setError({variant: 'warning', message: 'All price rates must be numbers.'})
+            }
         } else {
             setError({variant: 'warning', message: 'You must set your profile to "Sitter", "Owner", or both.'})
         }
