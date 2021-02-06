@@ -75,8 +75,8 @@ export default function UserForm({baseURL, setDashboardUser}) {
         if (user.sitter || user.owner) {
             axios.post(baseURL + '/users', user)
             .then((response) => {
-                console.log(response)
-                setDashboardUser && setDashboardUser(response);
+                //callback to dashboard
+                setDashboardUser({status: response.status, message: response.message, data: response.data});
 
                 setUser({
                     auth_id: currentUser.uid,
