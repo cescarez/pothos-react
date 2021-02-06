@@ -27,17 +27,19 @@ function App() {
                 <AuthProvider>  
                     <Navigation baseURL={BASE_URL} />
                     <Switch>
-                        <Route path='/users/:id'>
+                        <Route exact path='/users/:id'>
                             <User baseURL={BASE_URL} />
                         </Route>
-                        <Route path='/sitters'>
+                        <Route exact path='/sitters'>
                             <SitterList baseURL={BASE_URL} />
                         </Route>
-                        <Route path='/signup' component={Signup} />
-                        <Route path='/login' component={Login} />
-                        <Route path ='/forgot-password' component={ForgotPassword} />
-                        <PrivateRoute path='/update-email' component={UpdateEmailPassword} />
-                        <PrivateRoute path='/update-profile'>
+                        <Route exact path='/signup' component={Signup} />
+                        <Route exact path='/login' component={Login} />
+                        <Route exact path ='/forgot-password' component={ForgotPassword} />
+                        <PrivateRoute exact path='/update-email'>
+                            <UpdateEmailPassword />
+                        </PrivateRoute>
+                        <PrivateRoute exact path='/update-profile'>
                             <UpdateProfile baseURL={BASE_URL} />
                         </PrivateRoute>
                         {/* removed 'exact' from home path so all invalid endpoints will redirect to Home*/}
