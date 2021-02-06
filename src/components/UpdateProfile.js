@@ -69,43 +69,65 @@ export default function UpdateProfile({baseURL}) {
         });
     }
 
+    //check for if all form fields are populated
+    //note: sitter/owner attributes are excluded from this function since checkUserType() exists
+    const checkFormPopulated = () => {
+        const fields = 
+            Object.values(user)
+                .filter((element) => {
+                    return typeof(element) !== 'object' && typeof(element) !== 'boolean'
+                })
+                .concat(Object.values(user.address))
+
+        if (user.sitter) {
+            fields.concat(Object.values(user.price_rate));
+        }
+        if (fields.every((field) => field)) {
+            return true
+        } else {
+            setError({
+                variant: 'warning', 
+                message: 'All form fields must be populated.'
+            })
+            return false;
+        }
+    }
+
+    //check if at least one user type is selected
     const checkUserType = () => {
         if (user.sitter || user.owner) {
             return true;
         } else {
-            setError({variant: 'warning', message: 'You must set your profile to "Sitter", "Owner", or both.'});
+            setError({
+                variant: 'warning', 
+                message: 'You must set your profile to "Sitter", "Owner", or both.'
+            });
             return false;
         }
 
     }
 
-    //check for all populated fields
-    //note: sitter/owner attributes are excluded from this function since checkUserType() exists
-    const checkFormPopulated = () => {
-        const fields = Object.values(user).filter((element) => {return typeof(element) !== 'object' && typeof(element) !== 'boolean'}).concat(Object.values(user.address)).concat(Object.values(user.price_rate))
-        if (fields.every((field) => field)) {
-            return true
-        } else {
-            setError({variant: 'warning', message: 'All form fields must be populated.'})
-            return false
-        }
-    }
-
     //checks if price rates are number inputs
     const checkPriceRates = () => {
-        const rates = Object.values(user.price_rate)
-        console.log(rates)
-        if (rates.every((rate) => {
-            return (
-                Number.parseFloat(rate) && 
-                    ((typeof(rate) === 'number') || 
-                    (Number.parseFloat(rate).toString().length === rate.length))
-            )
-        })) {
-            return true
+        if (user.sitter) {
+            const rates = Object.values(user.price_rate)
+            if (rates.every((rate) => {
+                return (
+                    Number.parseFloat(rate) && 
+                        ((typeof(rate) === 'number') || 
+                        (Number.parseFloat(rate).toString().length === rate.length))
+                )
+            })) {
+                return true;
+            } else {
+                setError({
+                    variant: 'warning', 
+                    message: 'All price rates must be numbers.'
+                });
+                return false;
+            }
         } else {
-            setError({variant: 'warning', message: 'All price rates must be numbers.'})
-            return false
+            return true;
         }
     }
 

@@ -70,73 +70,106 @@ export default function UserForm({baseURL, setDashboardUser}) {
         });
     }
 
-    //check for all populated fields
+    //check for if all form fields are populated
+    //note: sitter/owner attributes are excluded from this function since checkUserType() exists
     const checkFormPopulated = () => {
-        const fields = Object.values(user).filter((element) => typeof(element) !== 'object').concat(Object.values(user.address)).concat(Object.values(user.price_rate))
-        console.log(fields)
+        const fields = 
+            Object.values(user)
+                .filter((element) => {
+                    return typeof(element) !== 'object' && typeof(element) !== 'boolean'
+                })
+                .concat(Object.values(user.address))
+
+        if (user.sitter) {
+            fields.concat(Object.values(user.price_rate));
+        }
         if (fields.every((field) => field)) {
             return true
         } else {
-            setError({variant: 'warning', message: 'All form fields must be populated.'})
-            return false
+            setError({
+                variant: 'warning', 
+                message: 'All form fields must be populated.'
+            })
+            return false;
         }
+    }
+
+    //check if at least one user type is selected
+    const checkUserType = () => {
+        if (user.sitter || user.owner) {
+            return true;
+        } else {
+            setError({
+                variant: 'warning', 
+                message: 'You must set your profile to "Sitter", "Owner", or both.'
+            });
+            return false;
+        }
+
     }
 
     //checks if price rates are number inputs
     const checkPriceRates = () => {
-        const rates = Object.values(user.price_rate)
-        if (rates.every((rate) => {
-            return (Number.parseFloat(rate) && 
-            (Number.parseFloat(rate).length === rate.length))
-        })) {
-            return true
-        } else {
-            setError({variant: 'warning', message: 'All price rates must be numbers.'})
-            return false
-        }
-    }
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if (user.sitter || user.owner) {
-            if (checkFormPopulated() && checkPriceRates()) {
-                axios.post(baseURL + '/users', user)
-                    .then((response) => {
-                        //callback to dashboard
-                        setDashboardUser({status: response.status, message: response.message, data: response.data});
-
-                        setUser({
-                            auth_id: currentUser.uid,
-                            username: '', 
-                            full_name: '',
-                            phone_number: '',
-                            avatar_url: currentUser.photoURL,
-                            sitter: false,
-                            owner: false,
-                            bio: '',
-                            address: {
-                                street: '',
-                                city: '',
-                                state: '',
-                                postal_code: '',
-                                country: ''
-                            },
-                            price_rate: {
-                                water_by_plant: '',
-                                water_by_time: '',
-                                repot_by_plant: '',
-                                repot_by_time: ''
-                            }
-                        })
-                        setError({variant:'success', message: response.data.message});
-                    })
-                    .catch((error) => {
-                        const message=`There was an error with your request. User profile was not saved. ${error.message}.`;
-                        setError({variant: 'danger', message: message});
-                        console.log(message);
-                    });
+        if (user.sitter) {
+            const rates = Object.values(user.price_rate)
+            if (rates.every((rate) => {
+                return (
+                    Number.parseFloat(rate) && 
+                        ((typeof(rate) === 'number') || 
+                        (Number.parseFloat(rate).toString().length === rate.length))
+                )
+            })) {
+                return true;
+            } else {
+                setError({
+                    variant: 'warning', 
+                    message: 'All price rates must be numbers.'
+                });
+                return false;
             }
         } else {
-            setError({variant: 'warning', message: 'You must set your profile to "Sitter", "Owner", or both.'})
+            return true;
+        }
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (checkFormPopulated() && checkUserType() && checkPriceRates()) {
+            axios.post(baseURL + '/users', user)
+                .then((response) => {
+                    //callback to dashboard
+                    setDashboardUser({status: response.status, message: response.message, data: response.data});
+
+                    setUser({
+                        auth_id: currentUser.uid,
+                        username: '', 
+                        full_name: '',
+                        phone_number: '',
+                        avatar_url: currentUser.photoURL,
+                        sitter: false,
+                        owner: false,
+                        bio: '',
+                        address: {
+                            street: '',
+                            city: '',
+                            state: '',
+                            postal_code: '',
+                            country: ''
+                        },
+                        price_rate: {
+                            water_by_plant: '',
+                            water_by_time: '',
+                            repot_by_plant: '',
+                            repot_by_time: ''
+                        }
+                    })
+                    setError({variant:'success', message: response.data.message});
+                })
+                .catch((error) => {
+                    const message=`There was an error with your request. User profile was not saved. ${error.message}.`;
+                    setError({variant: 'danger', message: message});
+                    console.log(message);
+                });
         }
     }
 
