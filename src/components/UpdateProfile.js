@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios'
+import { Link, useHistory } from 'react-router-dom'
 
 export default function UpdateProfile({baseURL}) {
     const { currentUser } = useAuth();
     const [error, setError] = useState('');
     const [user, setUser] = useState(null);
+    const history = useHistory();
 
     const loadUserData = () => {
         currentUser && 
@@ -75,6 +77,7 @@ export default function UpdateProfile({baseURL}) {
                 .then((response) => {
                     //success response
                     setError({variant:'success', message: response.data.message});
+                    history.push('/');
                 })
                 .catch((error) => {
                     const message=`There was an error with your request. User profile was not saved. ${error.message}.`;

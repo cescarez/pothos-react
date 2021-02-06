@@ -8,6 +8,7 @@ import Signup from './components/Signup'
 import Login from './components/Login'
 import Navigation from './components/Navigation'
 import ForgotPassword from './components/ForgotPassword'
+import PrivateRoute from './components/PrivateRoute'
 import User from './components/User'
 import UpdateEmailPassword from './components/UpdateEmailPassword'
 import UpdateProfile from './components/UpdateProfile'
@@ -26,19 +27,21 @@ function App() {
                 <AuthProvider>  
                     <Navigation baseURL={BASE_URL} />
                     <Switch>
-                        <Route path='/users/:id'>
+                        <Route exact path='/users/:id'>
                             <User baseURL={BASE_URL} />
                         </Route>
-                        <Route path='/sitters'>
+                        <Route exact path='/sitters'>
                             <SitterList baseURL={BASE_URL} />
                         </Route>
-                        <Route path='/signup' component={Signup} />
-                        <Route path='/login' component={Login} />
-                        <Route path ='/forgot-password' component={ForgotPassword} />
-                        <Route path='/update-email' component={UpdateEmailPassword} />
-                        <Route path='/update-profile'>
+                        <Route exact path='/signup' component={Signup} />
+                        <Route exact path='/login' component={Login} />
+                        <Route exact path ='/forgot-password' component={ForgotPassword} />
+                        <PrivateRoute exact path='/update-email'>
+                            <UpdateEmailPassword />
+                        </PrivateRoute>
+                        <PrivateRoute exact path='/update-profile'>
                             <UpdateProfile baseURL={BASE_URL} />
-                        </Route>
+                        </PrivateRoute>
                         {/* removed 'exact' from home path so all invalid endpoints will redirect to Home*/}
                         <Route path='/'>
                             <Home baseURL={BASE_URL} />
