@@ -8,6 +8,7 @@ import Signup from './components/Signup'
 import Login from './components/Login'
 import Navigation from './components/Navigation'
 import ForgotPassword from './components/ForgotPassword'
+import PrivateRoute from './components/PrivateRoute'
 import User from './components/User'
 import UpdateEmailPassword from './components/UpdateEmailPassword'
 import UpdateProfile from './components/UpdateProfile'
@@ -35,10 +36,10 @@ function App() {
                         <Route path='/signup' component={Signup} />
                         <Route path='/login' component={Login} />
                         <Route path ='/forgot-password' component={ForgotPassword} />
-                        <Route path='/update-email' component={UpdateEmailPassword} />
-                        <Route path='/update-profile'>
+                        <PrivateRoute path='/update-email' component={UpdateEmailPassword} />
+                        <PrivateRoute path='/update-profile'>
                             <UpdateProfile baseURL={BASE_URL} />
-                        </Route>
+                        </PrivateRoute>
                         {/* removed 'exact' from home path so all invalid endpoints will redirect to Home*/}
                         <Route path='/'>
                             <Home baseURL={BASE_URL} />
