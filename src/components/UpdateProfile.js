@@ -69,22 +69,38 @@ export default function UpdateProfile({baseURL}) {
         });
     }
 
+    //check for all populated fields
+    const checkFormPopulated = () => {
+        const fields = Object.values(user).filter((element) => typeof(element) !== 'object').concat(Object.values(user.address)).concat(Object.values(user.price_rate))
+        console.log(fields)
+        if (fields.every((field) => field)) {
+            return true
+        } else {
+            setError({variant: 'warning', message: 'All form fields must be populated.'})
+            return false
+        }
+    }
+
     //checks if price rates are number inputs
     const checkPriceRates = () => {
         const rates = Object.values(user.price_rate)
-        return (rates.every((rate) => {
+        if (rates.every((rate) => {
             return (Number.parseFloat(rate) && 
             (Number.parseFloat(rate).length === rate.length))
-        }))
+        })) {
+            return true
+        } else {
+            setError({variant: 'warning', message: 'All price rates must be numbers.'})
+            return false
+        }
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
         if (user.sitter || user.owner) {
-            if (checkPriceRates()) {
+            if (checkFormPopulated() && checkPriceRates()) {
                 axios.put(baseURL + '/users/' + user.userID, user)
                     .then((response) => {
-                        //success response
                         setError({variant:'success', message: response.data.message});
                         history.push('/');
                     })
@@ -93,13 +109,12 @@ export default function UpdateProfile({baseURL}) {
                         setError({variant: 'danger', message: message});
                         console.log(message);
                     });
-            } else {
-                setError({variant: 'warning', message: 'All price rates must be numbers.'})
             }
         } else {
             setError({variant: 'warning', message: 'You must set your profile to "Sitter", "Owner", or both.'})
         }
     }
+    //this conditional makes it so the userform doesn't flash while waiting on the axios response
     if (!user) {
         return(
             <div></div>
