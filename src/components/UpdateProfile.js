@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap'
+import { Form, Button, Container, Card, Col, Alert, Pagination } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
@@ -69,10 +69,20 @@ export default function UpdateProfile({baseURL}) {
         });
     }
 
+    const checkUserType = () => {
+        if (user.sitter || user.owner) {
+            return true;
+        } else {
+            setError({variant: 'warning', message: 'You must set your profile to "Sitter", "Owner", or both.'});
+            return false;
+        }
+
+    }
+
     //check for all populated fields
+    //note: sitter/owner attributes are excluded from this function since checkUserType() exists
     const checkFormPopulated = () => {
-        const fields = Object.values(user).filter((element) => typeof(element) !== 'object').concat(Object.values(user.address)).concat(Object.values(user.price_rate))
-        console.log(fields)
+        const fields = Object.values(user).filter((element) => {return typeof(element) !== 'object' && typeof(element) !== 'boolean'}).concat(Object.values(user.address)).concat(Object.values(user.price_rate))
         if (fields.every((field) => field)) {
             return true
         } else {
@@ -84,9 +94,13 @@ export default function UpdateProfile({baseURL}) {
     //checks if price rates are number inputs
     const checkPriceRates = () => {
         const rates = Object.values(user.price_rate)
+        console.log(rates)
         if (rates.every((rate) => {
-            return (Number.parseFloat(rate) && 
-            (Number.parseFloat(rate).length === rate.length))
+            return (
+                Number.parseFloat(rate) && 
+                    ((typeof(rate) === 'number') || 
+                    (Number.parseFloat(rate).toString().length === rate.length))
+            )
         })) {
             return true
         } else {
@@ -97,21 +111,17 @@ export default function UpdateProfile({baseURL}) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (user.sitter || user.owner) {
-            if (checkFormPopulated() && checkPriceRates()) {
-                axios.put(baseURL + '/users/' + user.userID, user)
-                    .then((response) => {
-                        setError({variant:'success', message: response.data.message});
-                        history.push('/');
-                    })
-                    .catch((error) => {
-                        const message=`There was an error with your request. User profile was not saved. ${error.message}.`;
-                        setError({variant: 'danger', message: message});
-                        console.log(message);
-                    });
-            }
-        } else {
-            setError({variant: 'warning', message: 'You must set your profile to "Sitter", "Owner", or both.'})
+        if (checkFormPopulated() && checkUserType() && checkPriceRates()) {
+            axios.put(baseURL + '/users/' + user.userID, user)
+                .then((response) => {
+                    setError({variant:'success', message: response.data.message});
+                    history.push('/');
+                })
+                .catch((error) => {
+                    const message=`There was an error with your request. User profile was not saved. ${error.message}.`;
+                    setError({variant: 'danger', message: message});
+                    console.log(message);
+                });
         }
     }
     //this conditional makes it so the userform doesn't flash while waiting on the axios response

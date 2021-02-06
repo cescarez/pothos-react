@@ -78,6 +78,8 @@ const SitterList = ({ baseURL }) => {
                                     </td>
                                 </tr>
                             )
+                        } else {
+                            return null
                         }
                     })}
                 </tbody>
