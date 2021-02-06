@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap'
+import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
-import axios from 'axios'
+import axios from 'axios';
 
 
 export default function UserForm({baseURL, setDashboardUser}) {
@@ -25,7 +25,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
             postal_code: '',
             country: ''
         },
-        email: currentUser.email,
         price_rate: {
             water_by_plant: '',
             water_by_time: '',
@@ -49,7 +48,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
                 }
             })
         } else if (priceParts.includes(newInput)){
-            if (typeof(parseFloat(newValue))) {
             setUser({
                 ...user,
                 price_rate: { 
@@ -57,9 +55,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
                     [newInput]: newValue,
                 }
             })
-            } else {
-                setError({variant: 'warning', message: 'Please enter valid numbers for all price rates.'});
-            }
         } else {
             setUser({
                 ...user, 
@@ -78,10 +73,11 @@ export default function UserForm({baseURL, setDashboardUser}) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (user.sitter || user.owner) {
-            // alert('A form was submitted.');
             axios.post(baseURL + '/users', user)
             .then((response) => {
-                setDashboardUser && setDashboardUser(user);
+                console.log(response)
+                setDashboardUser && setDashboardUser(response);
+
                 setUser({
                     auth_id: currentUser.uid,
                     username: '', 
@@ -98,7 +94,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
                         postal_code: '',
                         country: ''
                     },
-                    email: currentUser.email,
                     price_rate: {
                         water_by_plant: '',
                         water_by_time: '',
@@ -131,10 +126,10 @@ export default function UserForm({baseURL, setDashboardUser}) {
                             <h2 className='text-center mb-4'>Create Profile</h2>
                             <Form.Row>
                                 <Form.Group as={Col} >
-                                    <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck}/>
+                                    <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck} checked={user.sitter ? true : false }/>
                                 </Form.Group>
                                 <Form.Group as={Col} >
-                                    <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck}/>
+                                    <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck} checked={user.owner ? true : false }/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group>

@@ -1,16 +1,42 @@
 import React, {useState, useEffect} from 'react'
 import {useRouteMatch, Link} from 'react-router-dom';
 import {Card, Button, Container, Row, Col, Alert} from 'react-bootstrap';
+import { useAuth } from '../contexts/AuthContext';
 import Moment from 'moment';
 import axios from 'axios';
 import pothosPic from '../images/pothos.png'
 
 const User = ({baseURL}) => {
+    const { currentUser } = useAuth();
     const [user, setUser] = useState({});
     const [error, setError] = useState('');
+    const [currentOwner, setCurrentOwner] = useState('');
 
     const match = useRouteMatch('/users/:id');
     const userId = match.params.id
+
+    const loadUserData = () => {
+        currentUser && 
+            axios.get(`${baseURL}/users/current/${currentUser.uid}`)
+                .then((response) => {
+                    const apiUser = Object.values(response.data)[0]
+                    if (Object.keys(response.data)[0] !== 'message') {
+                        apiUser.userID = Object.keys(response.data)[0]
+                        setCurrentOwner(apiUser);
+                    } else {
+                        setError({variant: 'warning', message: apiUser})
+                    }
+                })
+                .catch((error) => {
+                    const message=`There was an error with your request. ${error.message}.`;
+                    setError({variant: 'danger', message: message});
+                    console.log(message);
+                })
+    }
+
+    useEffect(() => {
+        loadUserData();
+    }, [])
     
     useEffect(() => {
         axios.get(`${baseURL}/users/${userId}`)
@@ -25,6 +51,24 @@ const User = ({baseURL}) => {
             })
     }, [baseURL, userId])
 
+    const submitRequest = (event) => {
+        event.preventDefault();
+        axios.post(
+            baseURL + '/requests', 
+            {
+                "owner": currentOwner.userID,
+                "sitter": userId
+            }
+        ).then((response) => {
+            setError({variant:'success', message: 'Request successfully sent'});
+        }).catch((error) => {
+            const message=`There was an error with your request. Request not sent. ${error.message}.`;
+            setError({variant: 'danger', message: message});
+        })
+    }
+
+    //write method to display the number of emoji stars as a rounding up? of the user rating
+
     const showUserData = () => {
         return (
             <Container className='container-lg'>
@@ -36,9 +80,13 @@ const User = ({baseURL}) => {
                                 <Card.Title className='font-weight-bolder mb-1'>{user.full_name}</Card.Title>
                                 <Card.Subtitle className='text-muted font-weight-lighter'>{user.username}</Card.Subtitle>
                             </Col>
-                            <Col xs='auto'>
-                                <Button variant='outline-secondary btn-sm'>Send Request</Button>
-                            </Col>
+                            { user.sitter &&
+                                <Col xs='auto'>
+                                    <Button variant='outline-secondary btn-sm' onClick={submitRequest}>
+                                        Send Request
+                                    </Button>
+                                </Col>
+                            }
                         </Row>
                     </Card.Header>
                     <Card.Body className='py-2'>
@@ -48,7 +96,8 @@ const User = ({baseURL}) => {
                                 <Col className='text-left'>{Moment(user.date_joined).format('MMMM Do, YYYY')}</Col>
                             </Row>
                             <Row>
-                                <Col>{user.email}</Col>
+                                <Col className='text-right'>Rating:</Col>
+                                <Col className='text-left'>{user.rating ? user.rating : 'N/A'}</Col>
                             </Row>
                             <Row>
                                 <Col className='text-muted mt-2'><small>{user.bio}</small></Col>
@@ -86,7 +135,8 @@ const User = ({baseURL}) => {
 
     return (
         <div>
-            { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showUserData()}
+            { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
+            {showUserData()}
         </div>
     )
 }

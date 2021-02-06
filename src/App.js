@@ -20,7 +20,8 @@ const BASE_URL = 'https://pothos-api.herokuapp.com'
 function App() {
 
     return (
-        <div className="App">
+        <div className="App page-container">
+            <div className="content-wrap">
             <Router>
                 <AuthProvider>  
                     <Navigation baseURL={BASE_URL} />
@@ -43,9 +44,10 @@ function App() {
                             <Home baseURL={BASE_URL} />
                         </Route>
                     </Switch>
-                    <Footer />
                 </AuthProvider>
             </Router>
+            </div>
+            <Footer />
         </div>
     );
 }
