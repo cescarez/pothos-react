@@ -30,8 +30,6 @@ export default function UpdateEmailPassword() {
         }
 
         Promise.all(promises).then(() => {
-            setError({variant:'success',message: 'User profile sucessfully updated.'})
-            setTimeout(9000)
             history.push('/')
         }).catch((error) => {
             const message = `Failed to update account. ${error.message}`
