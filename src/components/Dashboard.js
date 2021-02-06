@@ -15,30 +15,36 @@ const Dashboard = ({baseURL}) => {
 
     const loadUserData = (auth_id) => {
         // console.log(`loading backend user profile with frontend auth_id: ${auth_id}`)
-        axios.get(`${baseURL}/users/current/${auth_id}`)
-            .then((response) => {
-                const apiUser = Object.values(response.data)[0]
-                if (Object.keys(response.data)[0] !== 'message') {
-                    apiUser.userID = Object.keys(response.data)[0]
-                    setUser(apiUser);
-                } else {
-                    setError({variant: 'warning', message: apiUser})
-                }
-            })
-            .catch((error) => {
-                const message=`There was an error with your request. ${error.message}.`;
-                setError({variant: 'danger', message: message});
-                console.log(message);
-            })
+        if (!user) {
+            axios.get(`${baseURL}/users/current/${auth_id}`)
+                .then((response) => {
+                    const apiUser = Object.values(response.data)[0]
+                    if (Object.keys(response.data)[0] !== 'message') {
+                        apiUser.userID = Object.keys(response.data)[0]
+                        setUser(apiUser);
+                    } else {
+                        setError({variant: 'warning', message: apiUser})
+                    }
+                })
+                .catch((error) => {
+                    const message=`There was an error with your request. ${error.message}.`;
+                    setError({variant: 'danger', message: message});
+                    console.log(message);
+                })
+        }
     }
 
     useEffect(() => {
         loadUserData(currentUser.uid);
     }, [])
 
-    const loadUserCallback = (user) => {
-        //TODO: load user from returned POST in userForm
-        loadUserData(user.auth_id);
+    const loadUserCallback = (response) => {
+        if (response.status === 201) {
+            loadUserData(response.data.auth_id);
+            setError({variant: 'success', message: 'User profile successfully saved.'});
+        } else {
+            setError({variant: 'danger', message: 'Error occurred. User profile was not saved.'})
+        }
     }
 
     //create useEffect to retrieve a user's list of chat threads -- pass that data for rendering to OwnerDashboard/SitterDashboard
@@ -56,11 +62,11 @@ const Dashboard = ({baseURL}) => {
                     </Jumbotron>
                 </Container>
                 { user ? 
-                    error.message ? 
-                        <Alert variant={error.variant}>{error.message}</Alert> 
-                    :
+                    <div>
+                        {error.message ?
+                            <Alert variant={error.variant}>{error.message}</Alert> 
+                        : null}
                         <Tabs border='primary'>
-                            {console.log(user)}
                             {user.owner  &&
                                 <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
                                     <OwnerDashboard baseURL={baseURL} />
@@ -72,6 +78,7 @@ const Dashboard = ({baseURL}) => {
                                 </Tab>
                             }
                         </Tabs>
+                    </div>
                 : 
                     <UserForm baseURL={baseURL} setDashboardUser={loadUserCallback} />
                 }
