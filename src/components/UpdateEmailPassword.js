@@ -8,14 +8,14 @@ export default function UpdateEmailPassword() {
     const passwordRef = useRef()
     const passwordConfirmRef = useRef()
     const { currentUser, updateEmail, updatePassword } = useAuth()
-    const [error, setError] = useState('')
+    const [error, setError] = useState({})
     const [loading, setLoading] = useState(false)
     const history = useHistory()
 
     function handleSubmit(e) {
         e.preventDefault()
         if (passwordRef.current.value !== passwordConfirmRef.current.value){
-            return setError('Passwords do not match')
+            return setError({variant: 'danger', message: 'Passwords do not match'})
         }
 
         const promises = []
@@ -31,8 +31,9 @@ export default function UpdateEmailPassword() {
 
         Promise.all(promises).then(() => {
             history.push('/')
-        }).catch(() => {
-            setError('Failed to update account')
+        }).catch((error) => {
+            const message = `Failed to update account. ${error.message}`
+            setError({variant: 'danger', message: message})
         }).finally(() => {
             setLoading(false)
         })
@@ -48,7 +49,7 @@ export default function UpdateEmailPassword() {
                 <Card>
                     <Card.Body>
                         <h2 className='text-center mb-4'>Update Email or Password</h2>
-                        {error && <Alert variant='danger'>{error}</Alert>}
+                        {error.message && <Alert variant={error.variant}>{error.message}</Alert>}
                         <Form onSubmit={handleSubmit}>
                             <Form.Group id='email'>
                                 <Form.Label>Email</Form.Label>

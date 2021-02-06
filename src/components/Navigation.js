@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
-import { Navbar, Nav, Button, Alert } from 'react-bootstrap';
+import { Navbar, Nav, Button, Alert, Dropdown } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import {useHistory, Link} from 'react-router-dom';
+import { HiOutlineCog } from 'react-icons/hi';
+
+import './Navigation.css';
 
 const Navigation = () => {
     const [error, setError] = useState('')
@@ -23,8 +26,20 @@ const Navigation = () => {
         <div className='navigation'>
             <Navbar fixed='top' bg='primary' variant='dark'>
                 <Nav className='mr-auto'>
+                    { currentUser &&
+                        <Dropdown navbar>
+                            <Dropdown.Toggle variant='primary' className='cog-icon' id='account-settings'>
+                                <HiOutlineCog />
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item href="/update-email">Update Email/Password</Dropdown.Item>
+                                <Dropdown.Item href="/update-profile">Update Profile</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    }
                     <Nav.Link as={Link} to='/'>Home</Nav.Link>
                 </Nav>
+
                 {currentUser ? 
                     <Button variant='secondary' as={Link} onClick={handleLogout}>Log Out</Button> : 
                     <Button variant='secondary' as={Link} to='/signup'>Sign Up</Button>

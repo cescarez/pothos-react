@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios'
+import { Link, useHistory } from 'react-router-dom'
 
 export default function UpdateProfile({baseURL}) {
     const { currentUser } = useAuth();
     const [error, setError] = useState('');
     const [user, setUser] = useState(null);
+    const history = useHistory();
 
     const loadUserData = () => {
         currentUser && 
@@ -72,15 +74,16 @@ export default function UpdateProfile({baseURL}) {
         event.preventDefault();
         if (user.sitter || user.owner) {
             axios.put(baseURL + '/users/' + user.userID, user)
-            .then((response) => {
-                //success response
-                setError({variant:'success', message: response.data.message});
-            })
-            .catch((error) => {
-                const message=`There was an error with your request. User profile was not saved. ${error.message}.`;
-                setError({variant: 'danger', message: message});
-                console.log(message);
-            });
+                .then((response) => {
+                    //success response
+                    setError({variant:'success', message: response.data.message});
+                    history.push('/');
+                })
+                .catch((error) => {
+                    const message=`There was an error with your request. User profile was not saved. ${error.message}.`;
+                    setError({variant: 'danger', message: message});
+                    console.log(message);
+                });
         } else {
             setError({variant: 'warning', message: 'You must set your profile to "Sitter", "Owner", or both.'})
         }

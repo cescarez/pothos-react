@@ -1,0 +1,11 @@
+.cog-icon, .footer-text {
+    color: white;
+    opacity: 0.6;
+}
+
+.caret-off::before {
+    display: none;
+}
+.caret-off::after {
+    display: none;
+}

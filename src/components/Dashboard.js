@@ -43,7 +43,7 @@ const Dashboard = ({baseURL}) => {
             loadUserData(response.data.auth_id);
             setError({variant: 'success', message: 'User profile successfully saved.'});
         } else {
-            setError({variant: 'danger', message: 'Error occurred. User profile was not saved.'})
+            setError({variant: 'warning', message: `Error occurred. User profile was not saved. ${response.message}`})
         }
     }
 
