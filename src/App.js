@@ -15,8 +15,6 @@ import UpdateProfile from './components/UpdateProfile'
 import Footer from './components/Footer'
 import ChatLog from './components/ChatLog'
 
-import SitterMap from './components/SitterMap'
-
 import './App.css';
 
 const BASE_URL = 'http://localhost:5000'
@@ -30,15 +28,15 @@ function App() {
                 <AuthProvider>  
                     <Navigation baseURL={BASE_URL} />
                     <Switch>
-                        <Route exact path='/users/:id'>
+                        <PrivateRoute exact path='/users/:id'>
                             <User baseURL={BASE_URL} />
-                        </Route>
-                        <Route exact path='/requests/:id'>
+                        </PrivateRoute>
+                        <PrivateRoute exact path='/requests/:id'>
                             <ChatLog baseURL={BASE_URL} />
-                        </Route>
-                        <Route exact path='/sitters'>
+                        </PrivateRoute>
+                        <PrivateRoute exact path='/sitters'>
                             <SitterList baseURL={BASE_URL} />
-                        </Route>
+                        </PrivateRoute>
                         <Route exact path='/signup' component={Signup} />
                         <Route exact path='/login' component={Login} />
                         <Route exact path ='/forgot-password' component={ForgotPassword} />
@@ -48,11 +46,6 @@ function App() {
                         <PrivateRoute exact path='/update-profile'>
                             <UpdateProfile baseURL={BASE_URL} />
                         </PrivateRoute>
-
-                        <PrivateRoute exact path='/sitter-map'>
-                            <SitterMap />
-                        </PrivateRoute>
-
                         {/* removed 'exact' from home path so all invalid endpoints will redirect to Home*/}
                         <Route path='/'>
                             <Home baseURL={BASE_URL} />

@@ -7,6 +7,7 @@ const BASE_GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?addr
 
 const SitterMap = ({ sitterList, currentUserData }) => {
     const [error, setError] = useState({});
+    //default center is center of the U.S.
     const [mapCenter, setMapCenter] = useState({ lat: 39.8097343, lng: -98.5556199 });
     const [zoom, setZoom] = useState(8);
     const [sitterCoords, setSitterCoords] = useState(null);
@@ -27,7 +28,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
     const loadSitterListMarkers = () => {
         const apiSitterCoords = []
         sitterList.forEach((sitter) => {
-            if (sitter.user_id !== currentUserData.userID) {
+            if (sitter.userID !== currentUserData.userID) {
                 axios.get(createGeocodeURL(sitter))
                     .then((response) =>{
                         const apiSitter = {
