@@ -8,7 +8,7 @@ import axios from 'axios';
 import './SitterList.css'
 import SitterMap from './SitterMap';
 
-const SitterList = ({ baseURL, currentUser }) => {
+const SitterList = ({ baseURL, currentUserData }) => {
     const { currentUser } = useAuth();
     const [sitterList, setSitterList] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
