@@ -60,7 +60,7 @@ const RequestList = ({ baseURL, userID }) => {
                             <tr key={request.request_id}>
                                 <td>
                                     <Link to={`/users/${request.owner}`}>
-                                        Plant Owner
+                                        {request.owner}
                                     </Link>
                                 </td>
                                 <td>
