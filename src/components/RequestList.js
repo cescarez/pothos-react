@@ -79,10 +79,10 @@ const RequestList = ({ baseURL, userID }) => {
                                     </Link>
                                 </td>
                                 <td>
-                                    <Button variant='primary'>Confirm</Button>
+                                    <Button variant='primary' onClick={() => {changeRequest(request.request_id,'confirm')}}>Confirm</Button>
                                 </td>
                                 <td>
-                                    <Button variant='primary'>Decline</Button>
+                                    <Button variant='primary' onClick={() => {changeRequest(request.request_id,'decline')}}>Decline</Button>
                                 </td>
                             </tr>
                         )
