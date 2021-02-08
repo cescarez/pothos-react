@@ -7,7 +7,6 @@ import axios from 'axios';
 import { Button } from 'react-bootstrap';
 
 import './SitterList.css'
-import './SitterMap.css'
 import SitterMap from './SitterMap';
 
 const SitterList = ({ baseURL, currentUserData }) => {
@@ -101,13 +100,13 @@ const SitterList = ({ baseURL, currentUserData }) => {
     return (
         <div className='sitter-list'>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>} 
-            {/* { showMap ? 
+            { showMap ? 
                 <div>
-                    <Button variant='outline-secondary' onClick={onViewMapClick}>Hide Map</Button> */}
+                    <Button variant='outline-secondary' onClick={onViewMapClick}>Hide Map</Button>
                     <SitterMap sitterList={sitterList} currentUserData={currentUserData} />
-                {/* </div> 
+                </div> 
             : <Button variant='outline-secondary' onClick={onViewMapClick}>View Map</Button>
-            }             */}
+            }            
             {showSitterList()}
         </div>
     )

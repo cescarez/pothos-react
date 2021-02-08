@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Container} from 'react-bootstrap';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker} from 'react-google-maps';
-import { compose, withProps } from "recompose"
 
 const SitterMap = ({sitterList, currentUserData}) => {
     const [error, setError] = useState({});
@@ -16,8 +15,7 @@ const SitterMap = ({sitterList, currentUserData}) => {
 
     }
 
-    const SitterMap = withScriptjs(withGoogleMap
-    (((props) => 
+    const SitterMap = withScriptjs(withGoogleMap(((props) => 
         <GoogleMap
             defaultZoom={props.zoom ? props.zoom : 8}
             defaultCenter={props.center ? props.center : {lat: 39.8097343, lng: -98.5556199}} 
