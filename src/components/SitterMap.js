@@ -1,72 +1,59 @@
 import React, {useEffect, useState} from 'react';
-// import { Loader, Geocoder, Map, Marker } from "@googlemaps/js-api-loader"
 import { Loader } from "@googlemaps/js-api-loader"
-import axios from 'axios';
 
-import './SitterMap.css'
+// import './SitterMap.css'
 
-//mapping code taken from https://stackoverflow.com/a/29463348
-
-// const BASE_GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
 const google = window.google
 
 const SitterMap = ({sitterList, currentUserData}) => {
     const [error, setError] = useState({});
-    const [geocoder, setGeocoder] = useState(null);
-    const [map, setMap] = useState(null);
+    // const [geocoder, setGeocoder] = useState(null);
+    // const [map, setMap] = useState(null);
 
     const loader = new Loader({
         apiKey: process.env.REACT_APP_GOOGLE_CLOUD_API_KEY,
         version: "weekly",
     });
 
-
     loader
         .load()
         .then(() => {
-            setMap(new google.maps.Map(document.getElementById("map_canvas"), {
+            const map = new google.maps.Map(document.getElementById("map_canvas"), {
                 center: {lat: 39.8097343, lng: -98.5556199},
                 zoom: 8,
-            }));
-            setGeocoder(new google.maps.Geocoder());
+            });
+            const geocoder = new google.maps.Geocoder();
             const currentUserAddress = `${currentUserData.address.street},+${currentUserData.address.city},+${currentUserData.address.state},+${currentUserData.address.postal_code}`;
             geocodeCurrentUserAddress(geocoder, map, currentUserAddress);
+
+            // sitterList.forEach((sitter) => {
+            //     const address = `${sitter.address.street},+${sitter.address.city},+${sitter.address.state},+${sitter.address.postal_code}`
+            //     geocodeSitterAddress(geocoder, map, address, sitter.full_name)
+            // })
         })
         .catch(error => {
             const message = `Google Maps initial loading failed. ${error.message}`
             setError({variant:'danger', message: message})
             console.log(message)
         });
-    // useEffect(()=>{
-    //     setMap(new google.maps.Map(document.getElementById("map_canvas"), {
-    //         center: {lat: 39.8097343, lng: -98.5556199},
-    //         zoom: 8,
-    //     }));
-    //     setGeocoder(new google.maps.Geocoder());
-    //     const currentUserAddress = `${currentUserData.address.street},+${currentUserData.address.city},+${currentUserData.address.state},+${currentUserData.address.postal_code}`;
-    //     geocodeCurrentUserAddress(geocoder, map, currentUserAddress);
-    // }, [])
+
+
     const geocodeCurrentUserAddress = (geocoder, resultsMap, address) => {
         geocoder.geocode({ address: address }, (results, status) => {
             if (status === "OK") {
-                map.setCenter(results[0].geometry.location);
+                resultsMap.setCenter(results[0].geometry.location);
                 new google.maps.Marker({
                     map: resultsMap,
                     position: results[0].geometry.location,
                     label: 'You are Here',
                 });
+                console.log(`successful geocode response for address: ${address}`)
             } else {
                 alert(`Geocode of current user's address: ${address} was not successful for the following reason: ` + status);
             }
         });
     }
 
-    useEffect(()=>{
-        sitterList.forEach((sitter) => {
-            const address = `${sitter.address.street},+${sitter.address.city},+${sitter.address.state},+${sitter.address.postal_code}`
-            geocodeSitterAddress(geocoder, map, address, sitter.full_name)
-        })
-    }, [])
     function geocodeSitterAddress(geocoder, resultsMap, address, sitterName) {
         geocoder.geocode({ address: address }, (results, status) => {
             if (status === "OK") {
@@ -77,6 +64,7 @@ const SitterMap = ({sitterList, currentUserData}) => {
                     icon: 'http://maps.google.com/mapfiles/ms/icons/blue.png',
                     // url: ...
                 });
+                // console.log(`successful geocode response for address: ${address}`)
             } else {
                 alert(`Geocode of ${address} was not successful for the following reason: ` + status);
             }
@@ -84,7 +72,7 @@ const SitterMap = ({sitterList, currentUserData}) => {
     }
 
     return (
-        <div id="map_canvas"></div>
+        <div class="map_canvas"></div>
     )
 }
 

@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Button } from 'react-bootstrap';
 
 import './SitterList.css'
+import './SitterMap.css'
 import SitterMap from './SitterMap';
 
 const SitterList = ({ baseURL, currentUserData }) => {
@@ -101,7 +102,7 @@ const SitterList = ({ baseURL, currentUserData }) => {
         <div className='sitter-list'>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>} 
             { showMap ? 
-                <div>
+                <div class='map_canvas'>
                     <Button variant='outline-secondary' onClick={onViewMapClick}>Hide Map</Button>
                     <SitterMap sitterList={sitterList} currentUserData={currentUserData} />
                 </div> 
