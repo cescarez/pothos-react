@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { Button, Alert } from 'react-bootstrap';
+import { Button, Alert, Container } from 'react-bootstrap';
 
 import SitterMap from './SitterMap';
 import SitterList from './SitterList';
@@ -36,7 +36,7 @@ const OwnerDashboard = ({ baseURL, currentUserData }) => {
     }
 
     return (
-        <div>
+        <Container className='w-100 d-inline-block'>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>} 
             { showMap ? 
                 <div>
@@ -46,7 +46,7 @@ const OwnerDashboard = ({ baseURL, currentUserData }) => {
             : <Button variant='outline-secondary' onClick={onViewMapClick}>View Map</Button>
             }            
             <SitterList sitterList={sitterList} currentUserData={currentUserData}/>
-        </div>
+        </Container>
     )
 }
 
