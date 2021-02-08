@@ -110,11 +110,12 @@ export default function UserForm({baseURL, setDashboardUser}) {
     const checkPriceRates = () => {
         if (user.sitter) {
             const rates = Object.values(user.price_rate)
+            console.log(rates)
             if (rates.every((rate) => {
                 return (
                     Number.parseFloat(rate) && 
                         ((typeof(rate) === 'number') || 
-                        (Number.parseFloat(rate).toString().length === rate.length))
+                        (Number.parseFloat(rate).toString() === rate.replace(/([0-9]+(\.[0-9]+[1-9])?)(\.?0+$)/,'$1')))
                 )
             })) {
                 return true;
