@@ -3,6 +3,7 @@ import { Alert, Jumbotron, Tabs, Tab, Container } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import {Link}  from 'react-router-dom';
+import bgimage from '../images/wallpaper.png'
 
 import OwnerDashboard from './OwnerDashboard';
 import SitterDashboard from './SitterDashboard';
@@ -54,7 +55,7 @@ const Dashboard = ({baseURL}) => {
         return (
             <div className='dashboard'>
                 <Container>
-                    <Jumbotron >
+                    <Jumbotron style={{ backgroundImage: `url(${bgimage})`, backgroundSize: 'cover' }}>
                         <h1>Welcome 
                             { user && <> Back,<br/><Link to={`/users/${user.userID}`}>{user.full_name}</Link></>}
                         !</h1>
@@ -76,7 +77,7 @@ const Dashboard = ({baseURL}) => {
                             }
                             {user.sitter &&
                                 <Tab eventKey='sitterDashboard' title='Sitter Dashboard'>
-                                    <SitterDashboard baseURL={baseURL} />
+                                    <SitterDashboard baseURL={baseURL} userID={user.userID} />
                                 </Tab>
                             }
                         </Tabs>

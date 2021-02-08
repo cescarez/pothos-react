@@ -1,0 +1,22 @@
+table.request-list__table > tbody > tr > td, table.request-list__table > thead > tr > th, table.request-list__table {
+    border: 1px dotted #56cc9d;
+}
+
+table.request-list__table > tbody > tr:hover {
+    background-color: #f3969a;
+    color: whitesmoke;
+}
+
+table.request-list__table > tbody > tr > td > a {
+display: block;
+width: 100%;
+height: inherit;
+padding: 6px;
+margin: 0px;
+text-decoration: none;
+color:inherit;
+}
+
+/* table.request-list__table > tbody > tr > td {
+padding: 2px;
+} */
