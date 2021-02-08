@@ -8,12 +8,14 @@ import Signup from './components/Signup'
 import Login from './components/Login'
 import Navigation from './components/Navigation'
 import ForgotPassword from './components/ForgotPassword'
-import PrivateRoute from './components/PrivateRoute'
 import User from './components/User'
+import PrivateRoute from './components/PrivateRoute'
 import UpdateEmailPassword from './components/UpdateEmailPassword'
 import UpdateProfile from './components/UpdateProfile'
 import Footer from './components/Footer'
 import ChatLog from './components/ChatLog'
+
+import SitterMap from './components/SitterMap'
 
 import './App.css';
 
@@ -46,6 +48,11 @@ function App() {
                         <PrivateRoute exact path='/update-profile'>
                             <UpdateProfile baseURL={BASE_URL} />
                         </PrivateRoute>
+
+                        <PrivateRoute exact path='/sitter-map'>
+                            <SitterMap />
+                        </PrivateRoute>
+
                         {/* removed 'exact' from home path so all invalid endpoints will redirect to Home*/}
                         <Route path='/'>
                             <Home baseURL={BASE_URL} />

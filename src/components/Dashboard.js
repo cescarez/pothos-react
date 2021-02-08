@@ -72,7 +72,7 @@ const Dashboard = ({baseURL}) => {
                         <Tabs border='primary'>
                             {user.owner  &&
                                 <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
-                                    <OwnerDashboard baseURL={baseURL} />
+                                    <OwnerDashboard baseURL={baseURL} currentUserData={user} />
                                 </Tab>
                             }
                             {user.sitter &&
