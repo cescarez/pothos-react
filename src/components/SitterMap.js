@@ -16,9 +16,9 @@ const SitterMap = ({sitterList, currentUserData}) => {
 
     }
 
-    const sitterMap = compose(
+    const SitterMap = compose(
         withProps({
-            googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
+            googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_CLOUD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`,
             loadingElement: <div style={{ height: `100%` }} />,
             containerElement: <div style={{ height: `400px` }} />,
             mapElement: <div style={{ height: `100%` }} />,
@@ -27,8 +27,8 @@ const SitterMap = ({sitterList, currentUserData}) => {
         withGoogleMap
     )((props) => 
         <GoogleMap
-            defaultZoom={8}
-            defaultCenter={{lat: 39.8097343, lng: -98.5556199}} 
+            defaultZoom={props.zoom ? props.zoom : 8}
+            defaultCenter={props.center ? props.center : {lat: 39.8097343, lng: -98.5556199}} 
         >
             {currentUserData && currentUserMarker()}
             {sitterList && sitterMarkers()}
@@ -37,7 +37,7 @@ const SitterMap = ({sitterList, currentUserData}) => {
     )
 
     return (
-        <sitterMap />
+        <SitterMap />
     )
 }
 
