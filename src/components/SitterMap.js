@@ -11,6 +11,19 @@ const SitterMap = ({ sitterList, currentUserData }) => {
     const [zoom, setZoom] = useState(8);
     const [sitterCoords, setSitterCoords] = useState(null);
 
+    useEffect(() => {
+        currentUserData &&
+            axios.get(createGeocodeURL(currentUserData))
+                .then((response) => {
+                    setZoom(15);
+                    setMapCenter(response.data.results[0].geometry.location);
+                })
+                .catch((error) => {
+                    const message = `Did not load current user data. ${error.message}`
+                    setError({ variant: 'warning', message: message })
+                })
+    }, [])
+
     const loadSitterListMarkers = () => {
         const apiSitterCoords = []
         sitterList.forEach((sitter) => {
@@ -70,7 +83,6 @@ const SitterMap = ({ sitterList, currentUserData }) => {
         >
             {currentUserData && <Marker position={mapCenter} label='You' />}
             {sitterList && showSitterMarkers()}
-
         </GoogleMap>
     )))
 
