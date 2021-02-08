@@ -1,28 +1,28 @@
 import React, {useState, useEffect} from 'react';
-import {Alert, Table} from 'react-bootstrap';
+import {Alert, Table, Button} from 'react-bootstrap';
 import Moment from 'moment';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../contexts/AuthContext'
 
 import './RequestList.css'
 
-const RequestList = ({ baseURL }) => {
-    const { currentUser } = useAuth();
-    const [user, setUser] = useState({});   
+const RequestList = ({ baseURL, userID }) => {  
     const [requestList, setRequestList] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
 
     useEffect(()=>{
-        axios.get(baseURL + '/requests-by-sitter/' + )
+        axios.get(baseURL + '/requests-by-sitter/' + userID)
             .then((response) => {
-                const apiSitterList = Object.values(response.data)
+                const apiRequestList = Object.values(response.data)
                 if (Object.keys(response.data)[0] !== 'message') {
-                    const userIDs = Object.keys(response.data)
-                    for(let i in userIDs) {
-                        apiSitterList[i].user_id = userIDs[i];
+                    const requestIDs = Object.keys(response.data)
+                    for(let i in requestIDs) {
+                        apiRequestList[i].request_id = requestIDs[i];
                     }
-                    setSitterList(apiSitterList)
+                    console.log(apiRequestList);
+                    setRequestList(apiRequestList);
+                    console.log(requestList);
+                    
                 } else {
                     setError({variant: 'warning', message: Object.values(response.data)[0]})
                 }
@@ -34,6 +34,9 @@ const RequestList = ({ baseURL }) => {
             })
     }, [baseURL])
 
+    const changeRequest = (requestid, status) => {
+        axios.put(baseURL + '/requests/' + requestid, {"status": status})
+    }
 
     const showRequestList = () => {
         return(
@@ -41,39 +44,44 @@ const RequestList = ({ baseURL }) => {
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Chat</th>
                         <th>Time Requested</th>
                         <th>Status</th>
-                        <th>Confirm/Cancel</th>
+                        <th>Confirm</th>
+                        <th>Decline</th>
                     </tr>
                 </thead>
                 <tbody>
                     {(requestList).map((request) => {
                         return(
-                            <tr key={request.owner}>
+                            <tr>
                                 <td>
-                                    <Link to={`/users/${sitter.user_id}`}>
-                                        {sitter.full_name}
+                                    <Link to={`/requests/${request.request_id}`}>
+                                        {request.id}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/users/${sitter.user_id}`}>
-                                        {sitter.username}
+                                    <Link to={`/requests/${request.request_id}`}>
+                                        {request.id}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/users/${sitter.user_id}`}>
-                                        {sitter.phone_number}
+                                    <Link to={`/requests/${request.request_id}`}>
+                                        {Moment(request.time_requested).format('MM-DD-YYYY')}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/users/${sitter.user_id}`}>
-                                        {Moment(sitter.date_joined).format('MM-DD-YYYY')}
+                                    <Link to={`/requests/${request.request_id}`}>
+                                        {request.status}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/users/${sitter.user_id}`}>
+                                    {/* <Link to={`/users/${sitter.user_id}`}>
                                         { sitter.rating ? sitter.rating : 'N/A'}
-                                    </Link>
+                                    </Link> */}
+                                </td>
+                                <td>
+                                    {/* <Button to  */}
                                 </td>
                             </tr>
                         )
@@ -83,13 +91,14 @@ const RequestList = ({ baseURL }) => {
         )
     }
 
-    if (!requestList) {
-        return <div></div>;
-    }
+    // if (!requestList) {
+    //     return <div></div>;
+    // }
 
     return (
         <div className='request-list'>
-            { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showRequestList()}
+            {/* { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showRequestList()} */}
+            {showRequestList()}
         </div>
     )
 }

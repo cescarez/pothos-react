@@ -77,7 +77,7 @@ const Dashboard = ({baseURL}) => {
                             }
                             {user.sitter &&
                                 <Tab eventKey='sitterDashboard' title='Sitter Dashboard'>
-                                    <SitterDashboard baseURL={baseURL} />
+                                    <SitterDashboard baseURL={baseURL} userID={user.userID} />
                                 </Tab>
                             }
                         </Tabs>
