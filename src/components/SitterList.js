@@ -13,9 +13,8 @@ const SitterList = ({ sitterList, currentUserData }) => {
                 <thead>
                     <tr>
                         <th>Name</th>
-                        {/* <th>Username</th> */}
-                        <th>Phone</th>
-                        <th>Date Joined</th>
+                        <th>Address</th>
+                        <th>Phone Number</th>
                         <th>Rating</th>
                     </tr>
                 </thead>
@@ -29,19 +28,14 @@ const SitterList = ({ sitterList, currentUserData }) => {
                                             {sitter.full_name}
                                         </Link>
                                     </td>
-                                    {/* <td>
-                                        <Link to={`/users/${sitter.userID}`}>
-                                            {sitter.username}
-                                        </Link>
-                                    </td> */}
                                     <td>
                                         <Link to={`/users/${sitter.userID}`}>
-                                            {sitter.phone_number}
+                                            {`${sitter.address.street} ${sitter.address.city}, ${sitter.address.state} ${sitter.address.postal_code}`}
                                         </Link>
                                     </td>
                                     <td>
                                         <Link to={`/users/${sitter.userID}`}>
-                                            {Moment(sitter.date_joined).format('MM-DD-YYYY')}
+                                            {sitter.phone_number}
                                         </Link>
                                     </td>
                                     <td>
