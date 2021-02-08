@@ -13,6 +13,7 @@ import User from './components/User'
 import UpdateEmailPassword from './components/UpdateEmailPassword'
 import UpdateProfile from './components/UpdateProfile'
 import Footer from './components/Footer'
+import ChatLog from './components/ChatLog'
 
 import './App.css';
 
@@ -29,6 +30,9 @@ function App() {
                     <Switch>
                         <Route exact path='/users/:id'>
                             <User baseURL={BASE_URL} />
+                        </Route>
+                        <Route exact path='/requests/:id'>
+                            <ChatLog baseURL={BASE_URL} />
                         </Route>
                         <Route exact path='/sitters'>
                             <SitterList baseURL={BASE_URL} />

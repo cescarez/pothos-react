@@ -19,10 +19,7 @@ const RequestList = ({ baseURL, userID }) => {
                     for(let i in requestIDs) {
                         apiRequestList[i].request_id = requestIDs[i];
                     }
-                    console.log(apiRequestList);
                     setRequestList(apiRequestList);
-                    console.log(requestList);
-                    
                 } else {
                     setError({variant: 'warning', message: Object.values(response.data)[0]})
                 }
@@ -36,6 +33,12 @@ const RequestList = ({ baseURL, userID }) => {
 
     const changeRequest = (requestid, status) => {
         axios.put(baseURL + '/requests/' + requestid, {"status": status})
+            .then((response) => {
+                setError({variant:'success', message: 'Request successfully changed.'})
+            }).catch((error) => {
+                const message=`There was an error with your request. ${error.message}.`;
+                setError({variant: 'danger', message: message});
+            })
     }
 
     const showRequestList = () => {
@@ -45,7 +48,7 @@ const RequestList = ({ baseURL, userID }) => {
                     <tr>
                         <th>Name</th>
                         <th>Chat</th>
-                        <th>Time Requested</th>
+                        <th>Date Requested</th>
                         <th>Status</th>
                         <th>Confirm</th>
                         <th>Decline</th>
@@ -54,15 +57,15 @@ const RequestList = ({ baseURL, userID }) => {
                 <tbody>
                     {(requestList).map((request) => {
                         return(
-                            <tr>
+                            <tr key={request.request_id}>
                                 <td>
-                                    <Link to={`/requests/${request.request_id}`}>
-                                        {request.id}
+                                    <Link to={`/users/${request.owner}`}>
+                                        Plant Owner
                                     </Link>
                                 </td>
                                 <td>
                                     <Link to={`/requests/${request.request_id}`}>
-                                        {request.id}
+                                        {request.request_id}
                                     </Link>
                                 </td>
                                 <td>
@@ -76,12 +79,10 @@ const RequestList = ({ baseURL, userID }) => {
                                     </Link>
                                 </td>
                                 <td>
-                                    {/* <Link to={`/users/${sitter.user_id}`}>
-                                        { sitter.rating ? sitter.rating : 'N/A'}
-                                    </Link> */}
+                                    <Button variant='primary'>Confirm</Button>
                                 </td>
                                 <td>
-                                    {/* <Button to  */}
+                                    <Button variant='primary'>Decline</Button>
                                 </td>
                             </tr>
                         )
@@ -91,14 +92,13 @@ const RequestList = ({ baseURL, userID }) => {
         )
     }
 
-    // if (!requestList) {
-    //     return <div></div>;
-    // }
+    if (!requestList) {
+        return <div></div>;
+    }
 
     return (
         <div className='request-list'>
-            {/* { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showRequestList()} */}
-            {showRequestList()}
+            { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showRequestList()}
         </div>
     )
 }
