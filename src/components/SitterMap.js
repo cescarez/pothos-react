@@ -27,20 +27,22 @@ const SitterMap = ({ sitterList, currentUserData }) => {
     const loadSitterListMarkers = () => {
         const apiSitterCoords = []
         sitterList.forEach((sitter) => {
-            axios.get(createGeocodeURL(sitter))
-                .then((response) =>{
-                    const apiSitter = {
-                        label: sitter.full_name,
-                    }
-                    apiSitter.address_coords = response.data.results[0].geometry.location
-                    apiSitterCoords.push(apiSitter);
-                    // console.log(`successfully set user address coords for user ${sitter.full_name}`)
-                })
-                .catch((error) => {
-                    const message = `Did not load sitter ${sitter.full_name} user data. ${error.message}`
-                    setError({ variant: 'warning', message: message })
-                    console.log(message);
-                })
+            if (sitter.user_id !== currentUserData.userID) {
+                axios.get(createGeocodeURL(sitter))
+                    .then((response) =>{
+                        const apiSitter = {
+                            label: sitter.full_name,
+                        }
+                        apiSitter.address_coords = response.data.results[0].geometry.location
+                        apiSitterCoords.push(apiSitter);
+                        // console.log(`successfully set user address coords for user ${sitter.full_name}`)
+                    })
+                    .catch((error) => {
+                        const message = `Did not load sitter ${sitter.full_name} user data. ${error.message}`
+                        setError({ variant: 'warning', message: message })
+                        console.log(message);
+                    })
+            }
         })
         setSitterCoords(apiSitterCoords)
     }
