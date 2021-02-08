@@ -35,7 +35,7 @@ const ChatLog = ({ baseURL }) => {
 
     return(
         <div>
-            Chat Log
+            <h2>Chat Log</h2>
             <div className='chat-log'>
                 {/* {chatComponents} */}
             </div>
