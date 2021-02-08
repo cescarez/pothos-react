@@ -16,16 +16,8 @@ const SitterMap = ({sitterList, currentUserData}) => {
 
     }
 
-    const SitterMap = compose(
-        withProps({
-            googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_CLOUD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`,
-            loadingElement: <div style={{ height: `100%` }} />,
-            containerElement: <div style={{ height: `400px` }} />,
-            mapElement: <div style={{ height: `100%` }} />,
-        }),
-        withScriptjs,
-        withGoogleMap
-    )((props) => 
+    const SitterMap = withScriptjs(withGoogleMap
+    (((props) => 
         <GoogleMap
             defaultZoom={props.zoom ? props.zoom : 8}
             defaultCenter={props.center ? props.center : {lat: 39.8097343, lng: -98.5556199}} 
@@ -34,10 +26,15 @@ const SitterMap = ({sitterList, currentUserData}) => {
             {sitterList && sitterMarkers()}
 
         </GoogleMap>
-    )
+    )))
 
     return (
-        <SitterMap />
+        <SitterMap 
+            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_CLOUD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `400px` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
+        />
     )
 }
 
