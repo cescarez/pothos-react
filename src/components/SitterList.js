@@ -6,11 +6,13 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 
 import './SitterList.css'
+import SitterMap from './SitterMap';
 
-const SitterList = ({ baseURL }) => {
+const SitterList = ({ baseURL, currentUser }) => {
     const { currentUser } = useAuth();
     const [sitterList, setSitterList] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
+    const [showMap, setShowMap] = useState(false);
 
     useEffect(()=>{
         axios.get(baseURL + '/sitters')
@@ -32,7 +34,6 @@ const SitterList = ({ baseURL }) => {
                 console.log(message);
             })
     }, [baseURL])
-
 
     const showSitterList = () => {
         return(
@@ -87,13 +88,25 @@ const SitterList = ({ baseURL }) => {
         )
     }
 
+    const onViewMapClick = () => {
+        setShowMap(!showMap);
+    }
+
     if (!sitterList) {
         return <div></div>;
     }
 
     return (
         <div className='sitter-list'>
-            { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showSitterList()}
+            { error.message && <Alert variant={error.variant}>{error.message}</Alert>} 
+            { showMap ? 
+                <div>
+                    <Button variant='outline-secondary' onClick={onViewMapClick}>Hide Map</Button>
+                    <SitterMap sitterList={sitterList} currentUserData={currentUserData} />
+                </div> 
+            : <Button variant='outline-secondary' onClick={onViewMapClick}>View Map</Button>
+            }            
+            {showSitterList()}
         </div>
     )
 }
