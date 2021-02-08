@@ -176,10 +176,6 @@ export default function UpdateProfile({baseURL}) {
                                 <Form.Control type="text" name='full_name' value={user.full_name} onChange={handleChange} />
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" name='username' value={user.username} onChange={handleChange} />
-                            </Form.Group>
-                            <Form.Group>
                                 <Form.Label>Phone Number</Form.Label>
                                 <Form.Control type = "text" name='phone_number' value={user.phone_number} onChange={handleChange} />
                             </Form.Group>

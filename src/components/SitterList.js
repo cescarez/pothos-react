@@ -42,7 +42,7 @@ const SitterList = ({ baseURL, currentUserData }) => {
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Username</th>
+                        {/* <th>Username</th> */}
                         <th>Phone</th>
                         <th>Date Joined</th>
                         <th>Rating</th>
@@ -58,11 +58,11 @@ const SitterList = ({ baseURL, currentUserData }) => {
                                             {sitter.full_name}
                                         </Link>
                                     </td>
-                                    <td>
+                                    {/* <td>
                                         <Link to={`/users/${sitter.user_id}`}>
                                             {sitter.username}
                                         </Link>
-                                    </td>
+                                    </td> */}
                                     <td>
                                         <Link to={`/users/${sitter.user_id}`}>
                                             {sitter.phone_number}

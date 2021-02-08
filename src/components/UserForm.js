@@ -11,7 +11,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
 
     const [user, setUser] = useState({
         auth_id: currentUser.uid,
-        username: '', 
         full_name: currentUser.displayName,
         phone_number: '',
         avatar_url: currentUser.photoURL,
@@ -196,10 +195,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
                             <Form.Group>
                                 <Form.Label>Full Name</Form.Label>
                                 <Form.Control type="text" name='full_name' value={user.full_name} onChange={handleChange} />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" name='username' value={user.username} onChange={handleChange} />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Phone Number</Form.Label>
