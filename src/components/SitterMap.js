@@ -12,20 +12,31 @@ const SitterMap = ({ sitterList, currentUserData }) => {
 
 
     useEffect(() => {
-        axios.get(createGeocodeURL(currentUserData))
-            .then((response) => {
-                setMapCenter(response.data.results[0].geometry.location);
-                setZoom(11);
-            })
-            .catch((error) => {
-                const message = `Did not load current user data. ${error.message}`
-                setError({ variant: 'warning', message: message })
-            })
+        currentUserData &&
+            axios.get(createGeocodeURL(currentUserData))
+                .then((response) => {
+                    setMapCenter(response.data.results[0].geometry.location);
+                    setZoom(11);
+                })
+                .catch((error) => {
+                    const message = `Did not load current user data. ${error.message}`
+                    setError({ variant: 'warning', message: message })
+                })
     }, [currentUserData])
 
     useEffect(() => {
-        sitterList.forEach((sitter) => {
-            sitter.address_query = createGeocodeURL(sitter)
+        sitterList &&
+            sitterList.forEach((sitter) => {
+                setTimeout(()=>{
+                    axios.get(createGeocodeURL(sitter))
+                        .then((response) =>{
+                            sitter.address_coords = response.data.results[0].geometry.location
+                        })
+                        .catch((error) => {
+                            const message = `Did not load sitter ${sitter.full_name} user data. ${error.message}`
+                            setError({ variant: 'warning', message: message })
+                        })
+                }, 3000)
         })
     }, [sitterList])
 
@@ -39,32 +50,22 @@ const SitterMap = ({ sitterList, currentUserData }) => {
         )
     }
 
-    // function geocodeSitterAddress(geocoder, resultsMap, address, sitterName) {
-    //     geocoder.geocode({ address: address }, (results, status) => {
-    //         if (status === "OK") {
-    //             new google.maps.Marker({
-    //                 map: resultsMap,
-    //                 position: results[0].geometry.location,
-    //                 label: sitterName,
-    //                 icon: 'http://maps.google.com/mapfiles/ms/icons/blue.png',
-    //                 // url: ...
-    //             });
-    //             // console.log(`successful geocode response for address: ${address}`)
-    //         } else {
-    //             alert(`Geocode of ${address} was not successful for the following reason: ` + status);
-    //         }
-    //     });
-    // }
-
-
     const currentUserMarker = () => {
         return (
-            <Marker position={mapCenter} />
+            <Marker position={mapCenter} label='You' />
         )
     }
 
     const sitterMarkers = () => {
-
+        return(
+            sitterList.forEach((sitter)=>{
+                <Marker
+                    position={sitter.address_coords}
+                    label={sitter.full_name}
+                    icon='http://maps.google.com/mapfiles/ms/icons/blue.png'
+                />
+            })
+        )
     }
 
     const SitterMap = withScriptjs(withGoogleMap(((props) =>
