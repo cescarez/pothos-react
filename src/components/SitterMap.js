@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import { Loader } from "@googlemaps/js-api-loader"
+import { Loader } from '@googlemaps/js-api-loader';
+import {Container} from 'react-bootstrap';
 
-// import './SitterMap.css'
+import './SitterMap.css'
 
-const google = window.google
+const google = window.google;
 
 const SitterMap = ({sitterList, currentUserData}) => {
+
     const [error, setError] = useState({});
     // const [geocoder, setGeocoder] = useState(null);
     // const [map, setMap] = useState(null);
@@ -72,7 +74,9 @@ const SitterMap = ({sitterList, currentUserData}) => {
     }
 
     return (
-        <div class="map_canvas"></div>
+        <Container className='sitter-map__div-container'>
+            <div id="map_canvas"></div>
+        </Container>
     )
 }
 

@@ -101,13 +101,13 @@ const SitterList = ({ baseURL, currentUserData }) => {
     return (
         <div className='sitter-list'>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>} 
-            { showMap ? 
-                <div class='map_canvas'>
-                    <Button variant='outline-secondary' onClick={onViewMapClick}>Hide Map</Button>
+            {/* { showMap ? 
+                <div>
+                    <Button variant='outline-secondary' onClick={onViewMapClick}>Hide Map</Button> */}
                     <SitterMap sitterList={sitterList} currentUserData={currentUserData} />
-                </div> 
+                {/* </div> 
             : <Button variant='outline-secondary' onClick={onViewMapClick}>View Map</Button>
-            }            
+            }             */}
             {showSitterList()}
         </div>
     )
