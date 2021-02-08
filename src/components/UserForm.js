@@ -11,7 +11,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
 
     const [user, setUser] = useState({
         auth_id: currentUser.uid,
-        username: '', 
         full_name: currentUser.displayName,
         phone_number: '',
         avatar_url: currentUser.photoURL,
@@ -23,7 +22,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
             city: '',
             state: '',
             postal_code: '',
-            country: ''
         },
         price_rate: {
             water_by_plant: '',
@@ -36,7 +34,7 @@ export default function UserForm({baseURL, setDashboardUser}) {
     const handleChange = (event) => {
         const newInput = event.target.name
         const newValue = event.target.value
-        const addressParts = ['street', 'city', 'state', 'postal_code', 'country']
+        const addressParts = ['street', 'city', 'state', 'postal_code']
         const priceParts = ['water_by_plant', 'water_by_time', 'repot_by_plant', 'repot_by_time']
 
         if (addressParts.includes(newInput)) {
@@ -112,11 +110,12 @@ export default function UserForm({baseURL, setDashboardUser}) {
     const checkPriceRates = () => {
         if (user.sitter) {
             const rates = Object.values(user.price_rate)
+            console.log(rates)
             if (rates.every((rate) => {
                 return (
                     Number.parseFloat(rate) && 
                         ((typeof(rate) === 'number') || 
-                        (Number.parseFloat(rate).toString().length === rate.length))
+                        (Number.parseFloat(rate).toString() === rate.replace(/([0-9]+(\.[0-9]+[1-9])?)(\.?0+$)/,'$1')))
                 )
             })) {
                 return true;
@@ -186,25 +185,25 @@ export default function UserForm({baseURL, setDashboardUser}) {
                         <Form onSubmit={handleSubmit}>
                             <h2 className='text-center mb-4'>Create Profile</h2>
                             <Form.Row>
+                                <Form.Group as={Col}></Form.Group>
                                 <Form.Group as={Col} >
                                     <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck} checked={user.sitter ? true : false }/>
                                 </Form.Group>
                                 <Form.Group as={Col} >
                                     <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck} checked={user.owner ? true : false }/>
                                 </Form.Group>
+                                <Form.Group as={Col}></Form.Group>
                             </Form.Row>
-                            <Form.Group>
-                                <Form.Label>Full Name</Form.Label>
-                                <Form.Control type="text" name='full_name' value={user.full_name} onChange={handleChange} />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" name='username' value={user.username} onChange={handleChange} />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Phone Number</Form.Label>
-                                <Form.Control type = "text" name='phone_number' value={user.phone_number} onChange={handleChange} />
-                            </Form.Group>
+                            <Form.Row>
+                                <Form.Group as={Col}>
+                                    <Form.Label>Full Name</Form.Label>
+                                    <Form.Control type="text" name='full_name' value={user.full_name} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group as={Col}>
+                                    <Form.Label>Phone Number</Form.Label>
+                                    <Form.Control type = "text" name='phone_number' value={user.phone_number} onChange={handleChange} />
+                                </Form.Group>
+                            </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridAddress1" > 
                                     <Form.Label>Street</Form.Label>
@@ -219,10 +218,6 @@ export default function UserForm({baseURL, setDashboardUser}) {
                                 <Form.Group as={Col} controlId="formGridState" >
                                     <Form.Label>State</Form.Label>
                                     <Form.Control  name='state' value={user.address.state} onChange={handleChange} />
-                                </Form.Group>
-                                <Form.Group as={Col} controlId="formGridCountry" >
-                                    <Form.Label>Country</Form.Label>
-                                    <Form.Control  name='country' value={user.address.country} onChange={handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridZip" >
                                     <Form.Label>Postal Code</Form.Label>

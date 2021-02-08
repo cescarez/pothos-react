@@ -36,7 +36,7 @@ export default function UpdateProfile({baseURL}) {
     const handleChange = (event) => {
         const newInput = event.target.name
         const newValue = event.target.value
-        const addressParts = ['street', 'city', 'state', 'postal_code', 'country']
+        const addressParts = ['street', 'city', 'state', 'postal_code']
         const priceParts = ['water_by_plant', 'water_by_time', 'repot_by_plant', 'repot_by_time']
         if (addressParts.includes(newInput)) {
             setUser({
@@ -115,7 +115,7 @@ export default function UpdateProfile({baseURL}) {
                 return (
                     Number.parseFloat(rate) && 
                         ((typeof(rate) === 'number') || 
-                        (Number.parseFloat(rate).toString().length === rate.length))
+                        (Number.parseFloat(rate).toString() === rate.replace(/([0-9]+(\.[0-9]+[1-9])?)(\.?0+$)/,'$1')))
                 )
             })) {
                 return true;
@@ -176,10 +176,6 @@ export default function UpdateProfile({baseURL}) {
                                 <Form.Control type="text" name='full_name' value={user.full_name} onChange={handleChange} />
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" name='username' value={user.username} onChange={handleChange} />
-                            </Form.Group>
-                            <Form.Group>
                                 <Form.Label>Phone Number</Form.Label>
                                 <Form.Control type = "text" name='phone_number' value={user.phone_number} onChange={handleChange} />
                             </Form.Group>
@@ -197,10 +193,6 @@ export default function UpdateProfile({baseURL}) {
                                 <Form.Group as={Col} controlId="formGridState" >
                                     <Form.Label>State</Form.Label>
                                     <Form.Control  name='state' value={user.address.state} onChange={handleChange} />
-                                </Form.Group>
-                                <Form.Group as={Col} controlId="formGridCountry" >
-                                    <Form.Label>Country</Form.Label>
-                                    <Form.Control  name='country' value={user.address.country} onChange={handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridZip" >
                                     <Form.Label>Postal Code</Form.Label>

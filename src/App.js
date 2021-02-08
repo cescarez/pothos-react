@@ -8,8 +8,8 @@ import Signup from './components/Signup'
 import Login from './components/Login'
 import Navigation from './components/Navigation'
 import ForgotPassword from './components/ForgotPassword'
-import PrivateRoute from './components/PrivateRoute'
 import User from './components/User'
+import PrivateRoute from './components/PrivateRoute'
 import UpdateEmailPassword from './components/UpdateEmailPassword'
 import UpdateProfile from './components/UpdateProfile'
 import Footer from './components/Footer'
@@ -28,15 +28,15 @@ function App() {
                 <AuthProvider>  
                     <Navigation baseURL={BASE_URL} />
                     <Switch>
-                        <Route exact path='/users/:id'>
+                        <PrivateRoute exact path='/users/:id'>
                             <User baseURL={BASE_URL} />
-                        </Route>
-                        <Route exact path='/requests/:id'>
+                        </PrivateRoute>
+                        <PrivateRoute exact path='/requests/:id'>
                             <ChatLog baseURL={BASE_URL} />
-                        </Route>
-                        <Route exact path='/sitters'>
+                        </PrivateRoute>
+                        <PrivateRoute exact path='/sitters'>
                             <SitterList baseURL={BASE_URL} />
-                        </Route>
+                        </PrivateRoute>
                         <Route exact path='/signup' component={Signup} />
                         <Route exact path='/login' component={Login} />
                         <Route exact path ='/forgot-password' component={ForgotPassword} />

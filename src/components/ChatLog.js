@@ -14,7 +14,7 @@ const ChatLog = ({ baseURL }) => {
     useEffect(() => {
         axios.get(baseURL + '/messages-by-request/' + requestID)
             .then((response) => {
-                const apiMessages = response.data
+                const apiMessages = Object.values(response.data)
                 setMessageList(apiMessages);
             }).catch((error) => {
                 const message=`There was an error with your request. ${error.message}.`;
@@ -23,21 +23,27 @@ const ChatLog = ({ baseURL }) => {
             })
     },[baseURL,requestID])
 
-    // const chatComponents = messageList.map((messages, i) => {
-    //     return(
-    //         <ChatEntry key={i} sender={messages.sender} body={messages.message} timeStamp={messages.timestamp} />
-    //     );
-    // });
+    const chatComponents = (() => {
+        if (!messageList) {
+            return (<div></div>);
+        } else {
+            return(
+                messageList.map((messages, i) => {
+                return(
+                    <ChatEntry key={i} sender={messages.sender} body={messages.message} timeStamp={messages.timestamp} />
+                );
+                })
+            )
+        }
+    });
 
-    // if (!messageList) {
-    //     return <div></div>;
-    // }
+    
 
     return(
         <div>
             <h2>Chat Log</h2>
             <div className='chat-log'>
-                {/* {chatComponents} */}
+                {chatComponents()}
             </div>
             <Button variant='secondary w-100' as={Link} to={'/'}>Return to Dashboard</Button>
         </div>
