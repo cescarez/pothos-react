@@ -10,6 +10,8 @@ const SitterMap = () => {
     const [error, setError] = useState({});
     const [mapCenter, setMapCenter] = useState({ lat: 39.8097343, lng: -98.5556199 });
     const [zoom, setZoom] = useState(8);
+    const [sitterCoords, setSitterCoords] = useState(null);
+    const [isMapLoaded, setIsMapLoaded] = useState(false);
 
     ///TEST DATA FOR /sitter-map ENDPOINT
     const currentUserData = {
@@ -39,12 +41,11 @@ const SitterMap = () => {
         }}
     ]
 
-
     useEffect(() => {
         currentUserData &&
             axios.get(createGeocodeURL(currentUserData))
                 .then((response) => {
-                    setZoom(11);
+                    setZoom(15);
                     setMapCenter(response.data.results[0].geometry.location);
                 })
                 .catch((error) => {
@@ -54,21 +55,28 @@ const SitterMap = () => {
     }, [])
 
     const loadSitterListMarkers = () => {
+        const apiSitterCoords = []
         sitterList.forEach((sitter) => {
-            setTimeout(()=>{
+            // setTimeout(()=>{
                 axios.get(createGeocodeURL(sitter))
                     .then((response) =>{
-                        sitter.address_coords = response.data.results[0].geometry.location
+                        const apiSitter = {
+                            label: sitter.full_name,
+                        }
+
+                        apiSitter.address_coords = response.data.results[0].geometry.location
 
                         console.log(`successfully set user address coords for user ${sitter.full_name}`)
+                        apiSitterCoords.push(apiSitter);
                     })
                     .catch((error) => {
                         const message = `Did not load sitter ${sitter.full_name} user data. ${error.message}`
                         setError({ variant: 'warning', message: message })
                         console.log(message);
                     })
-            }, 3000)
+            // }, 3000)
         })
+        setSitterCoords(apiSitterCoords)
     }
 
     useEffect(() => {
@@ -92,16 +100,22 @@ const SitterMap = () => {
     }
 
     const showSitterMarkers = () => {
-        sitterList.forEach((sitter)=>{
-            console.log(`dropped marker for ${sitter.full_name}`);
+        console.log(sitterCoords)
+        return(
+        <div>
+        {sitterCoords.map((sitter)=>{
+            console.log(`dropped marker for ${sitter.label}`)
             return(
                 <Marker
                     position={sitter.address_coords}
-                    label={sitter.full_name}
-                    // icon='http://maps.google.com/mapfiles/ms/icons/blue.png'
+                    label={sitter.label}
+                    icon='http://maps.google.com/mapfiles/ms/icons/blue.png'
                 />
             )
-        })
+        })}
+        </div>
+        )
+        setIsMapLoaded(true);
     }
     
     const SitterMap = withScriptjs(withGoogleMap(((props) =>
