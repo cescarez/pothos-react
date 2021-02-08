@@ -36,7 +36,7 @@ export default function UpdateProfile({baseURL}) {
     const handleChange = (event) => {
         const newInput = event.target.name
         const newValue = event.target.value
-        const addressParts = ['street', 'city', 'state', 'postal_code', 'country']
+        const addressParts = ['street', 'city', 'state', 'postal_code']
         const priceParts = ['water_by_plant', 'water_by_time', 'repot_by_plant', 'repot_by_time']
         if (addressParts.includes(newInput)) {
             setUser({
@@ -193,10 +193,6 @@ export default function UpdateProfile({baseURL}) {
                                 <Form.Group as={Col} controlId="formGridState" >
                                     <Form.Label>State</Form.Label>
                                     <Form.Control  name='state' value={user.address.state} onChange={handleChange} />
-                                </Form.Group>
-                                <Form.Group as={Col} controlId="formGridCountry" >
-                                    <Form.Label>Country</Form.Label>
-                                    <Form.Control  name='country' value={user.address.country} onChange={handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridZip" >
                                     <Form.Label>Postal Code</Form.Label>
