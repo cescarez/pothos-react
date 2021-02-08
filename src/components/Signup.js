@@ -8,7 +8,7 @@ export default function Signup() {
     const passwordRef = useRef()
     const passwordConfirmRef = useRef()
     const { signup } = useAuth()
-    const [error, setError] = useState('')
+    const [error, setError] = useState({})
     const [loading, setLoading] = useState(false)
     const history = useHistory()
 
@@ -16,7 +16,7 @@ export default function Signup() {
         e.preventDefault()
 
         if (passwordRef.current.value !== passwordConfirmRef.current.value){
-            return setError('Passwords do not match')
+            return setError({variant:'danger', message: 'Passwords do not match'})
         }
 
         try {
@@ -25,12 +25,13 @@ export default function Signup() {
             await signup(emailRef.current.value, passwordRef.current.value)
             history.push('/')
         } catch(error) {
-            setError(`Failed to create an account. ${error.message}`)
+            setError({variant: 'danger', message:`Failed to create an account. ${error.message}`})
         }
 
         setLoading(false)
 
     }
+
 
     return (
         <Container 
@@ -41,7 +42,7 @@ export default function Signup() {
                 <Card>
                     <Card.Body>
                         <h2 className='text-center mb-4'>Sign Up</h2>
-                        {error && <Alert variant='danger'>{error}</Alert>}
+                        {error.message && <Alert variant={error.variant}>{error.message}</Alert>}
                         <Form onSubmit={handleSubmit}>
                             <Form.Group id='email'>
                                 <Form.Label>Email</Form.Label>

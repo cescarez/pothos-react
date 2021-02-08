@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {Alert, Table} from 'react-bootstrap';
 import Moment from 'moment';
+import { useAuth } from '../contexts/AuthContext';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 
 import './SitterList.css'
 
 const SitterList = ({ baseURL }) => {
+    const { currentUser } = useAuth();
     const [sitterList, setSitterList] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
 
@@ -46,35 +48,39 @@ const SitterList = ({ baseURL }) => {
                 </thead>
                 <tbody>
                     {(sitterList).map((sitter) => {
-                        return(
-                            <tr key={sitter.user_id}>
-                                <td>
-                                    <Link to={`/users/${sitter.user_id}`}>
-                                        {sitter.full_name}
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/users/${sitter.user_id}`}>
-                                        {sitter.username}
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/users/${sitter.user_id}`}>
-                                        {sitter.phone_number}
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/users/${sitter.user_id}`}>
-                                        {Moment(sitter.date_joined).format('MM-DD-YYYY')}
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/users/${sitter.user_id}`}>
-                                        { sitter.rating ? sitter.rating : 'N/A'}
-                                    </Link>
-                                </td>
-                            </tr>
-                        )
+                        if (sitter.auth_id !== currentUser.uid) {
+                            return(
+                                <tr key={sitter.user_id}>
+                                    <td>
+                                        <Link to={`/users/${sitter.user_id}`}>
+                                            {sitter.full_name}
+                                        </Link>
+                                    </td>
+                                    <td>
+                                        <Link to={`/users/${sitter.user_id}`}>
+                                            {sitter.username}
+                                        </Link>
+                                    </td>
+                                    <td>
+                                        <Link to={`/users/${sitter.user_id}`}>
+                                            {sitter.phone_number}
+                                        </Link>
+                                    </td>
+                                    <td>
+                                        <Link to={`/users/${sitter.user_id}`}>
+                                            {Moment(sitter.date_joined).format('MM-DD-YYYY')}
+                                        </Link>
+                                    </td>
+                                    <td>
+                                        <Link to={`/users/${sitter.user_id}`}>
+                                            { sitter.rating ? sitter.rating : 'N/A'}
+                                        </Link>
+                                    </td>
+                                </tr>
+                            )
+                        } else {
+                            return null
+                        }
                     })}
                 </tbody>
             </Table>
