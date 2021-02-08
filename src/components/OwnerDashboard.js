@@ -36,7 +36,7 @@ const OwnerDashboard = ({ baseURL, currentUserData }) => {
     }
 
     return (
-        <Container className='w-100 d-inline-block'>
+        <Container className='px-0' fluid>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>} 
             { showMap ? 
                 <div>
