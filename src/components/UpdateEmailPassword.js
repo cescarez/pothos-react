@@ -32,7 +32,7 @@ export default function UpdateEmailPassword() {
         Promise.all(promises).then(() => {
             history.push('/')
         }).catch((error) => {
-            const message = `Failed to update account. ${error.message}`
+            const message = `Failed to update account. ${error.response && error.response.data.message ? error.response.data.message : error.message}`
             setError({variant: 'danger', message: message})
         }).finally(() => {
             setLoading(false)
