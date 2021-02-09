@@ -6,38 +6,40 @@ import axios from 'axios';
 import ChatEntry from './ChatEntry';
 import './ChatLog.css';
 
-const ChatLog = ({ baseURL }) => {
+function ChatLog ({ baseURL, location }) {
+    const { currentUser } = useAuth();
     const [messageList, setMessageList] = useState(null);
     const [error, setError] = useState('');
-    const match = useRouteMatch('/requests/:id');
-    const requestID = match.params.id;
-    const { currentUser } = useAuth();
     const [user, setUser] = useState(null);
     const [body, setBody] = useState('')
+    const currentUserID = location.state;
+    console.log(location.state)
+    const match = useRouteMatch('/requests/:id');
+    const requestID = match.params.id;
 
-    const loadUserData = (auth_id) => {
-        if (!user) {
-            axios.get(`${baseURL}/users/current/${auth_id}`)
-                .then((response) => {
-                    const apiUser = Object.values(response.data)[0]
-                    if (Object.keys(response.data)[0] !== 'message') {
-                        apiUser.userID = Object.keys(response.data)[0]
-                        setUser(apiUser);
-                    } else {
-                        setError({variant: 'warning', message: apiUser})
-                    }
-                })
-                .catch((error) => {
-                    const message=`There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
-                    setError({variant: 'danger', message: message});
-                    console.log(message);
-                })
-        }
-    }
+    // const loadUserData = (auth_id) => {
+    //     if (!user) {
+    //         axios.get(`${baseURL}/users/current/${auth_id}`)
+    //             .then((response) => {
+    //                 const apiUser = Object.values(response.data)[0]
+    //                 if (Object.keys(response.data)[0] !== 'message') {
+    //                     apiUser.userID = Object.keys(response.data)[0]
+    //                     setUser(apiUser);
+    //                 } else {
+    //                     setError({variant: 'warning', message: apiUser})
+    //                 }
+    //             })
+    //             .catch((error) => {
+    //                 const message=`There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
+    //                 setError({variant: 'danger', message: message});
+    //                 console.log(message);
+    //             })
+    //     }
+    // }
 
-    useEffect(() => {
-        loadUserData(currentUser.uid);
-    }, [])
+    // useEffect(() => {
+    //     loadUserData(currentUser.uid);
+    // }, [])
 
     const loadMessageList = () => {
         axios.get(baseURL + '/messages-by-request/' + requestID)
@@ -69,7 +71,7 @@ const ChatLog = ({ baseURL }) => {
                         sender_name={messages.sender_name} 
                         body={messages.message} 
                         timeStamp={messages.timestamp}
-                        currentUserID={user.userID} />
+                        currentUserID={currentUserID} />
                     );
                 })
             )

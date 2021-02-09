@@ -6,12 +6,12 @@ import axios from 'axios';
 
 import './RequestList.css'
 
-const RequestList = ({ baseURL, userID }) => {  
+const RequestList = ({ baseURL, currentUserID }) => {  
     const [requestList, setRequestList] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
 
     useEffect(()=>{
-        axios.get(baseURL + '/requests-by-sitter/' + userID)
+        axios.get(baseURL + '/requests-by-sitter/' + currentUserID)
             .then((response) => {
                 const apiRequestList = Object.values(response.data)
                 if (Object.keys(response.data)[0] !== 'message') {
@@ -64,17 +64,32 @@ const RequestList = ({ baseURL, userID }) => {
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/requests/${request.request_id}`}>
+                                    <Link to={{
+                                        pathname: `/requests/${request.request_id}`,
+                                        state: {
+                                            currentUserID: currentUserID
+                                        }
+                                    }}>
                                         Messages
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/requests/${request.request_id}`}>
+                                    <Link to={{
+                                        pathname: `/requests/${request.request_id}`,
+                                        state: {
+                                            currentUserID: currentUserID
+                                        }
+                                    }}>
                                         {Moment(request.time_requested).format('MM-DD-YYYY')}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/requests/${request.request_id}`}>
+                                    <Link to={{
+                                        pathname: `/requests/${request.request_id}`,
+                                        state: {
+                                            currentUserID: currentUserID
+                                        }
+                                    }}>
                                         {request.status}
                                     </Link>
                                 </td>
