@@ -4,7 +4,7 @@ import {Card, Button, Container, Row, Col, Alert} from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import Moment from 'moment';
 import axios from 'axios';
-import pothosPic from '../images/pothos.png'
+import pothosPic from '../images/pothos_large.png'
 
 const User = ({baseURL}) => {
     const { currentUser } = useAuth();
