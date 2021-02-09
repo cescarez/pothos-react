@@ -30,7 +30,7 @@ const ChatLog = ({ baseURL }) => {
             return(
                 messageList.map((messages, i) => {
                 return(
-                    <ChatEntry key={i} baseURL={baseURL} sender={messages.sender} body={messages.message} timeStamp={messages.timestamp} />
+                    <ChatEntry key={i} baseURL={baseURL} sender={messages.sender} sender_name={messages.sender_name} body={messages.message} timeStamp={messages.timestamp} />
                 );
                 })
             )

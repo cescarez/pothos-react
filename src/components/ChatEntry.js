@@ -6,7 +6,7 @@ import axios from 'axios';
 import './ChatEntry.css';
 
 
-const ChatEntry = ({baseURL, sender, body, timeStamp}) => {
+const ChatEntry = ({baseURL, sender, sender_name, body, timeStamp}) => {
     const { currentUser } = useAuth();
     const [user, setUser] = useState(null);
     const [error, setError] = useState('')
@@ -43,7 +43,7 @@ const ChatEntry = ({baseURL, sender, body, timeStamp}) => {
 
     return (
         <div className={senderClass}>
-        <h2 className='entry-name'>{sender}</h2>
+        <h2 className='entry-name'>{sender_name}</h2>
         <section className="entry-bubble">
             <p>{body}</p>
             <p className='entry-time'><Timestamp time={timeStamp} /></p>
