@@ -25,7 +25,7 @@ const OwnerDashboard = ({ baseURL, currentUserData }) => {
                 }
             })
             .catch((error) => {
-                const message=`There was an error with your request. ${error.message}.`;
+                const message=`There was an error with your request. ${error.response.data.message}.`;
                 setError({variant: 'danger', message: message});
                 console.log(message);
             })
@@ -37,7 +37,7 @@ const OwnerDashboard = ({ baseURL, currentUserData }) => {
 
     return (
         <Container className='px-0' fluid>
-            { error.message && <Alert variant={error.variant}>{error.message}</Alert>} 
+            { error.response.data.message && <Alert variant={error.variant}>{error.response.data.message}</Alert>} 
             { showMap ? 
                 <div>
                     <Button variant='outline-secondary' onClick={onViewMapClick}>Hide Map</Button>

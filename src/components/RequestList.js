@@ -25,7 +25,7 @@ const RequestList = ({ baseURL, userID }) => {
                 }
             })
             .catch((error) => {
-                const message=`There was an error with your request. ${error.message}.`;
+                const message=`There was an error with your request. ${error.response.data.message}.`;
                 setError({variant: 'danger', message: message});
                 console.log(message);
             })
@@ -36,7 +36,7 @@ const RequestList = ({ baseURL, userID }) => {
             .then((response) => {
                 setError({variant:'success', message: 'Request successfully changed.'})
             }).catch((error) => {
-                const message=`There was an error with your request. ${error.message}.`;
+                const message=`There was an error with your request. ${error.response.data.message}.`;
                 setError({variant: 'danger', message: message});
             })
     }
@@ -98,7 +98,7 @@ const RequestList = ({ baseURL, userID }) => {
 
     return (
         <div className='request-list'>
-            { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
+            { error.response.data.message && <Alert variant={error.variant}>{error.response.data.message}</Alert>}
             {showRequestList()}
         </div>
     )

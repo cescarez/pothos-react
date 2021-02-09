@@ -28,7 +28,7 @@ const ChatLog = ({ baseURL }) => {
                     }
                 })
                 .catch((error) => {
-                    const message=`There was an error with your request. ${error.message}.`;
+                    const message=`There was an error with your request. ${error.response.data.message}.`;
                     setError({variant: 'danger', message: message});
                     console.log(message);
                 })
@@ -45,7 +45,7 @@ const ChatLog = ({ baseURL }) => {
                 const apiMessages = Object.values(response.data)
                 setMessageList(apiMessages);
             }).catch((error) => {
-                const message=`There was an error with your request. ${error.message}.`;
+                const message=`There was an error with your request. ${error.response.data.message}.`;
                 setError({variant: 'danger', message: message});
                 console.log(message);
             })
@@ -91,16 +91,13 @@ const ChatLog = ({ baseURL }) => {
             .then(() => {
                 setBody('')
                 loadMessageList();
-                //refresh page?
             })
             .catch((error) => {
-                const message = `There was an error with your request. User profile was not saved. ${error.message}.`;
+                const message = `There was an error with your request. User profile was not saved. ${error.response.data.message}.`;
                 setError({ variant: 'danger', message: message });
                 console.log(message);
             })
     }
-
-    
 
     return(
         <Container>

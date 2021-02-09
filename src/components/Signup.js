@@ -25,7 +25,7 @@ export default function Signup() {
             await signup(emailRef.current.value, passwordRef.current.value)
             history.push('/')
         } catch(error) {
-            setError({variant: 'danger', message:`Failed to create an account. ${error.message}`})
+            setError({variant: 'danger', message:`Failed to create an account. ${error.response.data.message}`})
         }
 
         setLoading(false)
@@ -42,7 +42,7 @@ export default function Signup() {
                 <Card>
                     <Card.Body>
                         <h2 className='text-center mb-4'>Sign Up</h2>
-                        {error.message && <Alert variant={error.variant}>{error.message}</Alert>}
+                        {error.response.data.message && <Alert variant={error.variant}>{error.response.data.message}</Alert>}
                         <Form onSubmit={handleSubmit}>
                             <Form.Group id='email'>
                                 <Form.Label>Email</Form.Label>

@@ -158,7 +158,7 @@ export default function UserForm({ baseURL, setDashboardUser }) {
                     setError({ variant: 'success', message: response.data.message });
                 })
                 .catch((error) => {
-                    const message = `There was an error with your request. User profile was not saved. ${error.message}.`;
+                    const message = `There was an error with your request. User profile was not saved. ${error.response.data.message}.`;
                     setError({ variant: 'danger', message: message });
                     console.log(message);
                 });
@@ -172,7 +172,7 @@ export default function UserForm({ baseURL, setDashboardUser }) {
             style={{ minHeight: '100vh' }}
         >
             <div className='w-100' style={{ maxWidth: '800px' }}>
-                {error.message && <Alert variant={error.variant}>{error.message}</Alert>}
+                {error.response.data.message && <Alert variant={error.variant}>{error.response.data.message}</Alert>}
                 <Card>
                     <Card.Body>
                         <Form onSubmit={handleSubmit}>

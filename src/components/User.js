@@ -28,7 +28,7 @@ const User = ({baseURL}) => {
                     }
                 })
                 .catch((error) => {
-                    const message=`There was an error with your request. ${error.message}.`;
+                    const message=`There was an error with your request. ${error.response.data.message}`;
                     setError({variant: 'danger', message: message});
                     console.log(message);
                 })
@@ -45,7 +45,7 @@ const User = ({baseURL}) => {
                 setUser(apiUser);
             })
             .catch((error) => {
-                const message=`There was an error with your request. ${error.message}.`;
+                const message=`There was an error with your request. ${error.response.data.message}.`;
                 setError({variant: 'danger', message: message});
                 console.log(message);
             })
@@ -63,7 +63,7 @@ const User = ({baseURL}) => {
             console.log(response);
             setError({variant:'success', message: 'Request successfully sent'});
         }).catch((error) => {
-            const message=`There was an error with your request. Request not sent. ${error.message}.`;
+            const message=`There was an error with your request. Request not sent. ${error.response.data.message}.`;
             setError({variant: 'danger', message: message});
         })
     }
@@ -136,7 +136,7 @@ const User = ({baseURL}) => {
 
     return (
         <div>
-            { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
+            { error.response.data.message && <Alert variant={error.variant}>{error.response.data.message}</Alert>}
             {showUserData()}
         </div>
     )

@@ -28,7 +28,7 @@ const Dashboard = ({baseURL}) => {
                     }
                 })
                 .catch((error) => {
-                    const message=`There was an error with your request. ${error.message}.`;
+                    const message=`There was an error with your request. ${error.response.data.message}.`;
                     setError({variant: 'danger', message: message});
                     console.log(message);
                 })
@@ -51,7 +51,7 @@ const Dashboard = ({baseURL}) => {
     //create useEffect to retrieve a user's list of chat threads -- pass that data for rendering to OwnerDashboard/SitterDashboard
 
     //create useEffect to retrieve a user's list of requests -- pass that data for rendering to OwnerDashboard/SitterDashboard
-    if (user || error.message) {
+    if (user || error.response.data.message) {
         return (
             <div className='dashboard'>
                 <Container>
@@ -66,8 +66,8 @@ const Dashboard = ({baseURL}) => {
                 </Container>
                 { user ? 
                     <div>
-                        {error.message ?
-                            <Alert variant={error.variant}>{error.message}</Alert> 
+                        {error.response.data.message ?
+                            <Alert variant={error.variant}>{error.response.data.message}</Alert> 
                         : null}
                         <Tabs border='primary'>
                             {user.owner  &&

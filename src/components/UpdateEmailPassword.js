@@ -32,7 +32,7 @@ export default function UpdateEmailPassword() {
         Promise.all(promises).then(() => {
             history.push('/')
         }).catch((error) => {
-            const message = `Failed to update account. ${error.message}`
+            const message = `Failed to update account. ${error.response.data.message}`
             setError({variant: 'danger', message: message})
         }).finally(() => {
             setLoading(false)
@@ -49,7 +49,7 @@ export default function UpdateEmailPassword() {
                 <Card>
                     <Card.Body>
                         <h2 className='text-center mb-4'>Update Email or Password</h2>
-                        {error.message && <Alert variant={error.variant}>{error.message}</Alert>}
+                        {error.response.data.message && <Alert variant={error.variant}>{error.response.data.message}</Alert>}
                         <Form onSubmit={handleSubmit}>
                             <Form.Group id='email'>
                                 <Form.Label>Email</Form.Label>

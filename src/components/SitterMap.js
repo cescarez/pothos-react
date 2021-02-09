@@ -25,7 +25,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                     setMapCenter(response.data.results[0].geometry.location);
                 })
                 .catch((error) => {
-                    const message = `Did not load current user data. ${error.message}`
+                    const message = `Did not load current user data. ${error.response.data.message}`
                     setError({ variant: 'warning', message: message })
                 })
     }, [])
@@ -46,7 +46,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                         console.log(`successfully set user address coords for user ${sitter.full_name}`)
                     })
                     .catch((error) => {
-                        const message = `Did not load sitter ${sitter.full_name} user data. ${error.message}`
+                        const message = `Did not load sitter ${sitter.full_name} user data. ${error.response.data.message}`
                         setError({ variant: 'warning', message: message })
                         console.log(message);
                     })
@@ -107,7 +107,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
 
     return (
         <div className='h-100'>
-            { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
+            { error.response.data.message && <Alert variant={error.variant}>{error.response.data.message}</Alert>}
             { isLoaded ? 
                 showSitterMap() 
             : 
