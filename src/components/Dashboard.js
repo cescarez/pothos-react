@@ -67,7 +67,7 @@ const Dashboard = ({baseURL}) => {
                 { user ? 
                     <div>
                         {error.response.data.message ?
-                            <Alert variant={error.variant}>{error.response.data.message}</Alert> 
+                            <Alert variant={error.variant}>{error.message}</Alert> 
                         : null}
                         <Tabs border='primary'>
                             {user.owner  &&

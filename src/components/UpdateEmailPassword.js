@@ -49,7 +49,7 @@ export default function UpdateEmailPassword() {
                 <Card>
                     <Card.Body>
                         <h2 className='text-center mb-4'>Update Email or Password</h2>
-                        {error.response.data.message && <Alert variant={error.variant}>{error.response.data.message}</Alert>}
+                        {error.message && <Alert variant={error.variant}>{error.message}</Alert>}
                         <Form onSubmit={handleSubmit}>
                             <Form.Group id='email'>
                                 <Form.Label>Email</Form.Label>

@@ -98,7 +98,7 @@ const RequestList = ({ baseURL, userID }) => {
 
     return (
         <div className='request-list'>
-            { error.response.data.message && <Alert variant={error.variant}>{error.response.data.message}</Alert>}
+            { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
             {showRequestList()}
         </div>
     )

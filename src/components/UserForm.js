@@ -172,7 +172,7 @@ export default function UserForm({ baseURL, setDashboardUser }) {
             style={{ minHeight: '100vh' }}
         >
             <div className='w-100' style={{ maxWidth: '800px' }}>
-                {error.response.data.message && <Alert variant={error.variant}>{error.response.data.message}</Alert>}
+                {error.message && <Alert variant={error.variant}>{error.message}</Alert>}
                 <Card>
                     <Card.Body>
                         <Form onSubmit={handleSubmit}>

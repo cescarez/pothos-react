@@ -107,7 +107,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
 
     return (
         <div className='h-100'>
-            { error.response.data.message && <Alert variant={error.variant}>{error.response.data.message}</Alert>}
+            { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
             { isLoaded ? 
                 showSitterMap() 
             : 

@@ -37,7 +37,7 @@ const OwnerDashboard = ({ baseURL, currentUserData }) => {
 
     return (
         <Container className='px-0' fluid>
-            { error.response.data.message && <Alert variant={error.variant}>{error.response.data.message}</Alert>} 
+            { error.message && <Alert variant={error.variant}>{error.message}</Alert>} 
             { showMap ? 
                 <div>
                     <Button variant='outline-secondary' onClick={onViewMapClick}>Hide Map</Button>
