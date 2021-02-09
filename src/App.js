@@ -16,6 +16,7 @@ import Footer from './components/Footer'
 import ChatLog from './components/ChatLog'
 
 import './App.css';
+import OwnerDashboard from './components/OwnerDashboard';
 
 const BASE_URL = 'http://localhost:5000'
 
@@ -46,6 +47,13 @@ function App() {
                         <PrivateRoute exact path='/update-profile'>
                             <UpdateProfile baseURL={BASE_URL} />
                         </PrivateRoute>
+
+                        <PrivateRoute exact path='/owner-dashboard'>
+                            <OwnerDashboard baseURL={BASE_URL} />
+                        </PrivateRoute>
+
+
+
                         {/* removed 'exact' from home path so all invalid endpoints will redirect to Home*/}
                         <Route path='/'>
                             <Home baseURL={BASE_URL} />
