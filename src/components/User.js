@@ -63,7 +63,6 @@ const User = ({baseURL}) => {
                 sitter: userId
             }
         ).then((response) => {
-            console.log(response.data)
             newRequestID = response.data.request_id;
             console.log(`newRequestID after assignment: ${newRequestID}`)
             setError({variant:'success', message: 'Request successfully sent'});
