@@ -36,11 +36,13 @@ const Dashboard = ({baseURL}) => {
     }, [])
 
     const loadUserCallback = (response) => {
+        console.log(response)
+        console.log(response.data)
         if (response.status === 201) {
             loadUserData(response.data.auth_id);
             setError({variant: 'success', message: 'User profile successfully saved.'});
         } else {
-            setError({variant: 'warning', message: `Error occurred. User profile was not saved. ${response.message}`})
+            setError({variant: 'warning', message: `Error occurred. User profile was not saved. ${ response.response ? response.response.data.message : response.message}`})
         }
     }
 

@@ -135,7 +135,7 @@ export default function UpdateProfile({baseURL}) {
                     history.push('/');
                 })
                 .catch((error) => {
-                    const message=`There was an error with your request. User profile was not saved. ${error.response ? error.response.data.message : error.message}`;
+                    const message=`There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
                     setError({variant: 'danger', message: message});
                     console.log(message);
                 });
