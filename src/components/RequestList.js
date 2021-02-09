@@ -60,12 +60,12 @@ const RequestList = ({ baseURL, userID }) => {
                             <tr key={request.request_id}>
                                 <td>
                                     <Link to={`/users/${request.owner}`}>
-                                        {request.owner}
+                                        {request.owner_name}
                                     </Link>
                                 </td>
                                 <td>
                                     <Link to={`/requests/${request.request_id}`}>
-                                        {request.request_id}
+                                        Messages
                                     </Link>
                                 </td>
                                 <td>
@@ -79,10 +79,10 @@ const RequestList = ({ baseURL, userID }) => {
                                     </Link>
                                 </td>
                                 <td>
-                                    <Button variant='primary' onClick={() => {changeRequest(request.request_id,'confirm')}}>Confirm</Button>
+                                    <Button variant='primary' onClick={() => {changeRequest(request.request_id,'confirmed')}}>Confirm</Button>
                                 </td>
                                 <td>
-                                    <Button variant='primary' onClick={() => {changeRequest(request.request_id,'decline')}}>Decline</Button>
+                                    <Button variant='primary' onClick={() => {changeRequest(request.request_id,'declined')}}>Decline</Button>
                                 </td>
                             </tr>
                         )
@@ -98,7 +98,8 @@ const RequestList = ({ baseURL, userID }) => {
 
     return (
         <div className='request-list'>
-            { error.message ? <Alert variant={error.variant}>{error.message}</Alert> : showRequestList()}
+            { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
+            {showRequestList()}
         </div>
     )
 }

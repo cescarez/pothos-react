@@ -60,6 +60,7 @@ const User = ({baseURL}) => {
                 "sitter": userId
             }
         ).then((response) => {
+            console.log(response);
             setError({variant:'success', message: 'Request successfully sent'});
         }).catch((error) => {
             const message=`There was an error with your request. Request not sent. ${error.message}.`;
