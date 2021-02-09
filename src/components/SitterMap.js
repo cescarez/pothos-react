@@ -18,6 +18,8 @@ const SitterMap = ({ sitterList, currentUserData }) => {
         currentUserData &&
             axios.get(createGeocodeURL(currentUserData))
                 .then((response) => {
+                    currentUserData.addressString = `${currentUserData.address.street}, ${currentUserData.address.city}, ${currentUserData.address.state} ${currentUserData.address.postal_code}`
+
                     setZoom(15);
                     setMapCenter(response.data.results[0].geometry.location);
                 })
@@ -35,8 +37,9 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                     .then((response) =>{
                         const apiSitter = {
                             title: sitter.full_name,
+                            addressString: `${sitter.address.street}, ${sitter.address.city}, ${sitter.address.state} ${sitter.address.postal_code}`
                         }
-                        apiSitter.address_coords = response.data.results[0].geometry.location
+                        apiSitter.addressCoords = response.data.results[0].geometry.location
                         apiSitterCoords.push(apiSitter);
                         // console.log(`successfully set user address coords for user ${sitter.full_name}`)
                     })
@@ -67,12 +70,12 @@ const SitterMap = ({ sitterList, currentUserData }) => {
     const showSitterMarkers = () => {
         return(
             <div>
-                {sitterCoords.map((sitter)=>{
+                {sitterCoords.map((sitter, i)=>{
                     // console.log(`dropped marker for ${sitter.title}`)
                     return(
                         <Marker
-                            position={sitter.address_coords}
-                            title={sitter.title}
+                            position={sitter.addressCoords}
+                            title={sitter.title + '\n' + sitter.addressString}
                             icon={sitterPin}
                         />
                     )
@@ -86,7 +89,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
             defaultZoom={zoom}
             defaultCenter={mapCenter}
         >
-            {currentUserData && <Marker position={mapCenter} title='You' icon={userPin} />}
+            {currentUserData && <Marker position={mapCenter} title={currentUserData.full_name + '\n' + currentUserData.addressString} icon={userPin} />}
             {sitterList && showSitterMarkers()}
         </GoogleMap>
     )))
