@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Alert, Spinner } from 'react-bootstrap';
-import { useJsApiLoader, GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
+import { LoadScript, GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import axios from 'axios';
 import pothos from '../images/map_icons/pothos.png'
 import aglaonema from '../images/map_icons/aglaonema.png'
@@ -17,17 +17,9 @@ const SitterMap = ({ sitterList, currentUserData }) => {
     const [mapCenter, setMapCenter] = useState({ lat: 39.8097343, lng: -98.5556199 });
     const [zoom, setZoom] = useState(8);
     const [sitterCoords, setSitterCoords] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
 
-    const {isLoaded, loadError} = useJsApiLoader({
-        googleMapsApiKey: process.env.REACT_APP_GOOGLE_CLOUD_API_KEY
-    })
-    if (loadError) {
-        const message=`Load Error${loadError.message}`
-        setError(message)
-        console.log(message)
-    }
-
-   useEffect(() => {
+    useEffect(() => {
         currentUserData &&
             axios.get(createGeocodeURL(currentUserData))
                 .then((response) => {
@@ -45,12 +37,13 @@ const SitterMap = ({ sitterList, currentUserData }) => {
         sitterList.forEach((sitter) => {
             if (sitter.userID !== currentUserData.userID) {
                 axios.get(createGeocodeURL(sitter))
-                    .then((response) =>{
+                    .then((response) => {
                         const apiSitter = {
                             title: sitter.full_name,
                         }
                         apiSitter.address_coords = response.data.results[0].geometry.location
                         apiSitterCoords.push(apiSitter);
+
                         console.log(`successfully set user address coords for user ${sitter.full_name}`)
                     })
                     .catch((error) => {
@@ -77,73 +70,63 @@ const SitterMap = ({ sitterList, currentUserData }) => {
         )
     }
 
-    const onMarkerClick = () => {
-        // InfoWindow.open(map, marker)
-    }
-
     const showSitterMarkers = () => {
-        return(
+        return (
             <div>
-                {sitterCoords.map((sitter, i)=>{
+                {sitterCoords.map((sitter, i) => {
                     console.log(`dropped marker for ${sitter.title}`)
-                    return(
+                    return (
                         <div>
                             <Marker
                                 position={sitter.address_coords}
                                 title={sitter.title + '\n' + `${sitterList[i].address.street}, ${sitterList[i].address.city}, ${sitterList[i].address.state} ${sitterList[i].address.postal_code}`}
-                                // icon='http://maps.google.com/mapfiles/ms/icons/blue.png'
                                 icon={PLANT_ICONS[Math.floor(Math.random() * PLANT_ICONS.length)]}
-                                onClick={onMarkerClick}
                             />
                         </div>
                     )
                 })}
+                {/* {setIsLoaded(true)} */}
             </div>
         )
 
     }
-    
-    const showSitterMap = () => {
-        // const onLoad = React.useCallback(
-        //     function onLoad(mapInstance) {
-        //         //can set latlng objects etc
-        //     }
-        // )
-        setTimeout(() => {
 
-        if (!sitterCoords) {
-            return <div></div>
-        } else {
-            return(
+    const showSitterMap = () => {
+        return (
+            <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_CLOUD_API_KEY}>
                 <GoogleMap
                     zoom={zoom}
                     center={mapCenter}
                     // onLoad={onLoad}
                     mapContainerStyle={{
-                        height: "400px",
-                        width: "800px"
+                        height: '400px',
+                        width: 'auto'
                     }}
                 >
                     {currentUserData && <Marker position={mapCenter} label='You' />}
                     {sitterCoords && showSitterMarkers()}
                 </GoogleMap>
-            )
-        }
+            </LoadScript>
+        )
 
-        }, 3000)
     }
 
 
     return (
         <div className='h-100'>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
-            { isLoaded ? showSitterMap() : <Spinner />}
-            {/* <SitterMap
-                googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_CLOUD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
-                loadingElement={<div style={{ height: `100%` }} />}
-                containerElement={<div style={{ height: `400px` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
-            /> */}
+            { isLoaded ? 
+                showSitterMap() 
+            : 
+                <Container>
+                    <div className='invisible'>{setTimeout(() => {
+                        setIsLoaded(true)
+                    }, 500)}</div>
+                    <Spinner animation="border" variant="secondary">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                </Container>
+            }
         </div>
     )
 }
