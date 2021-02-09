@@ -58,7 +58,7 @@ const RequestList = ({ baseURL, userID }) => {
                     {(requestList).map((request) => {
                         return(
                             <tr key={request.request_id}>
-                                <td>
+                                <td className='request-list__td--owner'>
                                     <Link to={`/users/${request.owner}`}>
                                         {request.owner_name}
                                     </Link>
