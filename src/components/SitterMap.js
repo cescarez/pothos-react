@@ -3,7 +3,7 @@ import { Container, Alert, Spinner } from 'react-bootstrap';
 import { LoadScript, GoogleMap, Marker} from '@react-google-maps/api';
 import axios from 'axios';
 import userPin from '../images/map_icons/pin_danger.png';
-import sitterPin from '../images/map_icons/pin_success_sprout.png';
+import sitterPin from '../images/map_icons/pin_success.png';
 
 const BASE_GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
 
