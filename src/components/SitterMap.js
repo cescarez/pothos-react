@@ -2,8 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Container, Alert } from 'react-bootstrap';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import axios from 'axios';
+import pothos from '../images/map_icons/pothos.png'
+import calathea from '../images/map_icons/calathea.png'
+import maranta from '../images/map_icons/maranta.png'
+import ficus from '../images/map_icons/ficus.png'
+import sansevieria from '../images/map_icons/sansevieria.png'
 
 const BASE_GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
+const PLANT_ICONS = [pothos, calathea, maranta, ficus, sansevieria]
 
 const SitterMap = ({ sitterList, currentUserData }) => {
     const [error, setError] = useState({});
@@ -71,7 +77,8 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                         <Marker
                             position={sitter.address_coords}
                             label={sitter.label}
-                            icon='http://maps.google.com/mapfiles/ms/icons/blue.png'
+                            // icon='http://maps.google.com/mapfiles/ms/icons/blue.png'
+                            icon={PLANT_ICONS[Math.floor(Math.random() * PLANT_ICONS.length)]}
                         />
                     )
                 })}
