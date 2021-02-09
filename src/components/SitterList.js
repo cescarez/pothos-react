@@ -20,7 +20,7 @@ const SitterList = ({ sitterList, currentUserData }) => {
                 </thead>
                 <tbody>
                     {(sitterList).map((sitter) => {
-                        if (sitter.userID!== currentUserData.userID) {
+                        if (sitter.userID !== currentUserData.userID) {
                             return(
                                 <tr key={sitter.userID}>
                                     <td>

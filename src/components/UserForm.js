@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 
 
-export default function UserForm({baseURL, setDashboardUser}) {
+export default function UserForm({ baseURL, setDashboardUser }) {
     const { currentUser } = useAuth();
 
     const [error, setError] = useState('');
@@ -45,17 +45,17 @@ export default function UserForm({baseURL, setDashboardUser}) {
                     [newInput]: newValue,
                 }
             })
-        } else if (priceParts.includes(newInput)){
+        } else if (priceParts.includes(newInput)) {
             setUser({
                 ...user,
-                price_rate: { 
-                    ...user.price_rate, 
+                price_rate: {
+                    ...user.price_rate,
                     [newInput]: newValue,
                 }
             })
         } else {
             setUser({
-                ...user, 
+                ...user,
                 [newInput]: newValue,
             });
         }
@@ -71,10 +71,10 @@ export default function UserForm({baseURL, setDashboardUser}) {
     //check for if all form fields are populated
     //note: sitter/owner attributes are excluded from this function since checkUserType() exists
     const checkFormPopulated = () => {
-        const fields = 
+        const fields =
             Object.values(user)
                 .filter((element) => {
-                    return typeof(element) !== 'object' && typeof(element) !== 'boolean'
+                    return typeof (element) !== 'object' && typeof (element) !== 'boolean'
                 })
                 .concat(Object.values(user.address))
 
@@ -85,7 +85,7 @@ export default function UserForm({baseURL, setDashboardUser}) {
             return true
         } else {
             setError({
-                variant: 'warning', 
+                variant: 'warning',
                 message: 'All form fields must be populated.'
             })
             return false;
@@ -98,7 +98,7 @@ export default function UserForm({baseURL, setDashboardUser}) {
             return true;
         } else {
             setError({
-                variant: 'warning', 
+                variant: 'warning',
                 message: 'You must set your profile to "Sitter", "Owner", or both.'
             });
             return false;
@@ -110,18 +110,11 @@ export default function UserForm({baseURL, setDashboardUser}) {
     const checkPriceRates = () => {
         if (user.sitter) {
             const rates = Object.values(user.price_rate)
-            console.log(rates)
-            if (rates.every((rate) => {
-                return (
-                    Number.parseFloat(rate) && 
-                        ((typeof(rate) === 'number') || 
-                        (Number.parseFloat(rate).toString() === rate.replace(/([0-9]+(\.[0-9]+[1-9])?)(\.?0+$)/,'$1')))
-                )
-            })) {
+            if (rates.every((rate) => !isNaN(rate))) {
                 return true;
             } else {
                 setError({
-                    variant: 'warning', 
+                    variant: 'warning',
                     message: 'All price rates must be numbers.'
                 });
                 return false;
@@ -137,11 +130,11 @@ export default function UserForm({baseURL, setDashboardUser}) {
             axios.post(baseURL + '/users', user)
                 .then((response) => {
                     //callback to dashboard
-                    setDashboardUser({status: response.status, message: response.message, data: response.data});
+                    setDashboardUser({ status: response.status, message: response.message, data: response.data });
 
                     setUser({
                         auth_id: currentUser.uid,
-                        username: '', 
+                        username: '',
                         full_name: '',
                         phone_number: '',
                         avatar_url: currentUser.photoURL,
@@ -162,11 +155,11 @@ export default function UserForm({baseURL, setDashboardUser}) {
                             repot_by_time: ''
                         }
                     })
-                    setError({variant:'success', message: response.data.message});
+                    setError({ variant: 'success', message: response.data.message });
                 })
                 .catch((error) => {
-                    const message=`There was an error with your request. User profile was not saved. ${error.message}.`;
-                    setError({variant: 'danger', message: message});
+                    const message = `There was an error with your request. User profile was not saved. ${error.message}.`;
+                    setError({ variant: 'danger', message: message });
                     console.log(message);
                 });
         }
@@ -174,11 +167,11 @@ export default function UserForm({baseURL, setDashboardUser}) {
 
 
     return (
-        <Container 
+        <Container
             className='d-flex justify-content-center'
             style={{ minHeight: '100vh' }}
         >
-            <div className='w-100' style={{ maxWidth: '800px'}}>
+            <div className='w-100' style={{ maxWidth: '800px' }}>
                 {error.message && <Alert variant={error.variant}>{error.message}</Alert>}
                 <Card>
                     <Card.Body>
@@ -187,10 +180,10 @@ export default function UserForm({baseURL, setDashboardUser}) {
                             <Form.Row>
                                 <Form.Group as={Col}></Form.Group>
                                 <Form.Group as={Col} >
-                                    <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck} checked={user.sitter ? true : false }/>
+                                    <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck} checked={user.sitter ? true : false} />
                                 </Form.Group>
                                 <Form.Group as={Col} >
-                                    <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck} checked={user.owner ? true : false }/>
+                                    <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck} checked={user.owner ? true : false} />
                                 </Form.Group>
                                 <Form.Group as={Col}></Form.Group>
                             </Form.Row>
@@ -201,55 +194,55 @@ export default function UserForm({baseURL, setDashboardUser}) {
                                 </Form.Group>
                                 <Form.Group as={Col}>
                                     <Form.Label>Phone Number</Form.Label>
-                                    <Form.Control type = "text" name='phone_number' value={user.phone_number} onChange={handleChange} />
+                                    <Form.Control type="text" name='phone_number' value={user.phone_number} onChange={handleChange} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
-                                <Form.Group as={Col} controlId="formGridAddress1" > 
+                                <Form.Group as={Col} controlId="formGridAddress1" >
                                     <Form.Label>Street</Form.Label>
-                                    <Form.Control  name='street' value={user.address.street} onChange={handleChange} />
+                                    <Form.Control name='street' value={user.address.street} onChange={handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId='formGridCity' >
                                     <Form.Label>City</Form.Label>
-                                    <Form.Control  name='city' value={user.address.city} onChange={handleChange} />
+                                    <Form.Control name='city' value={user.address.city} onChange={handleChange} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridState" >
                                     <Form.Label>State</Form.Label>
-                                    <Form.Control  name='state' value={user.address.state} onChange={handleChange} />
+                                    <Form.Control name='state' value={user.address.state} onChange={handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridZip" >
                                     <Form.Label>Postal Code</Form.Label>
-                                    <Form.Control  name='postal_code' value={user.address.postal_code} onChange={handleChange} />
+                                    <Form.Control name='postal_code' value={user.address.postal_code} onChange={handleChange} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group>
                                 <Form.Label>About Me</Form.Label>
-                                <Form.Control  name='bio' value={user.bio} onChange={handleChange} as='textarea' />
+                                <Form.Control name='bio' value={user.bio} onChange={handleChange} as='textarea' />
                             </Form.Group>
-                            { user.sitter &&
+                            {user.sitter &&
                                 <Card>
                                     <Card.Body>
                                         <h3 className='text-center mb-4'>Rates</h3>
                                         <Form.Row>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Watering / Plant</Form.Label>
-                                                <Form.Control  name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange} />
+                                                <Form.Control name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange} />
                                             </Form.Group>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Watering / 30 min</Form.Label>
-                                                <Form.Control  name='water_by_time' value={user.price_rate.water_by_time} onChange={handleChange} />
+                                                <Form.Control name='water_by_time' value={user.price_rate.water_by_time} onChange={handleChange} />
                                             </Form.Group>
                                         </Form.Row>
                                         <Form.Row>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Repotting / Plant</Form.Label>
-                                                <Form.Control  name='repot_by_plant' value={user.price_rate.repot_by_plant} onChange={handleChange} />
+                                                <Form.Control name='repot_by_plant' value={user.price_rate.repot_by_plant} onChange={handleChange} />
                                             </Form.Group>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Repotting / 30 min</Form.Label>
-                                                <Form.Control  name='repot_by_time' value={user.price_rate.repot_by_time} onChange={handleChange} />
+                                                <Form.Control name='repot_by_time' value={user.price_rate.repot_by_time} onChange={handleChange} />
                                             </Form.Group>
                                         </Form.Row>
                                     </Card.Body>

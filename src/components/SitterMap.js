@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Alert, Spinner } from 'react-bootstrap';
-import { LoadScript, GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
+import { LoadScript, GoogleMap, Marker} from '@react-google-maps/api';
 import axios from 'axios';
-import pothos from '../images/map_icons/pothos.png'
-import aglaonema from '../images/map_icons/aglaonema.png'
-import dieffenbachia from '../images/map_icons/dieffenbachia.png'
-import ficus from '../images/map_icons/ficus.png'
-import sansevieria from '../images/map_icons/sansevieria.png'
+import userPin from '../images/map_icons/pin_danger.png';
+import sitterPin from '../images/map_icons/pin_success_sprout.png';
 
 const BASE_GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
-const PLANT_ICONS = [pothos, aglaonema, dieffenbachia, ficus, sansevieria]
 
 const SitterMap = ({ sitterList, currentUserData }) => {
     const [error, setError] = useState({});
@@ -23,6 +19,8 @@ const SitterMap = ({ sitterList, currentUserData }) => {
         currentUserData &&
             axios.get(createGeocodeURL(currentUserData))
                 .then((response) => {
+                    currentUserData.addressString = `${currentUserData.address.street}, ${currentUserData.address.city}, ${currentUserData.address.state} ${currentUserData.address.postal_code}`
+
                     setZoom(15);
                     setMapCenter(response.data.results[0].geometry.location);
                 })
@@ -40,8 +38,9 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                     .then((response) => {
                         const apiSitter = {
                             title: sitter.full_name,
+                            addressString: `${sitter.address.street}, ${sitter.address.city}, ${sitter.address.state} ${sitter.address.postal_code}`
                         }
-                        apiSitter.address_coords = response.data.results[0].geometry.location
+                        apiSitter.addressCoords = response.data.results[0].geometry.location
                         apiSitterCoords.push(apiSitter);
 
                         console.log(`successfully set user address coords for user ${sitter.full_name}`)
@@ -73,19 +72,16 @@ const SitterMap = ({ sitterList, currentUserData }) => {
     const showSitterMarkers = () => {
         return (
             <div>
-                {sitterCoords.map((sitter, i) => {
-                    console.log(`dropped marker for ${sitter.title}`)
-                    return (
-                        <div>
-                            <Marker
-                                position={sitter.address_coords}
-                                title={sitter.title + '\n' + `${sitterList[i].address.street}, ${sitterList[i].address.city}, ${sitterList[i].address.state} ${sitterList[i].address.postal_code}`}
-                                icon={PLANT_ICONS[Math.floor(Math.random() * PLANT_ICONS.length)]}
-                            />
-                        </div>
+                {sitterCoords.map((sitter, i)=>{
+                    // console.log(`dropped marker for ${sitter.title}`)
+                    return(
+                        <Marker
+                            position={sitter.addressCoords}
+                            title={sitter.title + '\n' + sitter.addressString}
+                            icon={sitterPin}
+                        />
                     )
                 })}
-                {/* {setIsLoaded(true)} */}
             </div>
         )
 
@@ -97,20 +93,17 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                 <GoogleMap
                     zoom={zoom}
                     center={mapCenter}
-                    // onLoad={onLoad}
                     mapContainerStyle={{
                         height: '400px',
                         width: 'auto'
                     }}
                 >
-                    {currentUserData && <Marker position={mapCenter} label='You' />}
+                    {currentUserData && <Marker position={mapCenter} title={currentUserData.full_name + '\n' + currentUserData.addressString} icon={userPin}/>}
                     {sitterCoords && showSitterMarkers()}
                 </GoogleMap>
             </LoadScript>
         )
-
     }
-
 
     return (
         <div className='h-100'>
@@ -122,9 +115,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                     <div className='invisible'>{setTimeout(() => {
                         setIsLoaded(true)
                     }, 500)}</div>
-                    <Spinner animation="border" variant="secondary">
-                        <span className="sr-only">Loading...</span>
-                    </Spinner>
+                    <Spinner animation="border" variant="secondary" style={{height: '200px', width: '200px'}}/>
                 </Container>
             }
         </div>
