@@ -18,7 +18,6 @@ const SitterMap = ({ sitterList, currentUserData }) => {
     const [zoom, setZoom] = useState(8);
     const [sitterCoords, setSitterCoords] = useState(null);
 
-
     const {isLoaded, loadError} = useJsApiLoader({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_CLOUD_API_KEY
     })
@@ -28,7 +27,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
         console.log(message)
     }
 
-    useEffect(() => {
+   useEffect(() => {
         currentUserData &&
             axios.get(createGeocodeURL(currentUserData))
                 .then((response) => {
@@ -48,11 +47,11 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                 axios.get(createGeocodeURL(sitter))
                     .then((response) =>{
                         const apiSitter = {
-                            label: sitter.full_name,
+                            title: sitter.full_name,
                         }
                         apiSitter.address_coords = response.data.results[0].geometry.location
                         apiSitterCoords.push(apiSitter);
-                        // console.log(`successfully set user address coords for user ${sitter.full_name}`)
+                        console.log(`successfully set user address coords for user ${sitter.full_name}`)
                     })
                     .catch((error) => {
                         const message = `Did not load sitter ${sitter.full_name} user data. ${error.message}`
@@ -86,19 +85,22 @@ const SitterMap = ({ sitterList, currentUserData }) => {
         return(
             <div>
                 {sitterCoords.map((sitter, i)=>{
-                    // console.log(`dropped marker for ${sitter.label}`)
+                    console.log(`dropped marker for ${sitter.title}`)
                     return(
-                        <Marker
-                            position={sitter.address_coords}
-                            title={sitter.label + '\n' + `${sitterList[i].address.street}, ${sitterList[i].address.city}, ${sitterList[i].address.state} ${sitterList[i].address.postal_code}`}
-                            // icon='http://maps.google.com/mapfiles/ms/icons/blue.png'
-                            icon={PLANT_ICONS[Math.floor(Math.random() * PLANT_ICONS.length)]}
-                            onClick={onMarkerClick}
-                        />
+                        <div>
+                            <Marker
+                                position={sitter.address_coords}
+                                title={sitter.title + '\n' + `${sitterList[i].address.street}, ${sitterList[i].address.city}, ${sitterList[i].address.state} ${sitterList[i].address.postal_code}`}
+                                // icon='http://maps.google.com/mapfiles/ms/icons/blue.png'
+                                icon={PLANT_ICONS[Math.floor(Math.random() * PLANT_ICONS.length)]}
+                                onClick={onMarkerClick}
+                            />
+                        </div>
                     )
                 })}
             </div>
         )
+
     }
     
     const showSitterMap = () => {
@@ -107,24 +109,41 @@ const SitterMap = ({ sitterList, currentUserData }) => {
         //         //can set latlng objects etc
         //     }
         // )
-        return(
-            <GoogleMap
-                zoom={zoom}
-                center={mapCenter}
-                // onLoad={onLoad}
-            >
-                {currentUserData && <Marker position={mapCenter} label='You' />}
-                {sitterList && showSitterMarkers()}
-            </GoogleMap>
-        )
+        setTimeout(() => {
 
+        if (!sitterCoords) {
+            return <div></div>
+        } else {
+            return(
+                <GoogleMap
+                    zoom={zoom}
+                    center={mapCenter}
+                    // onLoad={onLoad}
+                    mapContainerStyle={{
+                        height: "400px",
+                        width: "800px"
+                    }}
+                >
+                    {currentUserData && <Marker position={mapCenter} label='You' />}
+                    {sitterCoords && showSitterMarkers()}
+                </GoogleMap>
+            )
+        }
+
+        }, 3000)
     }
-    
+
 
     return (
-        <div>
+        <div className='h-100'>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
             { isLoaded ? showSitterMap() : <Spinner />}
+            {/* <SitterMap
+                googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_CLOUD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+                loadingElement={<div style={{ height: `100%` }} />}
+                containerElement={<div style={{ height: `400px` }} />}
+                mapElement={<div style={{ height: `100%` }} />}
+            /> */}
         </div>
     )
 }
