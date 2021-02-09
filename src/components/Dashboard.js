@@ -24,7 +24,7 @@ const Dashboard = ({baseURL}) => {
                     setUser(apiUser);
                 })
                 .catch((error) => {
-                    const message=`There was an error with your request. ${error.response ? error.response.data.message : error.message}.`;
+                    const message=`There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
                     setError({variant: 'danger', message: message});
                     console.log(message);
                 })
@@ -46,9 +46,8 @@ const Dashboard = ({baseURL}) => {
         }
     }
 
-    //create useEffect to retrieve a user's list of chat threads -- pass that data for rendering to OwnerDashboard/SitterDashboard
+    //create useEffect to retrieve a user's list of chat threads/requests -- pass that data for rendering to OwnerDashboard/SitterDashboard
 
-    //create useEffect to retrieve a user's list of requests -- pass that data for rendering to OwnerDashboard/SitterDashboard
     if (user || error.message) {
         return (
             <div className='dashboard'>

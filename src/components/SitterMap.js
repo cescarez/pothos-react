@@ -46,7 +46,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                         console.log(`successfully set user address coords for user ${sitter.full_name}`)
                     })
                     .catch((error) => {
-                        const message = `Did not load sitter ${sitter.full_name} user data. ${error.response ? error.response.data.message : error.message}`
+                        const message = `Did not load sitter ${sitter.full_name} user data. ${error.response && error.response.data.message ? error.response.data.message : error.message}`
                         setError({ variant: 'warning', message: message })
                         console.log(message);
                     })

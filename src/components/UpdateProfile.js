@@ -23,7 +23,7 @@ export default function UpdateProfile({baseURL}) {
                     }
                 })
                 .catch((error) => {
-                    const message=`There was an error with your request. ${error.response ? error.response.data.message : error.message}`;
+                    const message=`There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
                     setError({variant: 'danger', message: message});
                     console.log(message);
                 })
