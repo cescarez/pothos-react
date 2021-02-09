@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Alert } from 'react-bootstrap';
-import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow } from 'react-google-maps';
+import { Container, Alert, Spinner } from 'react-bootstrap';
+import { useJsApiLoader, GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import axios from 'axios';
 import pothos from '../images/map_icons/pothos.png'
 import aglaonema from '../images/map_icons/aglaonema.png'
@@ -17,6 +17,16 @@ const SitterMap = ({ sitterList, currentUserData }) => {
     const [mapCenter, setMapCenter] = useState({ lat: 39.8097343, lng: -98.5556199 });
     const [zoom, setZoom] = useState(8);
     const [sitterCoords, setSitterCoords] = useState(null);
+
+
+    const {isLoaded, loadError} = useJsApiLoader({
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_CLOUD_API_KEY
+    })
+    if (loadError) {
+        const message=`Load Error${loadError.message}`
+        setError(message)
+        console.log(message)
+    }
 
     useEffect(() => {
         currentUserData &&
@@ -91,25 +101,30 @@ const SitterMap = ({ sitterList, currentUserData }) => {
         )
     }
     
-    const SitterMap = withScriptjs(withGoogleMap(((props) =>
-        <GoogleMap
-            defaultZoom={zoom}
-            defaultCenter={mapCenter}
-        >
-            {currentUserData && <Marker position={mapCenter} label='You' />}
-            {sitterList && showSitterMarkers()}
-        </GoogleMap>
-    )))
+    const showSitterMap = () => {
+        // const onLoad = React.useCallback(
+        //     function onLoad(mapInstance) {
+        //         //can set latlng objects etc
+        //     }
+        // )
+        return(
+            <GoogleMap
+                zoom={zoom}
+                center={mapCenter}
+                // onLoad={onLoad}
+            >
+                {currentUserData && <Marker position={mapCenter} label='You' />}
+                {sitterList && showSitterMarkers()}
+            </GoogleMap>
+        )
+
+    }
+    
 
     return (
         <div>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
-            <SitterMap
-                googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_CLOUD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
-                loadingElement={<div style={{ height: `100%` }} />}
-                containerElement={<div style={{ height: `400px` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
-            />
+            { isLoaded ? showSitterMap() : <Spinner />}
         </div>
     )
 }
