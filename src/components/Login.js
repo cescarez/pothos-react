@@ -20,7 +20,7 @@ export default function Login() {
             await login(emailRef.current.value, passwordRef.current.value)
             history.push('/')
         } catch(error) {
-            setError(`Failed to log in. ${error.response.data.message}`)
+            setError(`Failed to log in. ${error.response ? error.response.data.message : error.message}`)
         }
 
         setLoading(false)

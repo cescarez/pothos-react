@@ -158,7 +158,7 @@ export default function UserForm({ baseURL, setDashboardUser }) {
                     setError({ variant: 'success', message: response.data.message });
                 })
                 .catch((error) => {
-                    const message = `There was an error with your request. User profile was not saved. ${error.response.data.message}.`;
+                    const message = `There was an error with your request. User profile was not saved. ${error.response ? error.response.data.message : error.message}`;
                     setError({ variant: 'danger', message: message });
                     console.log(message);
                 });

@@ -20,15 +20,11 @@ const Dashboard = ({baseURL}) => {
             axios.get(`${baseURL}/users/current/${auth_id}`)
                 .then((response) => {
                     const apiUser = Object.values(response.data)[0]
-                    if (Object.keys(response.data)[0] !== 'message') {
-                        apiUser.userID = Object.keys(response.data)[0]
-                        setUser(apiUser);
-                    } else {
-                        setError({variant: 'warning', message: apiUser})
-                    }
+                    apiUser.userID = Object.keys(response.data)[0]
+                    setUser(apiUser);
                 })
                 .catch((error) => {
-                    const message=`There was an error with your request. ${error.response.data.message}.`;
+                    const message=`There was an error with your request. ${error.response ? error.response.data.message : error.message}.`;
                     setError({variant: 'danger', message: message});
                     console.log(message);
                 })
@@ -51,7 +47,7 @@ const Dashboard = ({baseURL}) => {
     //create useEffect to retrieve a user's list of chat threads -- pass that data for rendering to OwnerDashboard/SitterDashboard
 
     //create useEffect to retrieve a user's list of requests -- pass that data for rendering to OwnerDashboard/SitterDashboard
-    if (user || error.response.data.message) {
+    if (user || error.message) {
         return (
             <div className='dashboard'>
                 <Container>
@@ -66,7 +62,7 @@ const Dashboard = ({baseURL}) => {
                 </Container>
                 { user ? 
                     <div>
-                        {error.response.data.message ?
+                        {error.message ?
                             <Alert variant={error.variant}>{error.message}</Alert> 
                         : null}
                         <Tabs border='primary'>

@@ -25,7 +25,7 @@ export default function Signup() {
             await signup(emailRef.current.value, passwordRef.current.value)
             history.push('/')
         } catch(error) {
-            setError({variant: 'danger', message:`Failed to create an account. ${error.response.data.message}`})
+            setError({variant: 'danger', message:`Failed to create an account. ${error.response ? error.response.data.message : error.message}`})
         }
 
         setLoading(false)
