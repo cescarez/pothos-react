@@ -15,7 +15,7 @@ export default function Footer() {
                     </Row>
                 </Container> */}
                 <div className="footer-bottom">
-                    <p className='text-xs-center'>
+                    <p className='text-xs-center footer-text'>
                         &copy; {new Date().getFullYear()} Pothos, Inc. All Rights Reserved
                     </p>
                 </div>
