@@ -4,7 +4,7 @@ import {Card, Button, Container, Row, Col, Alert} from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import Moment from 'moment';
 import axios from 'axios';
-import pothosPic from '../images/pothos.png'
+import pothosPic from '../images/pothos_large.png'
 
 const User = ({baseURL}) => {
     const { currentUser } = useAuth();
@@ -60,6 +60,7 @@ const User = ({baseURL}) => {
                 "sitter": userId
             }
         ).then((response) => {
+            console.log(response);
             setError({variant:'success', message: 'Request successfully sent'});
         }).catch((error) => {
             const message=`There was an error with your request. Request not sent. ${error.message}.`;

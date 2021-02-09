@@ -78,6 +78,7 @@ export default function UpdateProfile({baseURL}) {
                     return typeof(element) !== 'object' && typeof(element) !== 'boolean'
                 })
                 .concat(Object.values(user.address))
+                .concat(Object.values(user.price_rate))
 
         if (user.sitter) {
             fields.concat(Object.values(user.price_rate));
@@ -111,13 +112,7 @@ export default function UpdateProfile({baseURL}) {
     const checkPriceRates = () => {
         if (user.sitter) {
             const rates = Object.values(user.price_rate)
-            if (rates.every((rate) => {
-                return (
-                    Number.parseFloat(rate) && 
-                        ((typeof(rate) === 'number') || 
-                        (Number.parseFloat(rate).toString() === rate.replace(/([0-9]+(\.[0-9]+[1-9])?)(\.?0+$)/,'$1')))
-                )
-            })) {
+            if (rates.every((rate) => !isNaN(rate))) {
                 return true;
             } else {
                 setError({
