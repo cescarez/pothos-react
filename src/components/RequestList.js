@@ -10,7 +10,7 @@ const RequestList = ({ baseURL, userID }) => {
     const [requestList, setRequestList] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
 
-    useEffect(()=>{
+    const loadRequestList = () => {
         axios.get(baseURL + '/requests-by-sitter/' + userID)
             .then((response) => {
                 const apiRequestList = Object.values(response.data)
@@ -29,11 +29,16 @@ const RequestList = ({ baseURL, userID }) => {
                 setError({variant: 'danger', message: message});
                 console.log(message);
             })
-    }, [baseURL])
+    }
+
+    useEffect(()=>{
+        loadRequestList();
+    }, [])
 
     const changeRequest = (requestid, status) => {
         axios.put(baseURL + '/requests/' + requestid, {"status": status})
             .then((response) => {
+                loadRequestList();
                 setError({variant:'success', message: 'Request successfully changed.'})
             }).catch((error) => {
                 const message=`There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
