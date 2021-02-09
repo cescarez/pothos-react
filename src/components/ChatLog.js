@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouteMatch, Link } from 'react-router-dom'
-import { Button, Form, Col } from 'react-bootstrap';
+import { Container, Button, Form, Col } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import ChatEntry from './ChatEntry';
@@ -28,7 +28,7 @@ const ChatLog = ({ baseURL }) => {
                     }
                 })
                 .catch((error) => {
-                    const message=`There was an error with your request. ${error.message}.`;
+                    const message=`There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
                     setError({variant: 'danger', message: message});
                     console.log(message);
                 })
@@ -39,17 +39,22 @@ const ChatLog = ({ baseURL }) => {
         loadUserData(currentUser.uid);
     }, [])
 
-    useEffect(() => {
+    const loadMessageList = () => {
         axios.get(baseURL + '/messages-by-request/' + requestID)
             .then((response) => {
                 const apiMessages = Object.values(response.data)
                 setMessageList(apiMessages);
             }).catch((error) => {
-                const message=`There was an error with your request. ${error.message}.`;
+                const message=`There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
                 setError({variant: 'danger', message: message});
                 console.log(message);
             })
-    },[baseURL,requestID])
+
+    }
+
+    useEffect(() => {
+        loadMessageList();
+    },[])
 
     const chatComponents = (() => {
         if (!messageList) {
@@ -57,15 +62,15 @@ const ChatLog = ({ baseURL }) => {
         } else {
             return(
                 messageList.map((messages, i) => {
-                return(
-                    <ChatEntry key={i} 
-                    baseURL={baseURL} 
-                    sender={messages.sender} 
-                    sender_name={messages.sender_name} 
-                    body={messages.message} 
-                    timeStamp={messages.timestamp}
-                    currentUserID={user.userID} />
-                );
+                    return(
+                        <ChatEntry key={i} 
+                        baseURL={baseURL} 
+                        sender={messages.sender} 
+                        sender_name={messages.sender_name} 
+                        body={messages.message} 
+                        timeStamp={messages.timestamp}
+                        currentUserID={user.userID} />
+                    );
                 })
             )
         }
@@ -85,19 +90,17 @@ const ChatLog = ({ baseURL }) => {
         })
             .then(() => {
                 setBody('')
-                //refresh page?
+                loadMessageList();
             })
             .catch((error) => {
-                const message = `There was an error with your request. User profile was not saved. ${error.message}.`;
+                const message = `There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
                 setError({ variant: 'danger', message: message });
                 console.log(message);
             })
     }
 
-    
-
     return(
-        <div>
+        <Container>
             <h2>Chat Log</h2>
             <div className='chat-log'>
                 {chatComponents()}
@@ -115,7 +118,7 @@ const ChatLog = ({ baseURL }) => {
                 </Form>
             </div>
             <Button variant='secondary w-100' as={Link} to={'/'}>Return to Dashboard</Button>
-        </div>
+        </Container>
     )
 }
 

@@ -130,7 +130,7 @@ export default function UserForm({ baseURL, setDashboardUser }) {
             axios.post(baseURL + '/users', user)
                 .then((response) => {
                     //callback to dashboard
-                    setDashboardUser({ status: response.status, message: response.message, data: response.data });
+                    setDashboardUser(response);
 
                     setUser({
                         auth_id: currentUser.uid,
@@ -158,7 +158,7 @@ export default function UserForm({ baseURL, setDashboardUser }) {
                     setError({ variant: 'success', message: response.data.message });
                 })
                 .catch((error) => {
-                    const message = `There was an error with your request. User profile was not saved. ${error.message}.`;
+                    const message=`There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
                     setError({ variant: 'danger', message: message });
                     console.log(message);
                 });

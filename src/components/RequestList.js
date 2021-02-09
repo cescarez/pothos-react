@@ -25,7 +25,7 @@ const RequestList = ({ baseURL, userID }) => {
                 }
             })
             .catch((error) => {
-                const message=`There was an error with your request. ${error.message}.`;
+                const message=`There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
                 setError({variant: 'danger', message: message});
                 console.log(message);
             })
@@ -36,7 +36,7 @@ const RequestList = ({ baseURL, userID }) => {
             .then((response) => {
                 setError({variant:'success', message: 'Request successfully changed.'})
             }).catch((error) => {
-                const message=`There was an error with your request. ${error.message}.`;
+                const message=`There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
                 setError({variant: 'danger', message: message});
             })
     }
@@ -58,7 +58,7 @@ const RequestList = ({ baseURL, userID }) => {
                     {(requestList).map((request) => {
                         return(
                             <tr key={request.request_id}>
-                                <td>
+                                <td className='request-list__td--owner'>
                                     <Link to={`/users/${request.owner}`}>
                                         {request.owner_name}
                                     </Link>
