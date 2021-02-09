@@ -6,13 +6,13 @@ import axios from 'axios';
 import ChatEntry from './ChatEntry';
 import './ChatLog.css';
 
-function ChatLog ({ baseURL, location }) {
+function ChatLog ({ location }) {
     const { currentUser } = useAuth();
     const [messageList, setMessageList] = useState(null);
     const [error, setError] = useState('');
     const [user, setUser] = useState(null);
     const [body, setBody] = useState('')
-    const currentUserID = location.state;
+    const {baseURL, currentUserID} = location.state;
     console.log(location.state)
     const match = useRouteMatch('/requests/:id');
     const requestID = match.params.id;

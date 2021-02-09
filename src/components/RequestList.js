@@ -67,6 +67,7 @@ const RequestList = ({ baseURL, currentUserID }) => {
                                     <Link to={{
                                         pathname: `/requests/${request.request_id}`,
                                         state: {
+                                            baseURL: baseURL,
                                             currentUserID: currentUserID
                                         }
                                     }}>
@@ -77,6 +78,7 @@ const RequestList = ({ baseURL, currentUserID }) => {
                                     <Link to={{
                                         pathname: `/requests/${request.request_id}`,
                                         state: {
+                                            baseURL: baseURL,
                                             currentUserID: currentUserID
                                         }
                                     }}>
@@ -87,6 +89,7 @@ const RequestList = ({ baseURL, currentUserID }) => {
                                     <Link to={{
                                         pathname: `/requests/${request.request_id}`,
                                         state: {
+                                            baseURL: baseURL,
                                             currentUserID: currentUserID
                                         }
                                     }}>
