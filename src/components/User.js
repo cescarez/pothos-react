@@ -1,16 +1,19 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {useRouteMatch, Link} from 'react-router-dom';
-import {Card, Button, Container, Row, Col, Alert} from 'react-bootstrap';
+import {Card, Button, Container, Row, Col, Alert, Overlay} from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import Moment from 'moment';
 import axios from 'axios';
-import pothosPic from '../images/pothos_large.png'
+import pothosPic from '../images/pothos_large.png';
+import RequestForm from './RequestForm';
 
 const User = ({baseURL}) => {
     const { currentUser } = useAuth();
     const [user, setUser] = useState({});
     const [error, setError] = useState('');
     const [currentOwner, setCurrentOwner] = useState('');
+    const [showRequestPopever, setShowRequestPopover] = useState(false);
+    const target = useRef(null);
 
     const match = useRouteMatch('/users/:id');
     const userId = match.params.id
@@ -53,14 +56,16 @@ const User = ({baseURL}) => {
             })
     }, [baseURL, userId])
 
-    const submitRequest = (event) => {
-        event.preventDefault();
+    const onSubmitRequestCallback = (date, services) => {
+        // event.preventDefault();
         let newRequestID = null;
         axios.post(
             baseURL + '/requests', 
             {
                 owner: currentOwner.userID,
-                sitter: userId
+                sitter: userId,
+                requested_date_of_service: date,
+                services: services
             }
         ).then((response) => {
             newRequestID = response.data.request_id;
@@ -92,6 +97,8 @@ const User = ({baseURL}) => {
 
     //write method to display the number of emoji stars as a rounding up? of the user rating
 
+
+
     const showUserData = () => {
         return (
             <Container className='container-lg'>
@@ -104,11 +111,30 @@ const User = ({baseURL}) => {
                                 <Card.Subtitle className='text-muted font-weight-lighter'>{user.username}</Card.Subtitle>
                             </Col>
                             { user.sitter &&
+                                <>
                                 <Col xs='auto'>
-                                    <Button variant='outline-secondary btn-sm' onClick={submitRequest}>
+                                    <Button variant='outline-secondary btn-sm' ref={target} onClick={() => setShowRequestPopover(!showRequestPopever)}>
                                         Send Request
                                     </Button>
                                 </Col>
+                                <Overlay target={target.current} show={showRequestPopever} placement="left">
+                                    {({ placement, arrowProps, show: _show, popper, ...props }) => (
+                                    <div
+                                        {...props}
+                                        style={{
+                                            // backgroundColor: 'rgba(108, 195, 213, 0.95)', //info
+                                            backgroundColor: 'rgba(243, 150, 154, 0.90)', //secondary
+                                            padding: '2px 0px 2px',
+                                            color: 'white',
+                                            borderRadius: 6,
+                                            ...props.style,
+                                        }}
+                                    >
+                                       <RequestForm onSubmitRequest={onSubmitRequestCallback} />
+                                    </div>
+                                    )}
+                                </Overlay>
+                                </>
                             }
                         </Row>
                     </Card.Header>
