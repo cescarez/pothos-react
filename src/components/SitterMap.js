@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Alert } from 'react-bootstrap';
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
+import { withScriptjs, withGoogleMap, GoogleMap, Marker} from 'react-google-maps';
 import axios from 'axios';
+import userPin from '../images/map_icons/pin_danger.png';
+import sitterPin from '../images/map_icons/pin_success.png';
 
 const BASE_GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
 
@@ -16,6 +18,8 @@ const SitterMap = ({ sitterList, currentUserData }) => {
         currentUserData &&
             axios.get(createGeocodeURL(currentUserData))
                 .then((response) => {
+                    currentUserData.addressString = `${currentUserData.address.street}, ${currentUserData.address.city}, ${currentUserData.address.state} ${currentUserData.address.postal_code}`
+
                     setZoom(15);
                     setMapCenter(response.data.results[0].geometry.location);
                 })
@@ -32,9 +36,10 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                 axios.get(createGeocodeURL(sitter))
                     .then((response) =>{
                         const apiSitter = {
-                            label: sitter.full_name,
+                            title: sitter.full_name,
+                            addressString: `${sitter.address.street}, ${sitter.address.city}, ${sitter.address.state} ${sitter.address.postal_code}`
                         }
-                        apiSitter.address_coords = response.data.results[0].geometry.location
+                        apiSitter.addressCoords = response.data.results[0].geometry.location
                         apiSitterCoords.push(apiSitter);
                         // console.log(`successfully set user address coords for user ${sitter.full_name}`)
                     })
@@ -65,13 +70,13 @@ const SitterMap = ({ sitterList, currentUserData }) => {
     const showSitterMarkers = () => {
         return(
             <div>
-                {sitterCoords.map((sitter)=>{
-                    // console.log(`dropped marker for ${sitter.label}`)
+                {sitterCoords.map((sitter, i)=>{
+                    // console.log(`dropped marker for ${sitter.title}`)
                     return(
                         <Marker
-                            position={sitter.address_coords}
-                            label={sitter.label}
-                            icon='http://maps.google.com/mapfiles/ms/icons/blue.png'
+                            position={sitter.addressCoords}
+                            title={sitter.title + '\n' + sitter.addressString}
+                            icon={sitterPin}
                         />
                     )
                 })}
@@ -84,7 +89,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
             defaultZoom={zoom}
             defaultCenter={mapCenter}
         >
-            {currentUserData && <Marker position={mapCenter} label='You' />}
+            {currentUserData && <Marker position={mapCenter} title={currentUserData.full_name + '\n' + currentUserData.addressString} icon={userPin} />}
             {sitterList && showSitterMarkers()}
         </GoogleMap>
     )))
