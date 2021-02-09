@@ -55,19 +55,40 @@ const User = ({baseURL}) => {
 
     const submitRequest = (event) => {
         event.preventDefault();
+        let newRequestID = null;
         axios.post(
             baseURL + '/requests', 
             {
-                "owner": currentOwner.userID,
-                "sitter": userId
+                owner: currentOwner.userID,
+                sitter: userId
             }
         ).then((response) => {
-            console.log(response);
+            console.log(response.data)
+            newRequestID = response.data.request_id;
+            console.log(`newRequestID after assignment: ${newRequestID}`)
             setError({variant:'success', message: 'Request successfully sent'});
         }).catch((error) => {
             const message=`There was an error with your request. Request not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
             setError({variant: 'danger', message: message});
         })
+
+        //not sure if this timeout is needed at all
+        setTimeout(() => {
+            axios.post(
+                baseURL + '/messages', 
+                {
+                    sender: currentOwner.userID,
+                    message: 'Hey bud (pun intended), are you available for plant-sitting or repotting?',
+                    request_id: newRequestID
+                }
+            ).then((response) => {
+                setError({variant:'success', message: 'Request message successfully sent'});
+            }).catch((error) => {
+                const message=`There was an error with your request message. Message was not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
+                setError({variant: 'danger', message: message});
+            })
+
+        }, 250)
     }
 
     //write method to display the number of emoji stars as a rounding up? of the user rating
