@@ -14,6 +14,8 @@ import UpdateEmailPassword from './components/UpdateEmailPassword'
 import UpdateProfile from './components/UpdateProfile'
 import Footer from './components/Footer'
 import ChatLog from './components/ChatLog'
+import AboutUs from './components/AboutUs'
+import ContactUs from './components/ContactUs'
 
 import './App.css';
 import OwnerDashboard from './components/OwnerDashboard';
@@ -24,9 +26,9 @@ function App() {
 
     return (
         <div className="App page-container">
-            <div className="content-wrap">
             <Router>
                 <AuthProvider>  
+                <div className="content-wrap">
                     <Navigation baseURL={BASE_URL} />
                     <Switch>
                         <PrivateRoute exact path='/users/:id'>
@@ -41,6 +43,8 @@ function App() {
                         <Route exact path='/signup' component={Signup} />
                         <Route exact path='/login' component={Login} />
                         <Route exact path ='/forgot-password' component={ForgotPassword} />
+                        <Route exact path='/about' component={AboutUs} />
+                        <Route exact path='/contact' component={ContactUs} />
                         <PrivateRoute exact path='/update-email'>
                             <UpdateEmailPassword />
                         </PrivateRoute>
@@ -59,10 +63,10 @@ function App() {
                             <Home baseURL={BASE_URL} />
                         </Route>
                     </Switch>
+                    </div>
+                    <Footer />
                 </AuthProvider>
             </Router>
-            </div>
-            <Footer />
         </div>
     );
 }
