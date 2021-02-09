@@ -82,7 +82,7 @@ const RequestList = ({ baseURL, currentUserID }) => {
                                             currentUserID: currentUserID
                                         }
                                     }}>
-                                        {Moment(request.time_requested).format('MM-DD-YYYY')}
+                                        {Moment.utc(request.time_requested).format('MM-DD-YYYY')}
                                     </Link>
                                 </td>
                                 <td>

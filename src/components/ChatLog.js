@@ -13,7 +13,6 @@ function ChatLog ({ location }) {
     const [user, setUser] = useState(null);
     const [body, setBody] = useState('')
     const {baseURL, currentUserID} = location.state;
-    console.log(location.state)
     const match = useRouteMatch('/requests/:id');
     const requestID = match.params.id;
 
