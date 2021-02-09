@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Alert } from 'react-bootstrap';
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
+import { withScriptjs, withGoogleMap, GoogleMap, Marker} from 'react-google-maps';
 import axios from 'axios';
+import userPin from '../images/map_icons/pin_danger.png';
+import sitterPin from '../images/map_icons/pin_success.png';
 
 const BASE_GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
 
@@ -32,7 +34,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                 axios.get(createGeocodeURL(sitter))
                     .then((response) =>{
                         const apiSitter = {
-                            label: sitter.full_name,
+                            title: sitter.full_name,
                         }
                         apiSitter.address_coords = response.data.results[0].geometry.location
                         apiSitterCoords.push(apiSitter);
@@ -66,12 +68,12 @@ const SitterMap = ({ sitterList, currentUserData }) => {
         return(
             <div>
                 {sitterCoords.map((sitter)=>{
-                    // console.log(`dropped marker for ${sitter.label}`)
+                    // console.log(`dropped marker for ${sitter.title}`)
                     return(
                         <Marker
                             position={sitter.address_coords}
-                            label={sitter.label}
-                            icon='http://maps.google.com/mapfiles/ms/icons/blue.png'
+                            title={sitter.title}
+                            icon={sitterPin}
                         />
                     )
                 })}
@@ -84,7 +86,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
             defaultZoom={zoom}
             defaultCenter={mapCenter}
         >
-            {currentUserData && <Marker position={mapCenter} label='You' />}
+            {currentUserData && <Marker position={mapCenter} title='You' icon={userPin} />}
             {sitterList && showSitterMarkers()}
         </GoogleMap>
     )))
