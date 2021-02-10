@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Card, Col, InputGroup, Alert, Pagination } from 'react-bootstrap'
 
-export default function RequestForm({ onSubmitRequest, sitterPrices }) {
+export default function RequestForm({ onSubmitRequestCallback, sitterPrices }) {
+    const [error, setError] = useState({});
     const [requestFormFields, setRequestFormFields] = useState({
         date_of_service: '',
         services: {
@@ -38,19 +39,27 @@ export default function RequestForm({ onSubmitRequest, sitterPrices }) {
             sum += (rate * parseInt(services[service]))
         })
         console.log(`estimated service cost: ${sum}`)
-        return(
-            sum
-        )
+        return sum
     }
+
+    const onSubmitRequest = () => {
+        if (requestFormFields.date_of_service){
+            onSubmitRequestCallback(requestFormFields)
+        } else {
+            setError({variant:'warning', message: 'You must select a date for the requested plant service(s).'})
+        }  
+    }
+
 
     return (
         <Container fluid >
+            { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
             <Form >
                 <Form.Group>
                     <Form.Row>
                         <Form.Label>Date for Plant Services</Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="date" name='date_of_service' value={requestFormFields.date_of_service.date} onChange={onRequestFormChange} />
+                            <Form.Control type="date" name='date_of_service' value={requestFormFields.date_of_service.date} onChange={onRequestFormChange} required />
                         </Col>
                     </Form.Row>
                 </Form.Group>
@@ -91,7 +100,7 @@ export default function RequestForm({ onSubmitRequest, sitterPrices }) {
                         </InputGroup>
                     </Form.Row>
                 </Form.Group>
-                <Button variant='primary' type="submit" value="submit" className='d-inline-block w-100' onClick={()=>onSubmitRequest(requestFormFields)}>
+                <Button variant='primary' type="submit" value="submit" className='d-inline-block w-100' onClick={onSubmitRequest}>
                     Submit Request
                 </Button>
             </Form>

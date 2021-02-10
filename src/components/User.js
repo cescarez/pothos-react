@@ -107,7 +107,7 @@ const User = ({baseURL}) => {
                                             ...props.style,
                                         }}
                                     >
-                                       <RequestForm onSubmitRequest={onSubmitRequestCallback} sitterPrices={user.price_rate} />
+                                       <RequestForm onSubmitRequestCallback={onSubmitRequestCallback} sitterPrices={user.price_rate} />
                                     </div>
                                     )}
                                 </Overlay>
