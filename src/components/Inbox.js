@@ -14,7 +14,7 @@ const Inbox= ({ baseURL }) => {
         axios.get(`${baseURL}/users/current/${auth_id}`)
             .then((response) => {
                 const userID = Object.keys(response.data)[0]
-                return axios.get(baseURL + '/requests-by-owner/' + userID)
+                return axios.get(baseURL + '/requests-by-user/' + userID)
                     .then((response) => {
                         const apiRequestList = Object.values(response.data)
                         if (Object.keys(response.data)[0] !== 'message') {
