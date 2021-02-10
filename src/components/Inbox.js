@@ -59,7 +59,7 @@ const Inbox= ({ baseURL }) => {
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Time of Request</th>
+                            <th>Request was Issued</th>
                             <th>Requested Date of Service</th>
                             <th>Request Status</th>
                             <th>Rating</th>

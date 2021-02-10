@@ -55,7 +55,8 @@ const RequestList = ({ baseURL, userID }) => {
                     <tr>
                         <th>Name</th>
                         <th>Chat</th>
-                        <th>Date Requested</th>
+                        <th>Request was Issued</th>
+                        {/* <th>Date Requested</th> */}
                         <th>Status</th>
                         <th>Confirm</th>
                         <th>Decline</th>
@@ -77,7 +78,7 @@ const RequestList = ({ baseURL, userID }) => {
                                 </td>
                                 <td>
                                     <Link to={`/requests/${request.request_id}`}>
-                                        {Moment(request.time_requested).format('MM-DD-YYYY')}
+                                        {Moment.parseZone(request.time_requested).local().format('LL LT')}
                                     </Link>
                                 </td>
                                 <td>
