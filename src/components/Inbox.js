@@ -5,16 +5,21 @@ import {Link} from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 
+import Rating from './Rating';
+
 const Inbox= ({ baseURL }) => {  
     const [requestList, setRequestList] = useState(null);
+    const [user, setUser] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
     const { currentUser } = useAuth();
 
     const loadUserData = (auth_id) => {
         axios.get(`${baseURL}/users/current/${auth_id}`)
             .then((response) => {
-                const userID = Object.keys(response.data)[0]
-                return axios.get(baseURL + '/requests-by-user/' + userID)
+                const apiUser = Object.values(response.data)[0]
+                apiUser.userID = Object.keys(response.data)[0]
+                setUser(apiUser);
+                return axios.get(baseURL + '/requests-by-user/' + apiUser.userID)
                     .then((response) => {
                         const apiRequestList = Object.values(response.data)
                         if (Object.keys(response.data)[0] !== 'message') {
@@ -39,6 +44,14 @@ const Inbox= ({ baseURL }) => {
         loadUserData(currentUser.uid)
     }, [])
 
+    const getDisplayName = (request) => {
+        if (user.userID !== request.owner) {
+            return request.owner_name
+        } else {
+            return request.sitter_name
+        }
+    }
+
     function showRequestList() {
         return(
             <Table className='request-list__table'>
@@ -48,6 +61,7 @@ const Inbox= ({ baseURL }) => {
                         <th>Chat</th>
                         <th>Date Requested</th>
                         <th>Status</th>
+                        <th>Rating</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,7 +70,7 @@ const Inbox= ({ baseURL }) => {
                             <tr key={request.request_id}>
                                 <td className='request-list__td--owner'>
                                     <Link to={`/users/${request.owner}`}>
-                                        {request.owner_name}
+                                        {getDisplayName(request)}
                                     </Link>
                                 </td>
                                 <td>
@@ -74,6 +88,9 @@ const Inbox= ({ baseURL }) => {
                                         {request.status}
                                     </Link>
                                 </td>
+                                <td>
+                                    <Rating baseURL={baseURL} requestID={request.request_id} user={request.owner} />
+                                </td>
                             </tr>
                         )
                     })}
@@ -82,7 +99,7 @@ const Inbox= ({ baseURL }) => {
         )
     }
 
-    if (!requestList) {
+    if (!requestList || !user) {
         return <div></div>;
     }
 
