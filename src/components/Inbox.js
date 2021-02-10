@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Alert, Table } from 'react-bootstrap';
+import { Alert, Table, Button } from 'react-bootstrap';
 import Moment from 'moment';
 import {Link} from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -88,8 +88,10 @@ const Inbox= ({ baseURL }) => {
 
     return (
         <div className='request-list'>
+            <h3>Conversations</h3>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
             {showRequestList()}
+            <Button variant='secondary w-90' as={Link} to={'/'}>Return to Dashboard</Button>
         </div>
     )
 }

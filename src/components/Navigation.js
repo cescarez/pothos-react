@@ -29,7 +29,7 @@ const Navigation = () => {
                     { currentUser &&
                         <Dropdown navbar>
                             <Dropdown.Toggle variant='primary' className='cog-icon' id='account-settings'>
-                                <HiOutlineCog />
+                                <HiOutlineCog className='cog'/>
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <Dropdown.Item href="/update-email">Update Email/Password</Dropdown.Item>
@@ -42,7 +42,7 @@ const Navigation = () => {
                         <HiOutlineChatAlt className='chat-icon'/>
                     </Nav.Link>
                     }
-                    <Nav.Link as={Link} to='/'>Pothos</Nav.Link>
+                    <Navbar.Brand as={Link} to='/'>Pothos</Navbar.Brand>
                 </Nav>
 
                 {currentUser ? 
