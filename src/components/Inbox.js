@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { Container, Alert, Table, Button } from 'react-bootstrap';
 import Moment from 'moment';
 import {Link} from 'react-router-dom';
@@ -44,7 +44,7 @@ const Inbox= ({ baseURL }) => {
         loadUserData(currentUser.uid)
     }, [])
 
-    const getDisplayName = (request) => {
+    const getOtherUserName = (request) => {
         if (user.userID !== request.owner) {
             return request.owner_name
         } else {
@@ -67,25 +67,47 @@ const Inbox= ({ baseURL }) => {
                     </thead>
                     <tbody>
                         {(requestList).map((request) => {
+                            const otherUserName = getOtherUserName(request);
                             return(
                                 <tr key={request.request_id}>
                                     <td className='request-list__td--owner'>
                                         <Link to={`/users/${request.owner}`}>
-                                            {getDisplayName(request)}
+                                            {otherUserName}
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to={`/requests/${request.request_id}`}>
+                                        <Link to={{
+                                            pathname: `/requests/${request.request_id}`,
+                                            state: {
+                                                baseURL: baseURL,
+                                                currentUserID: user.userID,
+                                                otherUserName: otherUserName
+                                            }
+                                        }}>
                                             Messages
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to={`/requests/${request.request_id}`}>
+                                        <Link to={{
+                                            pathname: `/requests/${request.request_id}`,
+                                            state: {
+                                                baseURL: baseURL,
+                                                currentUserID: user.userID,
+                                                otherUserName: otherUserName
+                                            }
+                                        }}>
                                             {Moment.parseZone(request.time_requested).local().format('LL LT')}
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to={`/requests/${request.request_id}`}>
+                                        <Link to={{
+                                            pathname: `/requests/${request.request_id}`,
+                                            state: {
+                                                baseURL: baseURL,
+                                                currentUserID: user.userID,
+                                                otherUserName: otherUserName 
+                                            }
+                                        }}>
                                             {request.status}
                                         </Link>
                                     </td>

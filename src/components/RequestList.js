@@ -6,12 +6,12 @@ import axios from 'axios';
 
 import './RequestList.css'
 
-const RequestList = ({ baseURL, userID }) => {  
+const RequestList = ({ baseURL, currentUserData }) => {  
     const [requestList, setRequestList] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
 
     const loadRequestList = () => {
-        axios.get(baseURL + '/requests-by-sitter/' + userID)
+        axios.get(baseURL + '/requests-by-sitter/' + currentUserData.userID)
             .then((response) => {
                 const apiRequestList = Object.values(response.data)
                 if (Object.keys(response.data)[0] !== 'message') {
@@ -46,7 +46,13 @@ const RequestList = ({ baseURL, userID }) => {
             })
     }
 
-
+    const getOtherUserName = (request) => {
+        if (currentUserData.userID !== request.owner) {
+            return request.owner_name
+        } else {
+            return request.sitter_name
+        }
+    }
 
     const showRequestList = () => {
         return(
@@ -56,7 +62,7 @@ const RequestList = ({ baseURL, userID }) => {
                         <th>Name</th>
                         <th>Chat</th>
                         <th>Request was Issued</th>
-                        {/* <th>Date Requested</th> */}
+                        <th>Date of Service</th>
                         <th>Status</th>
                         <th>Confirm</th>
                         <th>Decline</th>
@@ -64,6 +70,7 @@ const RequestList = ({ baseURL, userID }) => {
                 </thead>
                 <tbody>
                     {(requestList).map((request) => {
+                        const otherUserName = getOtherUserName(request);
                         return(
                             <tr key={request.request_id}>
                                 <td className='request-list__td--owner'>
@@ -72,17 +79,38 @@ const RequestList = ({ baseURL, userID }) => {
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/requests/${request.request_id}`}>
-                                        Messages
+                                    <Link to={{
+                                        pathname: `/requests/${request.request_id}`,
+                                        state: {
+                                            baseURL: baseURL,
+                                            currentUserID: currentUserData.userID,
+                                            otherUserName: otherUserName
+                                        }
+                                    }}>
+                                        {request.date_of_service}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/requests/${request.request_id}`}>
+                                    <Link to={{
+                                        pathname: `/requests/${request.request_id}`,
+                                        state: {
+                                            baseURL: baseURL,
+                                            currentUserID: currentUserData.userID,
+                                            otherUserName: otherUserName
+                                        }
+                                    }}>
                                         {Moment.parseZone(request.time_requested).local().format('LL LT')}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/requests/${request.request_id}`}>
+                                    <Link to={{
+                                        pathname: `/requests/${request.request_id}`,
+                                        state: {
+                                            baseURL: baseURL,
+                                            currentUserID: currentUserData.userID,
+                                            otherUserName: otherUserName
+                                        }
+                                    }}>
                                         {request.status}
                                     </Link>
                                 </td>

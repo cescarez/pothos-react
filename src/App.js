@@ -36,8 +36,7 @@ function App() {
                         <PrivateRoute exact path='/users/:id'>
                             <User baseURL={BASE_URL} />
                         </PrivateRoute>
-                        <PrivateRoute exact path='/requests/:id'>
-                            <ChatLog baseURL={BASE_URL} />
+                        <PrivateRoute exact path='/requests/:id' component={ChatLog}>
                         </PrivateRoute>
                         <PrivateRoute exact path='/sitters'>
                             <SitterList baseURL={BASE_URL} />
