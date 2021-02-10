@@ -8,13 +8,13 @@ export default function Footer() {
 
     return(
         <div className='main-footer'>
-            <Navbar bg='primary' sticky='bottom'>
+            <Navbar bg='primary' sticky='bottom' variant='dark'>
                 <Nav className='mr-auto'>
                     <Nav.Link className='footer-link' as={Link} to='/about'>About Us</Nav.Link>
                     <Nav.Link className='footer-link' as={Link} to='/contact'>Contact Us</Nav.Link>
                 </Nav>
                     <div className="footer-bottom">
-                        <p className='footer-text'>
+                        <p className='footer-text my-auto'>
                             &copy; {new Date().getFullYear()} Pothos, Inc | All Rights Reserved
                         </p>
                     </div>

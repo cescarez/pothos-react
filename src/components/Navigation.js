@@ -38,8 +38,10 @@ const Navigation = () => {
                         </Dropdown>
                     }
                     { currentUser &&
-                    <Nav.Link as={Link} to='/inbox'>
+                    <Nav.Link as={Link} to='/inbox' className='py-0'>
+                        <Button className='my-0'>
                         <HiOutlineChatAlt className='chat-icon'/>
+                        </Button>
                     </Nav.Link>
                     }
                     <Navbar.Brand as={Link} to='/'>Pothos</Navbar.Brand>
