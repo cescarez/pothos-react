@@ -46,7 +46,9 @@ function App() {
                         <Route exact path ='/forgot-password' component={ForgotPassword} />
                         <Route exact path='/about' component={AboutUs} />
                         <Route exact path='/contact' component={ContactUs} />
-                        <Route exact path='/inbox' component={Inbox} />
+                        <Route exact path='/inbox'>
+                            <Inbox baseURL={BASE_URL} />
+                        </Route>
                         <PrivateRoute exact path='/update-email'>
                             <UpdateEmailPassword />
                         </PrivateRoute>

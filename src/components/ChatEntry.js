@@ -8,9 +8,7 @@ const ChatEntry = ({baseURL, sender, sender_name, body, timeStamp, currentUserID
     if (sender === currentUserID) {
         senderClass = 'chat-entry remote'
     }
-    // if (sender === '-MT2hIkqpzEkQklrNzCz') {
-    //     senderClass = 'chat-entry remote'
-    // }
+
     return (
         <div className={senderClass}>
         <h2 className='entry-name'>{sender_name}</h2>
