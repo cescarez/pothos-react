@@ -106,7 +106,7 @@ const ChatLog = ({ baseURL }) => {
                 {chatComponents()}
             </div>
             <div className='chat-log'>
-                <Form onSubmit={handleSubmit}>
+                <Form className='chat-box' onSubmit={handleSubmit}>
                     <Form.Row>
                         <Col xs={10}>
                             <Form.Control type='text' name='message' value={body} onChange={handleChange}/>
@@ -116,8 +116,8 @@ const ChatLog = ({ baseURL }) => {
                         </Col>
                     </Form.Row>
                 </Form>
+                <Button className='inbox-button' variant='secondary w-100' as={Link} to={'/inbox'}>Return to Inbox</Button>
             </div>
-            <Button variant='secondary w-100' as={Link} to={'/'}>Return to Dashboard</Button>
         </Container>
     )
 }

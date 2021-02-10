@@ -37,9 +37,11 @@ const Navigation = () => {
                             </Dropdown.Menu>
                         </Dropdown>
                     }
+                    { currentUser &&
                     <Nav.Link as={Link} to='/inbox'>
                         <HiOutlineChatAlt className='chat-icon'/>
                     </Nav.Link>
+                    }
                     <Nav.Link as={Link} to='/'>Pothos</Nav.Link>
                 </Nav>
 
