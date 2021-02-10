@@ -56,24 +56,26 @@ const User = ({baseURL}) => {
             })
     }, [baseURL, userId])
 
-    const onSubmitRequestCallback = (date, services) => {
-        // event.preventDefault();
+    const onSubmitRequestCallback = (requestForm) => {
         let newRequestID = null;
-        axios.post(
-            baseURL + '/requests', 
-            {
-                owner: currentOwner.userID,
-                sitter: userId,
-                requested_date_of_service: date,
-                services: services
-            }
-        ).then((response) => {
+        let successfulRequest = false;
+        let successfulMessage = false;
+        let errorMessage = {variant: 'danger', message: 'There was an error with your request.'}
+        console.log(requestForm)
+
+        const newRequest = {
+            owner: currentOwner.userID,
+            sitter: userId,
+            date_of_service: Moment.utc(requestForm.date_of_service),
+            services: requestForm.services
+        }
+        axios.post(baseURL + '/requests', newRequest)
+        .then((response) => {
             newRequestID = response.data.request_id;
-            console.log(`newRequestID after assignment: ${newRequestID}`)
-            setError({variant:'success', message: 'Request successfully sent'});
+            successfulRequest = true;
         }).catch((error) => {
-            const message=`There was an error with your request. Request not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
-            setError({variant: 'danger', message: message});
+            const message = `Request was not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
+            errorMessage.message += message;
         })
 
         //not sure if this timeout is needed at all
@@ -82,17 +84,24 @@ const User = ({baseURL}) => {
                 baseURL + '/messages', 
                 {
                     sender: currentOwner.userID,
-                    message: 'Hey bud (pun intended), are you available for plant-sitting or repotting?',
+                    // message: `Hey bud (pun intended), are you available for ${requestForm.services.water_by_plant || requestForm.services.water_by_time ? 'watering' : ''}${(requestForm.services.water_by_time || requestForm.services.water_by_plant) && (requestForm.services.repot_by_plant || requestForm.services.repot_by_time) ? ' and ' : ''}${requestForm.services.repot_by_plant || requestForm.services.repot_by_time ? 'repotting' : ''} on ${Moment(requestForm.date_of_service)}?`,
+                    message: `Hey bud (pun intended), are you available for watering/plant sitting services on ${Moment(requestForm.date_of_service)}?`,
                     request_id: newRequestID
                 }
             ).then((response) => {
-                setError({variant:'success', message: 'Request message successfully sent'});
+                successfulMessage = true;
             }).catch((error) => {
-                const message=`There was an error with your request message. Message was not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
-                setError({variant: 'danger', message: message});
+                const message = `Message was not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
+                errorMessage.message += message;
             })
 
+            if (successfulRequest && successfulMessage) {
+                setError({variant:'success', message: 'Request was successfully sent.'});
+            } else {
+                setError(errorMessage);
+            }
         }, 250)
+
     }
 
     //write method to display the number of emoji stars as a rounding up? of the user rating
@@ -130,7 +139,7 @@ const User = ({baseURL}) => {
                                             ...props.style,
                                         }}
                                     >
-                                       <RequestForm onSubmitRequest={onSubmitRequestCallback} />
+                                       <RequestForm onSubmitRequest={onSubmitRequestCallback} sitterPrices={user.price_rate} />
                                     </div>
                                     )}
                                 </Overlay>
