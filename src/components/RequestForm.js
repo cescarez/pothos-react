@@ -22,7 +22,7 @@ export default function RequestForm({ onSubmitRequest, sitterPrices }) {
         if (newInput !== 'date_of_service') {
             newRequestForm.services = {
                 ...requestFormFields.services,
-                [newInput]: newValue,
+                [newInput]: parseInt(newValue),
             }
             newRequestForm.total_cost = serviceCostEstimate(newRequestForm.services);
         } else {
