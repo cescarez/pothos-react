@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Alert, Table, Button } from 'react-bootstrap';
+import { Container, Alert, Table, Button } from 'react-bootstrap';
 import Moment from 'moment';
 import {Link} from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -54,48 +54,50 @@ const Inbox= ({ baseURL }) => {
 
     function showRequestList() {
         return(
-            <Table className='request-list__table'>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Chat</th>
-                        <th>Date Requested</th>
-                        <th>Status</th>
-                        <th>Rating</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {(requestList).map((request) => {
-                        return(
-                            <tr key={request.request_id}>
-                                <td className='request-list__td--owner'>
-                                    <Link to={`/users/${request.owner}`}>
-                                        {getDisplayName(request)}
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/requests/${request.request_id}`}>
-                                        Messages
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/requests/${request.request_id}`}>
-                                        {Moment(request.time_requested).format('MM-DD-YYYY')}
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/requests/${request.request_id}`}>
-                                        {request.status}
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Rating baseURL={baseURL} requestID={request.request_id} user={request.owner} />
-                                </td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </Table>
+            <Container fluid>
+                <Table className='request-list__table'>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Time of Request</th>
+                            <th>Requested Date of Service</th>
+                            <th>Request Status</th>
+                            <th>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {(requestList).map((request) => {
+                            return(
+                                <tr key={request.request_id}>
+                                    <td className='request-list__td--owner'>
+                                        <Link to={`/users/${request.owner}`}>
+                                            {getDisplayName(request)}
+                                        </Link>
+                                    </td>
+                                    <td>
+                                        <Link to={`/requests/${request.request_id}`}>
+                                            Messages
+                                        </Link>
+                                    </td>
+                                    <td>
+                                        <Link to={`/requests/${request.request_id}`}>
+                                            {Moment.parseZone(request.time_requested).local().format('LL LT')}
+                                        </Link>
+                                    </td>
+                                    <td>
+                                        <Link to={`/requests/${request.request_id}`}>
+                                            {request.status}
+                                        </Link>
+                                    </td>
+                                    <td>
+                                        <Rating baseURL={baseURL} requestID={request.request_id} user={request.owner} />
+                                    </td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </Table>
+            </Container>
         )
     }
 
