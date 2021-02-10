@@ -57,11 +57,6 @@ const User = ({baseURL}) => {
     }, [baseURL, userId])
 
     const onSubmitRequestCallback = (requestForm) => {
-        let newRequestID = null;
-        let successfulRequest = false;
-        let successfulMessage = false;
-        console.log(requestForm)
-
         const newRequest = {
             owner: currentOwner.userID,
             sitter: userId,
@@ -70,30 +65,11 @@ const User = ({baseURL}) => {
         }
         axios.post(baseURL + '/requests', newRequest)
         .then((response) => {
-            newRequestID = response.data.request_id;
             setError({variant: 'success', message: 'Request successfully sent.'})
         }).catch((error) => {
             const message = `There was an error with your request. Request was not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
             setError({variant: 'danger', message: message})
         })
-
-        //not sure if this timeout is needed at all
-        setTimeout(() => {
-            axios.post(
-                baseURL + '/messages', 
-                {
-                    sender: currentOwner.userID,
-                    message: `Hey bud (pun intended), are you available for watering/plant sitting services on ${Moment(requestForm.date_of_service)}?`,
-                    request_id: newRequestID
-                }
-            ).then((response) => {
-                setError({variant: 'success', message: 'Request message successfully sent.'})
-            }).catch((error) => {
-                const message = `There was an error with your request. Request message was not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
-                setError({variant: 'danger', message: message})
-            })
-        }, 250)
-
     }
 
     //write method to display the number of emoji stars as a rounding up? of the user rating
