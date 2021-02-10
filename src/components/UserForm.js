@@ -194,7 +194,7 @@ export default function UserForm({ baseURL, setDashboardUser }) {
                                 </Form.Group>
                                 <Form.Group as={Col}>
                                     <Form.Label>Phone Number</Form.Label>
-                                    <Form.Control type="text" name='phone_number' value={user.phone_number} onChange={handleChange} />
+                                    <Form.Control type="tel" name='phone_number' value={user.phone_number} onChange={handleChange} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder='###-###-####'/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>

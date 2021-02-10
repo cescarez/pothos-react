@@ -1,16 +1,19 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {useRouteMatch, Link} from 'react-router-dom';
-import {Card, Button, Container, Row, Col, Alert} from 'react-bootstrap';
+import {Card, Button, Container, Row, Col, Alert, Overlay} from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import Moment from 'moment';
 import axios from 'axios';
-import pothosPic from '../images/pothos_large.png'
+import pothosPic from '../images/pothos_large.png';
+import RequestForm from './RequestForm';
 
 const User = ({baseURL}) => {
     const { currentUser } = useAuth();
     const [user, setUser] = useState({});
     const [error, setError] = useState('');
     const [currentOwner, setCurrentOwner] = useState('');
+    const [showRequestPopever, setShowRequestPopover] = useState(false);
+    const target = useRef(null);
 
     const match = useRouteMatch('/users/:id');
     const userId = match.params.id
@@ -53,44 +56,25 @@ const User = ({baseURL}) => {
             })
     }, [baseURL, userId])
 
-    const submitRequest = (event) => {
-        event.preventDefault();
-        let newRequestID = null;
-        axios.post(
-            baseURL + '/requests', 
-            {
-                owner: currentOwner.userID,
-                sitter: userId
-            }
-        ).then((response) => {
-            newRequestID = response.data.request_id;
-            console.log(`newRequestID after assignment: ${newRequestID}`)
-            setError({variant:'success', message: 'Request successfully sent'});
+    const onSubmitRequestCallback = (requestForm) => {
+        const newRequest = {
+            owner: currentOwner.userID,
+            sitter: userId,
+            date_of_service: Moment.utc(requestForm.date_of_service),
+            services: requestForm.services
+        }
+        axios.post(baseURL + '/requests', newRequest)
+        .then((response) => {
+            setError({variant: 'success', message: 'Request successfully sent.'})
         }).catch((error) => {
-            const message=`There was an error with your request. Request not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
-            setError({variant: 'danger', message: message});
+            const message = `There was an error with your request. Request was not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
+            setError({variant: 'danger', message: message})
         })
-
-        //not sure if this timeout is needed at all
-        setTimeout(() => {
-            axios.post(
-                baseURL + '/messages', 
-                {
-                    sender: currentOwner.userID,
-                    message: 'Hey bud (pun intended), are you available for plant-sitting or repotting?',
-                    request_id: newRequestID
-                }
-            ).then((response) => {
-                setError({variant:'success', message: 'Request message successfully sent'});
-            }).catch((error) => {
-                const message=`There was an error with your request message. Message was not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
-                setError({variant: 'danger', message: message});
-            })
-
-        }, 250)
     }
 
     //write method to display the number of emoji stars as a rounding up? of the user rating
+
+
 
     const showUserData = () => {
         return (
@@ -104,11 +88,30 @@ const User = ({baseURL}) => {
                                 <Card.Subtitle className='text-muted font-weight-lighter'>{user.username}</Card.Subtitle>
                             </Col>
                             { user.sitter &&
+                                <>
                                 <Col xs='auto'>
-                                    <Button variant='outline-secondary btn-sm' onClick={submitRequest}>
+                                    <Button variant='outline-secondary btn-sm' ref={target} onClick={() => setShowRequestPopover(!showRequestPopever)}>
                                         Send Request
                                     </Button>
                                 </Col>
+                                <Overlay target={target.current} show={showRequestPopever} placement="left">
+                                    {({ placement, arrowProps, show: _show, popper, ...props }) => (
+                                    <div
+                                        {...props}
+                                        style={{
+                                            // backgroundColor: 'rgba(108, 195, 213, 0.95)', //info
+                                            backgroundColor: 'rgba(243, 150, 154, 0.90)', //secondary
+                                            padding: '2px 0px 2px',
+                                            color: 'white',
+                                            borderRadius: 6,
+                                            ...props.style,
+                                        }}
+                                    >
+                                       <RequestForm onSubmitRequestCallback={onSubmitRequestCallback} sitterPrices={user.price_rate} />
+                                    </div>
+                                    )}
+                                </Overlay>
+                                </>
                             }
                         </Row>
                     </Card.Header>
