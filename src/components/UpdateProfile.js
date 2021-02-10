@@ -159,21 +159,25 @@ export default function UpdateProfile({baseURL}) {
                         <Form onSubmit={handleSubmit}>
                             <h2 className='text-center mb-4'>Update User Profile</h2>
                             <Form.Row>
+                                <Form.Group as={Col}></Form.Group>
                                 <Form.Group as={Col} >
                                     <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck} checked={user.sitter ? true : false } />
                                 </Form.Group>
                                 <Form.Group as={Col} >
                                     <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck} checked={user.owner ? true : false } />
                                 </Form.Group>
+                                <Form.Group as={Col}></Form.Group>
                             </Form.Row>
-                            <Form.Group>
-                                <Form.Label>Full Name</Form.Label>
-                                <Form.Control type="text" name='full_name' value={user.full_name} onChange={handleChange} />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Phone Number</Form.Label>
-                                <Form.Control type = "text" name='phone_number' value={user.phone_number} onChange={handleChange} />
-                            </Form.Group>
+                            <Form.Row>
+                                <Form.Group as={Col}>
+                                    <Form.Label>Full Name</Form.Label>
+                                    <Form.Control type="text" name='full_name' value={user.full_name} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Phone Number</Form.Label>
+                                    <Form.Control type="tel" name='phone_number' value={user.phone_number} onChange={handleChange} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder='###-###-####'/>
+                                </Form.Group>
+                            </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridAddress1" > 
                                     <Form.Label>Street</Form.Label>

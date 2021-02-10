@@ -16,6 +16,8 @@ import Footer from './components/Footer'
 import ChatLog from './components/ChatLog'
 import AboutUs from './components/AboutUs'
 import ContactUs from './components/ContactUs'
+import Inbox from './components/Inbox'
+import Gallery from './components/Gallery'
 
 import './App.css';
 import OwnerDashboard from './components/OwnerDashboard';
@@ -45,6 +47,10 @@ function App() {
                         <Route exact path ='/forgot-password' component={ForgotPassword} />
                         <Route exact path='/about' component={AboutUs} />
                         <Route exact path='/contact' component={ContactUs} />
+                        <Route exact path='/gallery' component={Gallery} />
+                        <Route exact path='/inbox'>
+                            <Inbox baseURL={BASE_URL} />
+                        </Route>
                         <PrivateRoute exact path='/update-email'>
                             <UpdateEmailPassword />
                         </PrivateRoute>

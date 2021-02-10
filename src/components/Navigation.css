@@ -1,4 +1,4 @@
-.cog-icon, .footer-text {
+.cog-icon, .chat-icon, .footer-text, .footer-link {
     color: white;
     opacity: 0.6;
 }
@@ -8,4 +8,9 @@
 }
 .caret-off::after {
     display: none;
+}
+
+.cog, .chat-icon{
+    height: 25px;
+    width: 25px;
 }

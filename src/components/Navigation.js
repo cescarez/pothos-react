@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Navbar, Nav, Button, Alert, Dropdown } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import {useHistory, Link} from 'react-router-dom';
-import { HiOutlineCog } from 'react-icons/hi';
+import { HiOutlineCog, HiOutlineChatAlt } from 'react-icons/hi';
 
 import './Navigation.css';
 
@@ -29,7 +29,7 @@ const Navigation = () => {
                     { currentUser &&
                         <Dropdown navbar>
                             <Dropdown.Toggle variant='primary' className='cog-icon' id='account-settings'>
-                                <HiOutlineCog />
+                                <HiOutlineCog className='cog'/>
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <Dropdown.Item href="/update-email">Update Email/Password</Dropdown.Item>
@@ -37,7 +37,14 @@ const Navigation = () => {
                             </Dropdown.Menu>
                         </Dropdown>
                     }
-                    <Nav.Link as={Link} to='/'>Home</Nav.Link>
+                    { currentUser &&
+                    <Nav.Link as={Link} to='/inbox' className='py-0'>
+                        <Button className='my-0'>
+                        <HiOutlineChatAlt className='chat-icon'/>
+                        </Button>
+                    </Nav.Link>
+                    }
+                    <Navbar.Brand as={Link} to='/'>Pothos</Navbar.Brand>
                 </Nav>
 
                 {currentUser ? 
