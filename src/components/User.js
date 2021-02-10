@@ -60,7 +60,6 @@ const User = ({baseURL}) => {
         let newRequestID = null;
         let successfulRequest = false;
         let successfulMessage = false;
-        let errorMessage = {variant: 'danger', message: 'There was an error with your request.'}
         console.log(requestForm)
 
         const newRequest = {
@@ -72,10 +71,10 @@ const User = ({baseURL}) => {
         axios.post(baseURL + '/requests', newRequest)
         .then((response) => {
             newRequestID = response.data.request_id;
-            successfulRequest = true;
+            setError({variant: 'success', message: 'Request successfully sent.'})
         }).catch((error) => {
-            const message = `Request was not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
-            errorMessage.message += message;
+            const message = `There was an error with your request. Request was not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
+            setError({variant: 'danger', message: message})
         })
 
         //not sure if this timeout is needed at all
@@ -84,22 +83,15 @@ const User = ({baseURL}) => {
                 baseURL + '/messages', 
                 {
                     sender: currentOwner.userID,
-                    // message: `Hey bud (pun intended), are you available for ${requestForm.services.water_by_plant || requestForm.services.water_by_time ? 'watering' : ''}${(requestForm.services.water_by_time || requestForm.services.water_by_plant) && (requestForm.services.repot_by_plant || requestForm.services.repot_by_time) ? ' and ' : ''}${requestForm.services.repot_by_plant || requestForm.services.repot_by_time ? 'repotting' : ''} on ${Moment(requestForm.date_of_service)}?`,
                     message: `Hey bud (pun intended), are you available for watering/plant sitting services on ${Moment(requestForm.date_of_service)}?`,
                     request_id: newRequestID
                 }
             ).then((response) => {
-                successfulMessage = true;
+                setError({variant: 'success', message: 'Request message successfully sent.'})
             }).catch((error) => {
-                const message = `Message was not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
-                errorMessage.message += message;
+                const message = `There was an error with your request. Request message was not sent. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
+                setError({variant: 'danger', message: message})
             })
-
-            if (successfulRequest && successfulMessage) {
-                setError({variant:'success', message: 'Request was successfully sent.'});
-            } else {
-                setError(errorMessage);
-            }
         }, 250)
 
     }
