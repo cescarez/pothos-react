@@ -23,9 +23,9 @@ const Navigation = () => {
     }
 
     return (
-        <div className='navigation'>
+        <div className='navigation d-flex'>
             <Navbar fixed='top' bg='primary' variant='dark' >
-                <Nav>
+                <Container className='d-inline-flex justify-content-start'>
                     { currentUser &&
                         <Dropdown navbar>
                             <Dropdown.Toggle variant='primary' className='cog-icon' id='account-settings'>
@@ -46,14 +46,18 @@ const Navigation = () => {
                             </Button>
                         </Nav.Link>
                     }
+                </Container>
+                <Container className='d-inline-flex justify-content-center'>
                     <Navbar.Brand as={Link} to='/'>Pothos</Navbar.Brand>
-                </Nav>
-                {currentUser &&
-                    <Button className='checkout-button' variant='secondary'>Check Out</Button>
-                }
-                {!currentUser &&
-                    <Button variant='secondary' as={Link} to='/signup'>Sign Up</Button>
-                } 
+                </Container>
+                <Container className='d-inline-flex justify-content-end'>
+                    {currentUser &&
+                        <Button className='checkout-button' variant='secondary'>Check Out</Button>
+                    }
+                    {!currentUser &&
+                        <Button variant='secondary' as={Link} to='/signup'>Sign Up</Button>
+                    } 
+                </Container>
             </Navbar>
             {error && <Alert variant='danger'>{error}</Alert>}
         </div>
