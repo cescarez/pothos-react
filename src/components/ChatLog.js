@@ -120,7 +120,7 @@ const ChatLog = ({ location }) => {
                             <Form.Control type='text' name='message' value={body} onChange={handleChange}/>
                         </Col>
                         <Col>
-                            <UploadForm requestID={requestID} sender={currentUserID} baseURL={baseURL}/>
+                            <UploadForm loadMessageList={loadMessageList} requestID={requestID} sender={currentUserID} baseURL={baseURL}/>
                         </Col>
                         <Col>
                             <Button type='submit' value='submit'>Submit</Button>
