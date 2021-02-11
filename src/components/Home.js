@@ -3,12 +3,12 @@ import { useAuth } from '../contexts/AuthContext';
 import Dashboard from './Dashboard'
 import Login from './Login'
 
-const Home = ({baseURL}) => {
+const Home = ({baseURL, maxRating}) => {
   const { currentUser } = useAuth();
     return (
         <div>
             { currentUser ? 
-                <Dashboard baseURL={baseURL} /> 
+                <Dashboard baseURL={baseURL} maxRating={maxRating} /> 
             :
                 <Login />
             }

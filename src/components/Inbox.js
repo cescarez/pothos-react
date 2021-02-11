@@ -7,7 +7,8 @@ import axios from 'axios';
 
 import Rating from './Rating';
 
-const Inbox= ({ baseURL }) => {  
+
+const Inbox= ({ baseURL, maxRating }) => {  
     const [requestList, setRequestList] = useState(null);
     const [user, setUser] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
@@ -106,7 +107,7 @@ const Inbox= ({ baseURL }) => {
                                         </Link>
                                     </td>
                                     <td className='align-middle'>
-                                        <Rating baseURL={baseURL} request={request} currentUserData={user} />
+                                        <Rating baseURL={baseURL} request={request} currentUserData={user} maxRating={maxRating}/>
                                     </td>
                                 </tr>
                             )
