@@ -1,43 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { useRouteMatch, Link } from 'react-router-dom'
-import { Container, Button, Form, Col } from 'react-bootstrap';
+import { Container, Button, Form, Col, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import ChatEntry from './ChatEntry';
 import './ChatLog.css';
 
-const ChatLog = ({ baseURL }) => {
+const ChatLog = ({ location }) => {
     const [messageList, setMessageList] = useState(null);
     const [error, setError] = useState('');
+    const { currentUser } = useAuth();
+    // const [user, setUser] = useState(null);
+    const [body, setBody] = useState('')
     const match = useRouteMatch('/requests/:id');
     const requestID = match.params.id;
-    const { currentUser } = useAuth();
-    const [user, setUser] = useState(null);
-    const [body, setBody] = useState('')
-
-    const loadUserData = (auth_id) => {
-        if (!user) {
-            axios.get(`${baseURL}/users/current/${auth_id}`)
-                .then((response) => {
-                    const apiUser = Object.values(response.data)[0]
-                    if (Object.keys(response.data)[0] !== 'message') {
-                        apiUser.userID = Object.keys(response.data)[0]
-                        setUser(apiUser);
-                    } else {
-                        setError({variant: 'warning', message: apiUser})
-                    }
-                })
-                .catch((error) => {
-                    const message=`There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
-                    setError({variant: 'danger', message: message});
-                    console.log(message);
-                })
-        }
-    }
-
-    useEffect(() => {
-        loadUserData(currentUser.uid);
-    }, [])
+    const {baseURL, currentUserID, otherUserName } = location.state;
 
     const loadMessageList = () => {
         axios.get(baseURL + '/messages-by-request/' + requestID)
@@ -69,7 +46,7 @@ const ChatLog = ({ baseURL }) => {
                         sender_name={messages.sender_name} 
                         body={messages.message} 
                         timeStamp={messages.timestamp}
-                        currentUserID={user.userID} />
+                        currentUserID={currentUserID} />
                     );
                 })
             )
@@ -85,7 +62,7 @@ const ChatLog = ({ baseURL }) => {
         event.preventDefault();
         axios.post(baseURL + '/messages', {
             "message": body,
-            "sender": user.userID,
+            "sender": currentUserID,
             "request_id": requestID
         })
             .then(() => {
@@ -101,7 +78,8 @@ const ChatLog = ({ baseURL }) => {
 
     return(
         <Container>
-            <h2>Chat Log</h2>
+            { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
+            <h2>Chat with {otherUserName}</h2>
             <div className='chat-log'>
                 {chatComponents()}
             </div>
@@ -116,7 +94,11 @@ const ChatLog = ({ baseURL }) => {
                         </Col>
                     </Form.Row>
                 </Form>
-                <Button className='inbox-button' variant='secondary w-100' as={Link} to={'/inbox'}>Return to Inbox</Button>
+                <Container className='d-inline-flex justify-content-around'>
+                        <Button className='inbox-button' variant='secondary' as={Link} to={'/'}>Return to Dashboard</Button>
+                        <Button className='inbox-button' variant='secondary' as={Link} to={'/inbox'}>Return to Inbox</Button>
+                </Container>
+
             </div>
         </Container>
     )
