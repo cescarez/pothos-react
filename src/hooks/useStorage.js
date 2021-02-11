@@ -17,11 +17,20 @@ const useStorage = (file, requestID, sender, baseURL) => {
             setError(err);
         }, async () => {
             const url = await storageRef.getDownloadURL();
-            axios.post(baseURL + '/photos',{
-                "photo_url": url,
-                "sender": sender,
-                "request_id": requestID
-            }).then((response) => {
+            axios.all([
+                axios.post(baseURL + '/photos',{
+                    "photo_url": url,
+                    "request_id": requestID
+                }),
+                axios.post(baseURL + '/messages', {
+                    "message": "",
+                    "photo": true,
+                    "photo_url": url,
+                    "request_id": requestID,
+                    "sender": sender
+                })
+            ])
+            .then((response) => {
                 console.log(response);
             }).catch((error) => {
                 console.log(error)
