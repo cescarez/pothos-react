@@ -3,20 +3,21 @@ import {Row} from 'react-bootstrap';
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
 
-const RatingStars = ({currentRating, maxRating}) => {
+const RatingStars = ({currentRating, maxRating, disabled}) => {
 
     const displayRating = () => {
         const ratingIcons = []
 
         for(let i = 0; i < currentRating; i++){
             ratingIcons.push(
-                <AiFillStar/> 
+                <AiFillStar opacity={disabled ? '0.3' : '1'} /> 
             )
         }
         if (currentRating < maxRating) {
             for(let i = currentRating; i < maxRating; i++){
                 ratingIcons.push(
-                    <AiOutlineStar/> 
+                    <AiOutlineStar opacity={disabled ? '0.4' : '1'} /> 
+                    // <AiOutlineStar /> 
                 )
             }
         }
