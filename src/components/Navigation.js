@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Navbar, Nav, Button, Alert, Dropdown } from 'react-bootstrap';
+import { Navbar, Nav, Button, Alert, Dropdown, Container, Row } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import {useHistory, Link} from 'react-router-dom';
 import { HiOutlineCog, HiOutlineChatAlt } from 'react-icons/hi';
@@ -24,8 +24,8 @@ const Navigation = () => {
 
     return (
         <div className='navigation'>
-            <Navbar fixed='top' bg='primary' variant='dark'>
-                <Nav className='mr-auto'>
+            <Navbar fixed='top' bg='primary' variant='dark' >
+                <Nav>
                     { currentUser &&
                         <Dropdown navbar>
                             <Dropdown.Toggle variant='primary' className='cog-icon' id='account-settings'>
@@ -34,22 +34,24 @@ const Navigation = () => {
                             <Dropdown.Menu>
                                 <Dropdown.Item href="/update-email">Update Email/Password</Dropdown.Item>
                                 <Dropdown.Item href="/update-profile">Update Profile</Dropdown.Item>
+                                <Dropdown.Divider />
+                                <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                     }
                     { currentUser &&
-                    <Nav.Link as={Link} to='/inbox' className='py-0'>
-                        <Button className='my-0'>
-                        <HiOutlineChatAlt className='chat-icon'/>
-                        </Button>
-                    </Nav.Link>
+                        <Nav.Link as={Link} to='/inbox' className='py-0'>
+                            <Button>
+                                <HiOutlineChatAlt className='chat-icon'/>
+                            </Button>
+                        </Nav.Link>
                     }
                     <Navbar.Brand as={Link} to='/'>Pothos</Navbar.Brand>
                 </Nav>
+                {currentUser &&
                     <Button className='checkout-button' variant='secondary'>Check Out</Button>
-
-                {currentUser ? 
-                    <Button variant='secondary' as={Link} onClick={handleLogout}>Log Out</Button> : 
+                }
+                {!currentUser &&
                     <Button variant='secondary' as={Link} to='/signup'>Sign Up</Button>
                 } 
             </Navbar>
