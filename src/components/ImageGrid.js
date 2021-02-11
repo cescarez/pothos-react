@@ -4,7 +4,7 @@ import axios from 'axios'
 // import useFirestore from '../hooks/useFirestore';
 import './Gallery.css';
 
-const ImageGrid = () => {
+const ImageGrid = ({ setSelectedImg }) => {
     // const { docs } = useFirestore('images');
     const match = useRouteMatch('/gallery/:id');
     const requestID = match.params.id;
@@ -30,7 +30,7 @@ const ImageGrid = () => {
     return(
         <div className='img-grid'>
             { photoList && photoList.map(photo => (
-                <div className='img-wrap' key={photo.id}>
+                <div className='img-wrap' key={photo.id} onClick={() => setSelectedImg(photo.photo_url)}>
                     <img src={photo.photo_url} alt='plant pic' />
                 </div>
             ))}
