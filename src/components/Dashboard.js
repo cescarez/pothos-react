@@ -63,9 +63,9 @@ const Dashboard = ({baseURL}) => {
                 </Container>
                 { user ? 
                     <div>
-                        {error.message ?
+                        {error.message &&
                             <Alert variant={error.variant}>{error.message}</Alert> 
-                        : null}
+                        }
                         <Tabs border='primary'>
                             {user.owner  &&
                                 <Tab eventKey='ownerDashboard' title='Owner Dashboard'>

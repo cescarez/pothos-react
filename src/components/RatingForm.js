@@ -1,63 +1,22 @@
-import React, {useState, useEffect} from 'react';
-import {Container, Image, Row, Col} from 'react-bootstrap';
-import axios from 'axios';
-// import selectedIcon from '../images/rating_icons/green_leaf.png';
-// import unselectedIcon from '../images/rating_icons/grey_leaf.png';
+import React, {useState} from 'react';
+import {Row} from 'react-bootstrap';
 
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
-const RatingForm = ({baseURL, request, currentUserData, max_rating}) => {
-    const selectedIcon = AiFillStar
-    const unselectedIcon = AiOutlineStar
-    // const [rating, setRating] = useState(0);
-    // const [displayedRating, setDisplayedRating] = useState(0);
-    const [currentUserRole, setCurrentUserRole] = useState(null);
-    const [ratingForm, setRatingForm] = useState({displayedRating: 1, currentRating: 1})
-
-    useEffect(() => {
-        if(currentUserData.userID === request.owner) {
-            setCurrentUserRole('owner');
-        } else {
-            setCurrentUserRole('sitter');
-        }
-    }, [ratingForm])
-
-    const onStarClick = (newRating) => {
-        // const newRating = parseInt(event.target.name)
-        console.log(newRating)
-        setRatingForm({...ratingForm, currentRating: newRating})
-    }
-
-
-    const onStarHover = (newRating) => {
-        // const newRating = parseInt(event.target.name)
-        console.log(newRating)
-        setRatingForm({...ratingForm, displayedRating: newRating})
-        displayRating()
-    }
-
-
-    const onRatingSubmit = () => {
-        axios.put(baseURL + '/request', request.request_id)
-        .then ((response) => {
-
-        })
-        .catch((error) => {
-
-        })
-    }
+const RatingForm = ({baseURL, request, currentUserData, max_rating, onRatingSubmit}) => {
+    const [currentRating, setCurrentRating] = useState(0);
 
     const displayRating = () => {
         const ratingIcons = []
-        for(let i = 0; i < ratingForm.displayedRating; i++){
+        for(let i = 0; i < currentRating; i++){
             ratingIcons.push(
-                <AiFillStar onMouseOver={()=>onStarHover(i+1)} onMouseLeave={(()=>displayRating())} onClick={()=>onStarClick(i+1)} /> 
+                <AiFillStar onMouseOver={()=>setCurrentRating(i+1)} onMouseLeave={(()=>setCurrentRating(0))} onClick={()=>onRatingSubmit(currentRating)} color='gold' /> 
             )
         }
-        if (ratingForm.displayedRating < max_rating) {
-            for(let i = ratingForm.displayedRating; i < max_rating; i++){
+        if (currentRating < max_rating) {
+            for(let i = currentRating; i < max_rating; i++){
                 ratingIcons.push(
-                    <AiOutlineStar onMouseOver={()=>onStarHover(i+1)} onMouseLeave={(()=>displayRating())} onClick={()=>onStarClick(i+1)} /> 
+                    <AiOutlineStar onMouseOver={()=>setCurrentRating(i+1)} onMouseLeave={(()=>setCurrentRating(0))} onClick={()=>onRatingSubmit(currentRating)} /> 
                 )
             }
         }
