@@ -6,15 +6,13 @@ import axios from 'axios';
 
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
-const MAX_RATING = 4;
-
-const RatingForm = ({baseURL, request, currentUserData}) => {
+const RatingForm = ({baseURL, request, currentUserData, max_rating}) => {
     const selectedIcon = AiFillStar
     const unselectedIcon = AiOutlineStar
     // const [rating, setRating] = useState(0);
     // const [displayedRating, setDisplayedRating] = useState(0);
     const [currentUserRole, setCurrentUserRole] = useState(null);
-    const [ratingForm, setRatingForm] = useState({displayedRating: 0, currentRating: 0})
+    const [ratingForm, setRatingForm] = useState({displayedRating: 1, currentRating: 1})
 
     useEffect(() => {
         if(currentUserData.userID === request.owner) {
@@ -22,21 +20,19 @@ const RatingForm = ({baseURL, request, currentUserData}) => {
         } else {
             setCurrentUserRole('sitter');
         }
-        displayRating();
     }, [ratingForm])
 
     const onStarClick = (newRating) => {
         // const newRating = parseInt(event.target.name)
         console.log(newRating)
-        setRatingForm({...ratingForm, displayedRating: newRating})
-        // displayRating()
+        setRatingForm({...ratingForm, currentRating: newRating})
     }
 
 
     const onStarHover = (newRating) => {
         // const newRating = parseInt(event.target.name)
         console.log(newRating)
-        setRatingForm({...ratingForm, currentRating: newRating})
+        setRatingForm({...ratingForm, displayedRating: newRating})
         displayRating()
     }
 
@@ -55,13 +51,13 @@ const RatingForm = ({baseURL, request, currentUserData}) => {
         const ratingIcons = []
         for(let i = 0; i < ratingForm.displayedRating; i++){
             ratingIcons.push(
-                <AiFillStar onHover={()=>onStarHover(i+1)} onClick={()=>onStarClick(i+1)} /> 
+                <AiFillStar onMouseOver={()=>onStarHover(i+1)} onMouseLeave={(()=>displayRating())} onClick={()=>onStarClick(i+1)} /> 
             )
         }
-        if (ratingForm.displayedRating < MAX_RATING) {
-            for(let i = ratingForm.displayedRating; i < MAX_RATING; i++){
+        if (ratingForm.displayedRating < max_rating) {
+            for(let i = ratingForm.displayedRating; i < max_rating; i++){
                 ratingIcons.push(
-                    <AiOutlineStar onHover={()=>onStarHover(i+1)} onClick={()=>onStarClick(i+1)} /> 
+                    <AiOutlineStar onMouseOver={()=>onStarHover(i+1)} onMouseLeave={(()=>displayRating())} onClick={()=>onStarClick(i+1)} /> 
                 )
             }
         }

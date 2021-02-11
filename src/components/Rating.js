@@ -56,7 +56,7 @@ const Rating = ({baseURL, request, currentUserData}) => {
 
     return (
         <Row className='justify-content-center'>
-            {rating ? displayRating() : <RatingForm baseURL={baseURL} request={request} currentUserData={currentUserData} />}
+            {rating ? displayRating() : <RatingForm baseURL={baseURL} request={request} currentUserData={currentUserData} max_rating={MAX_RATING} />}
         </Row>
     )
 }
