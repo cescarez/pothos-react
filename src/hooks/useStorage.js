@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { projectStorage } from '../firebase';
 import axios from 'axios';
 
-const useStorage = (file, requestID, sender, baseURL) => {
+const useStorage = (file, requestID, sender, baseURL, loadMessageList) => {
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState(null);
     const [url, setUrl] = useState(null);
@@ -31,6 +31,7 @@ const useStorage = (file, requestID, sender, baseURL) => {
                 })
             ])
             .then((response) => {
+                loadMessageList(baseURL);
                 console.log(response);
             }).catch((error) => {
                 console.log(error)

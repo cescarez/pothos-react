@@ -31,7 +31,7 @@ const Message = ({ message }) => (
   </section>
 );
 
-export default function App() {
+export default function Stripe() {
   const [message, setMessage] = useState("");
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout

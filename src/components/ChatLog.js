@@ -20,6 +20,7 @@ const ChatLog = ({ location }) => {
     const [otherUserName, setOtherUserName] = useState();
 
     const loadMessageList = (someURL) => {
+        console.log(someURL);
         axios.get(someURL + '/messages-by-request/' + requestID)
             .then((response) => {
                 const apiMessages = Object.values(response.data)
@@ -75,11 +76,13 @@ const ChatLog = ({ location }) => {
         axios.post(baseURL + '/messages', {
             "message": body,
             "sender": currentUserID,
-            "request_id": requestID
+            "request_id": requestID,
+            "photo_url": '',
+            "photo": false
         })
             .then(() => {
                 setBody('')
-                loadMessageList();
+                loadMessageList(baseURL);
             })
             .catch((error) => {
                 const message = `There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
@@ -117,7 +120,7 @@ const ChatLog = ({ location }) => {
                             <Form.Control type='text' name='message' value={body} onChange={handleChange}/>
                         </Col>
                         <Col>
-                            <UploadForm requestID={requestID} sender={currentUserID} baseURL={baseURL}/>
+                            <UploadForm loadMessageList={loadMessageList} requestID={requestID} sender={currentUserID} baseURL={baseURL}/>
                         </Col>
                         <Col>
                             <Button type='submit' value='submit'>Submit</Button>
