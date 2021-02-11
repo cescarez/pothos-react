@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { Button, Alert, Container } from 'react-bootstrap';
+import { Button, Alert, Container, Row, Col } from 'react-bootstrap';
 
 import SitterMap from './SitterMap';
 import SitterList from './SitterList';
@@ -38,11 +38,16 @@ const OwnerDashboard = ({ baseURL, currentUserData }) => {
     return (
         <Container className='px-0' fluid>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>} 
+            {currentUserData.owner_rating &&
+                <Container className='text-right'>
+                    {`Current Rating: ${currentUserData.owner_rating}`}
+                </Container>
+            }
             { showMap ? 
                 <div>
                     <Button variant='outline-secondary' onClick={onViewMapClick}>Hide Map</Button>
                     <SitterMap sitterList={sitterList} currentUserData={currentUserData} />
-                </div> 
+                </div>
             : <Button variant='outline-secondary' onClick={onViewMapClick}>View Map</Button>
             }            
             <SitterList sitterList={sitterList} currentUserData={currentUserData}/>

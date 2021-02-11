@@ -15,7 +15,7 @@ const SitterList = ({ sitterList, currentUserData }) => {
                         <th>Name</th>
                         <th>Address</th>
                         <th>Phone Number</th>
-                        <th>Rating</th>
+                        <th>Sitter Rating</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,7 +40,7 @@ const SitterList = ({ sitterList, currentUserData }) => {
                                     </td>
                                     <td>
                                         <Link to={`/users/${sitter.userID}`}>
-                                            { sitter.rating ? sitter.rating : 'N/A'}
+                                            { sitter.sitter_rating ? sitter.sitter_rating : 'N/A'}
                                         </Link>
                                     </td>
                                 </tr>
