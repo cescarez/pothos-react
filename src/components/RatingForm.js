@@ -28,9 +28,18 @@ const RatingForm = ({baseURL, request, currentUserData}) => {
     const onStarClick = (newRating) => {
         // const newRating = parseInt(event.target.name)
         console.log(newRating)
+        setRatingForm({...ratingForm, displayedRating: newRating})
+        // displayRating()
+    }
+
+
+    const onStarHover = (newRating) => {
+        // const newRating = parseInt(event.target.name)
+        console.log(newRating)
         setRatingForm({...ratingForm, currentRating: newRating})
         displayRating()
     }
+
 
     const onRatingSubmit = () => {
         axios.put(baseURL + '/request', request.request_id)
@@ -46,13 +55,13 @@ const RatingForm = ({baseURL, request, currentUserData}) => {
         const ratingIcons = []
         for(let i = 0; i < ratingForm.displayedRating; i++){
             ratingIcons.push(
-                <AiFillStar/> 
+                <AiFillStar onHover={()=>onStarHover(i+1)} onClick={()=>onStarClick(i+1)} /> 
             )
         }
         if (ratingForm.displayedRating < MAX_RATING) {
             for(let i = ratingForm.displayedRating; i < MAX_RATING; i++){
                 ratingIcons.push(
-                    <AiOutlineStar onClick={()=>onStarClick(i+1)} value={i} /> 
+                    <AiOutlineStar onHover={()=>onStarHover(i+1)} onClick={()=>onStarClick(i+1)} /> 
                 )
             }
         }
