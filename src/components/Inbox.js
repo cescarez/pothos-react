@@ -86,14 +86,18 @@ const Inbox= ({ baseURL }) => {
                                             {otherUserName}
                                         </Link>
                                     </td>
-                                    <td>
+                                    <td className='align-middle'>
                                         <Link to={requestRouterParams(request.request_id, otherUserName)}>
-                                            {Moment.parseZone(request.time_requested).local().format('l LT')}
+                                            <small>
+                                                {Moment.parseZone(request.time_requested).local().format('l LT')}
+                                            </small>
                                         </Link>
                                     </td>
-                                    <td>
+                                    <td className='align-middle'>
                                         <Link to={requestRouterParams(request.request_id, otherUserName)}>
-                                            {Moment.parseZone(request.date_of_service).local().format('l LT')}
+                                            <small>
+                                                {Moment.parseZone(request.date_of_service).local().format('l LT')}
+                                            </small>
                                         </Link>
                                     </td>
                                     <td className='align-middle'>

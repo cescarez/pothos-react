@@ -42,7 +42,7 @@ export default function RatingForm({baseURL, request, currentUserData}) {
     }
 
     return (
-        <Container fluid className='pyj-auto'>
+        <Container fluid>
             {displayRating()}
         </Container>
     )

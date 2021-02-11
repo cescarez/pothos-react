@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import emoji from 'emoji-dictionary';
 import {Container, Image, Row, Col} from 'react-bootstrap';
 import axios from 'axios';
@@ -14,6 +14,17 @@ const Rating = ({baseURL, request, currentUserData}) => {
     const selectedIcon = AiFillStar
     const unselectedIcon = AiOutlineStar
     const [rating, setRating] = useState(0);
+    const [currentUserRole, setCurrentUserRole] = useState(null);
+
+    useEffect(()=>{
+        if(currentUserData.userID === request.owner) {
+            setCurrentUserRole('owner');
+            setRating(request.sitter_rating);
+        } else {
+            setCurrentUserRole('sitter');
+            setRating(request.owner_rating);
+        }
+    })
 
     const onHover = () => {
 
