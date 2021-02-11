@@ -118,7 +118,11 @@ const ChatLog = ({ location }) => {
                         </Col>
                     </Form.Row>
                 </Form>
-                <Button className='inbox-button' variant='secondary w-100' as={Link} to={'/inbox'}>Return to Inbox</Button>
+                <Container className='d-inline-flex justify-content-around'>
+                        <Button className='inbox-button' variant='secondary' as={Link} to={'/'}>Return to Dashboard</Button>
+                        <Button className='inbox-button' variant='secondary' as={Link} to={'/inbox'}>Return to Inbox</Button>
+                </Container>
+
             </div>
         </Container>
     )
