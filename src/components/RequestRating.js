@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Row, Alert} from 'react-bootstrap';
 import axios from 'axios';
-import { AiOutlineStar, AiFillStar } from "react-icons/ai";
+import Moment from 'moment';
 
 import RatingForm from './RequestRatingForm';
 import RatingStars from './RatingStars';
@@ -40,12 +40,31 @@ const Rating = ({baseURL, request, currentUserData, maxRating}) => {
         })
     }
 
+    const isRateable = () => {
+        const today = Moment().utc();
+        // console.log(`today: ${today}`)
+        // console.log(`request date: ${Moment(request.date_of_service).utc(true)}`)
+        // console.log(`request status: ${request.status}`)
+        return (
+            (today >= Moment(request.date_of_service).utc(true)) && (request.status === 'confirmed')
+            // (Moment(request.date_of_service).utc(true).fromNow()) && (request.status === 'confirmed')
+        )
+    }
+
     return (
         <Row className='justify-content-center'>
             {error.message &&
                 <Alert variant={error.variant}>{error.message}</Alert> 
             }
-            { rating ? <RatingStars currentRating={rating} maxRating={maxRating} /> : <RatingForm baseURL={baseURL} request={request} currentUserData={currentUserData} maxRating={maxRating} onRatingSubmit={onRatingSubmitCallback} />}
+            { isRateable() ?
+                (rating ? 
+                    <RatingStars currentRating={rating} maxRating={maxRating} /> 
+                : 
+                    <RatingForm baseURL={baseURL} request={request} currentUserData={currentUserData} maxRating={maxRating} onRatingSubmit={onRatingSubmitCallback} />
+                )
+            :
+                <RatingStars currentRating={0} maxRating={maxRating} disabled/>
+            }
         </Row>
     )
 }
