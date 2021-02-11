@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Row, Alert} from 'react-bootstrap';
+import React from 'react';
+import {Row} from 'react-bootstrap';
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
 
