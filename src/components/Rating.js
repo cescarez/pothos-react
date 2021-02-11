@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import emoji from 'emoji-dictionary';
 import {Container, Image, Row, Col} from 'react-bootstrap';
 import axios from 'axios';
 // import selectedIcon from '../images/rating_icons/green_leaf.png';
@@ -14,14 +13,11 @@ const Rating = ({baseURL, request, currentUserData}) => {
     const selectedIcon = AiFillStar
     const unselectedIcon = AiOutlineStar
     const [rating, setRating] = useState(0);
-    const [currentUserRole, setCurrentUserRole] = useState(null);
 
     useEffect(()=>{
         if(currentUserData.userID === request.owner) {
-            setCurrentUserRole('owner');
             setRating(request.sitter_rating);
         } else {
-            setCurrentUserRole('sitter');
             setRating(request.owner_rating);
         }
     })
@@ -54,19 +50,14 @@ const Rating = ({baseURL, request, currentUserData}) => {
                 )
             }
         }
-
-        return (
-            <Row className='py-10'>
-                {ratingIcons.map((icon) => icon)}
-            </Row>
-        )
+        return (ratingIcons.map((icon) => icon))
 
     }
 
     return (
-        <Container fluid >
-            {displayRating()}
-        </Container>
+        <Row className='justify-content-center'>
+            {rating ? displayRating() : <RatingForm baseURL={baseURL} request={request} currentUserData={currentUserData} />}
+        </Row>
     )
 }
 
