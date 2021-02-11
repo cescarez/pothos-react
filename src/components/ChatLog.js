@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouteMatch, Link } from 'react-router-dom'
 import { Container, Button, Form, Col, Alert } from 'react-bootstrap';
-import { useAuth } from '../contexts/AuthContext';
+// import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import ChatEntry from './ChatEntry';
 import './ChatLog.css';
@@ -10,7 +10,7 @@ import UploadForm from './UploadForm';
 const ChatLog = ({ location }) => {
     const [messageList, setMessageList] = useState(null);
     const [error, setError] = useState('');
-    const { currentUser } = useAuth();
+    // const { currentUser } = useAuth();
     // const [user, setUser] = useState(null);
     const [body, setBody] = useState('')
     const match = useRouteMatch('/requests/:id');
@@ -27,7 +27,6 @@ const ChatLog = ({ location }) => {
                 setError({variant: 'danger', message: message});
                 console.log(message);
             })
-
     }
 
     useEffect(() => {
@@ -81,7 +80,7 @@ const ChatLog = ({ location }) => {
         <Container>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
             <h2>Chat with {otherUserName}</h2>
-            <Button className='gallery-button' variant='outline-info' as={Link} to={'/gallery'}>View Gallery</Button>
+            <Button className='gallery-button' variant='outline-info' as={Link} to={'/gallery/' + requestID}>View Gallery</Button>
             <div className='chat-log'>
                 {chatComponents()}
             </div>
