@@ -71,7 +71,8 @@ const Inbox= ({ baseURL, maxRating }) => {
                 <Table className='request-list__table'>
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th>Owner</th>
+                            <th>Sitter</th>
                             <th>Request was Issued</th>
                             <th>Requested Date of Service</th>
                             <th>Status</th>
@@ -85,7 +86,12 @@ const Inbox= ({ baseURL, maxRating }) => {
                                 <tr key={request.request_id}>
                                     <td className='request-list__td--owner'>
                                         <Link to={`/users/${request.owner}`}>
-                                            {otherUserName}
+                                            {request.owner_name}
+                                        </Link>
+                                    </td>
+                                    <td className='request-list__td--owner'>
+                                        <Link to={`/users/${request.sitter}`}>
+                                            {request.sitter_name}
                                         </Link>
                                     </td>
                                     <td className='align-middle'>
