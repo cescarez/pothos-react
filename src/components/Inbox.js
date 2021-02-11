@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 
-import Rating from './Rating';
+import Rating from './RequestRating';
 
 
 const Inbox= ({ baseURL, maxRating }) => {  

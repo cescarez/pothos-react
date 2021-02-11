@@ -7,19 +7,14 @@ const RatingStars = ({currentRating, maxRating}) => {
 
     const displayRating = () => {
         const ratingIcons = []
-        // console.log('entered displayRating')
-        // console.log(currentRating)
-        // console.log(maxRating)
 
         for(let i = 0; i < currentRating; i++){
-            // console.log('adding a filled star')
             ratingIcons.push(
                 <AiFillStar/> 
             )
         }
         if (currentRating < maxRating) {
             for(let i = currentRating; i < maxRating; i++){
-                // console.log('adding an empty star')
                 ratingIcons.push(
                     <AiOutlineStar/> 
                 )

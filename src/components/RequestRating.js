@@ -3,7 +3,7 @@ import {Row, Alert} from 'react-bootstrap';
 import axios from 'axios';
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
-import RatingForm from './RatingForm';
+import RatingForm from './RequestRatingForm';
 import RatingStars from './RatingStars';
 
 
