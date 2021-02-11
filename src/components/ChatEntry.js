@@ -13,7 +13,7 @@ const ChatEntry = ({baseURL, sender, sender_name, text, photo, photo_url, timeSt
         <div className={senderClass}>
         <h2 className='entry-name'>{sender_name}</h2>
         <section className="entry-bubble">
-            { photo ? <img src={photo_url} alt='plant pic' /> : <p>{text}</p>}
+            { photo ? <img className='chat-pic' src={photo_url} alt='plant pic' /> : <p>{text}</p>}
             <p className='entry-time'><Timestamp time={timeStamp} /></p>
         </section>
         </div>

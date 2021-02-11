@@ -89,7 +89,7 @@ background-color: #fefea2;
     background-color: #a9f6f6;
 }
 
-img{
+.chat-pic {
     max-width: 150px;
     max-height: 150px;
 }
