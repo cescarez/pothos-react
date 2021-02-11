@@ -54,13 +54,23 @@ const RequestList = ({ baseURL, currentUserData }) => {
         }
     }
 
+    const requestRouterParams = (requestID, otherUserName) => {
+        return ({
+            pathname: `/requests/${requestID}`,
+            state: {
+                baseURL: baseURL,
+                currentUserID: currentUserData.userID,
+                otherUserName: otherUserName
+            }
+        })
+    } 
+
     const showRequestList = () => {
         return(
             <Table className='request-list__table'>
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Chat</th>
                         <th>Request was Issued</th>
                         <th>Date of Service</th>
                         <th>Status</th>
@@ -79,38 +89,17 @@ const RequestList = ({ baseURL, currentUserData }) => {
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={{
-                                        pathname: `/requests/${request.request_id}`,
-                                        state: {
-                                            baseURL: baseURL,
-                                            currentUserID: currentUserData.userID,
-                                            otherUserName: otherUserName
-                                        }
-                                    }}>
-                                        {request.date_of_service}
+                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                        {Moment.parseZone(request.time_requested).local().format('l LT')}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={{
-                                        pathname: `/requests/${request.request_id}`,
-                                        state: {
-                                            baseURL: baseURL,
-                                            currentUserID: currentUserData.userID,
-                                            otherUserName: otherUserName
-                                        }
-                                    }}>
-                                        {Moment.parseZone(request.time_requested).local().format('LL LT')}
+                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                        {Moment.parseZone(request.date_of_service).local().format('l LT')}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={{
-                                        pathname: `/requests/${request.request_id}`,
-                                        state: {
-                                            baseURL: baseURL,
-                                            currentUserID: currentUserData.userID,
-                                            otherUserName: otherUserName
-                                        }
-                                    }}>
+                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
                                         {request.status}
                                     </Link>
                                 </td>
