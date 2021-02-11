@@ -3,7 +3,7 @@ import {Row} from 'react-bootstrap';
 
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
-const RatingForm = ({baseURL, request, currentUserData, max_rating, onRatingSubmit}) => {
+const RatingForm = ({baseURL, request, currentUserData, maxRating, onRatingSubmit}) => {
     const [currentRating, setCurrentRating] = useState(0);
 
     const displayRating = () => {
@@ -13,8 +13,8 @@ const RatingForm = ({baseURL, request, currentUserData, max_rating, onRatingSubm
                 <AiFillStar onMouseOver={()=>setCurrentRating(i+1)} onMouseLeave={(()=>setCurrentRating(0))} onClick={()=>onRatingSubmit(currentRating)} color='gold' /> 
             )
         }
-        if (currentRating < max_rating) {
-            for(let i = currentRating; i < max_rating; i++){
+        if (currentRating < maxRating) {
+            for(let i = currentRating; i < maxRating; i++){
                 ratingIcons.push(
                     <AiOutlineStar onMouseOver={()=>setCurrentRating(i+1)} onMouseLeave={(()=>setCurrentRating(0))} onClick={()=>onRatingSubmit(currentRating)} /> 
                 )

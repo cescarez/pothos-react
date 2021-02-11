@@ -4,15 +4,16 @@ import axios from 'axios';
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
 import RatingForm from './RatingForm';
+import RatingStars from './RatingStars';
 
 const MAX_RATING = 4;
 
 const Rating = ({baseURL, request, currentUserData}) => {
     const [error, setError] = useState({});
-    const [rating, setRating] = useState(0);
+    const [rating, setRating] = useState(null);
     const [ratingType, setRatingType] = useState(null);
 
-    useEffect(()=>{
+    const loadRatings = () => {
         if(currentUserData.userID === request.owner) {
             setRating(request.sitter_rating);
             setRatingType('sitter');
@@ -20,6 +21,10 @@ const Rating = ({baseURL, request, currentUserData}) => {
             setRating(request.owner_rating);
             setRatingType('owner');
         }
+    }
+
+    useEffect(()=>{
+        loadRatings();
     }, [])
 
     const onRatingSubmitCallback = (newRating) => {
@@ -36,30 +41,12 @@ const Rating = ({baseURL, request, currentUserData}) => {
         })
     }
 
-    const displayRating = () => {
-        const ratingIcons = []
-        for(let i = 0; i < rating; i++){
-            ratingIcons.push(
-                <AiFillStar/> 
-            )
-        }
-        if (rating < MAX_RATING) {
-            for(let i = rating; i < MAX_RATING; i++){
-                ratingIcons.push(
-                    <AiOutlineStar/> 
-                )
-            }
-        }
-        return (ratingIcons.map((icon) => icon))
-
-    }
-
     return (
         <Row className='justify-content-center'>
             {error.message &&
                 <Alert variant={error.variant}>{error.message}</Alert> 
             }
-            {rating ? displayRating() : <RatingForm baseURL={baseURL} request={request} currentUserData={currentUserData} max_rating={MAX_RATING} onRatingSubmit={onRatingSubmitCallback} />}
+            { rating ? <RatingStars currentRating={rating} maxRating={MAX_RATING} /> : <RatingForm baseURL={baseURL} request={request} currentUserData={currentUserData} maxRating={MAX_RATING} onRatingSubmit={onRatingSubmitCallback} />}
         </Row>
     )
 }
