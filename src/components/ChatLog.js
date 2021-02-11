@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { useRouteMatch, Link } from 'react-router-dom'
 import { Container, Button, Form, Col, Alert } from 'react-bootstrap';
-import { useAuth } from '../contexts/AuthContext';
+// import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import ChatEntry from './ChatEntry';
 import './ChatLog.css';
+import UploadForm from './UploadForm';
 
 const ChatLog = ({ location }) => {
     const [messageList, setMessageList] = useState(null);
     const [error, setError] = useState('');
-    const { currentUser } = useAuth();
+    // const { currentUser } = useAuth();
     // const [user, setUser] = useState(null);
     const [body, setBody] = useState('')
     const match = useRouteMatch('/requests/:id');
@@ -26,7 +27,6 @@ const ChatLog = ({ location }) => {
                 setError({variant: 'danger', message: message});
                 console.log(message);
             })
-
     }
 
     useEffect(() => {
@@ -44,7 +44,9 @@ const ChatLog = ({ location }) => {
                         baseURL={baseURL} 
                         sender={messages.sender} 
                         sender_name={messages.sender_name} 
-                        body={messages.message} 
+                        text={messages.message}
+                        photo={messages.photo}
+                        photo_url={messages.photo_url}
                         timeStamp={messages.timestamp}
                         currentUserID={currentUserID} />
                     );
@@ -80,14 +82,18 @@ const ChatLog = ({ location }) => {
         <Container>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
             <h2>Chat with {otherUserName}</h2>
+            <Button className='gallery-button' variant='outline-info' as={Link} to={'/gallery/' + requestID}>View Gallery</Button>
             <div className='chat-log'>
                 {chatComponents()}
             </div>
             <div className='chat-log'>
                 <Form className='chat-box' onSubmit={handleSubmit}>
                     <Form.Row>
-                        <Col xs={10}>
+                        <Col xs={8} md={9}>
                             <Form.Control type='text' name='message' value={body} onChange={handleChange}/>
+                        </Col>
+                        <Col>
+                            <UploadForm requestID={requestID} sender={currentUserID} baseURL={baseURL}/>
                         </Col>
                         <Col>
                             <Button type='submit' value='submit'>Submit</Button>

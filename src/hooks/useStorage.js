@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
-import { projectStorage, projectFirestore, timestamp } from '../firebase'
+import { projectStorage } from '../firebase';
+import axios from 'axios';
 
-const useStorage = (file) => {
+const useStorage = (file, requestID, sender, baseURL) => {
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState(null);
     const [url, setUrl] = useState(null);
 
     useEffect(() => {
-        //references
         const storageRef = projectStorage.ref(file.name);
-        const collectionRef = projectFirestore.collection('images');
 
         storageRef.put(file).on('state_changed', (snap) => {
             let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
@@ -18,8 +17,24 @@ const useStorage = (file) => {
             setError(err);
         }, async () => {
             const url = await storageRef.getDownloadURL();
-            const createdAt = timestamp();
-            collectionRef.add({ url, createdAt });
+            axios.all([
+                axios.post(baseURL + '/photos',{
+                    "photo_url": url,
+                    "request_id": requestID
+                }),
+                axios.post(baseURL + '/messages', {
+                    "message": "",
+                    "photo": true,
+                    "photo_url": url,
+                    "request_id": requestID,
+                    "sender": sender
+                })
+            ])
+            .then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                console.log(error)
+            })
             setUrl(url);
         })
     },[file]);

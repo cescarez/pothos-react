@@ -46,6 +46,7 @@ const Navigation = () => {
                     }
                     <Navbar.Brand as={Link} to='/'>Pothos</Navbar.Brand>
                 </Nav>
+                    <Button className='checkout-button' variant='secondary'>Check Out</Button>
 
                 {currentUser ? 
                     <Button variant='secondary' as={Link} onClick={handleLogout}>Log Out</Button> : 

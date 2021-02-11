@@ -36,8 +36,7 @@ function App() {
                         <PrivateRoute exact path='/users/:id'>
                             <User baseURL={BASE_URL} maxRating={MAX_RATING} />
                         </PrivateRoute>
-                        <PrivateRoute exact path='/requests/:id' component={ChatLog}>
-                        </PrivateRoute>
+                        <PrivateRoute exact path='/requests/:id' component={ChatLog} />
                         <PrivateRoute exact path='/sitters'>
                             <SitterList baseURL={BASE_URL} />
                         </PrivateRoute>
@@ -47,6 +46,7 @@ function App() {
                         <Route exact path='/about' component={AboutUs} />
                         <Route exact path='/contact' component={ContactUs} />
                         <Route exact path='/gallery' component={Gallery} />
+                        <Route exact path='/gallery/:id' component={Gallery} />
                         <Route exact path='/inbox'>
                             <Inbox baseURL={BASE_URL} maxRating={MAX_RATING} />
                         </Route>
