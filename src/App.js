@@ -20,7 +20,6 @@ import Inbox from './components/Inbox'
 import Gallery from './components/Gallery'
 
 import './App.css';
-import OwnerDashboard from './components/OwnerDashboard';
 
 const BASE_URL = 'http://localhost:5000';
 const MAX_RATING = 4;
