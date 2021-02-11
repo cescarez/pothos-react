@@ -38,11 +38,9 @@ const OwnerDashboard = ({ baseURL, currentUserData }) => {
     return (
         <Container className='px-0' fluid>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>} 
-            {currentUserData.owner_rating &&
-                <Container className='text-right'>
-                    {`Current Rating: ${currentUserData.owner_rating}`}
-                </Container>
-            }
+            <Container className='text-right'>
+                {`Current Owner Rating: ${currentUserData.owner_rating ? currentUserData.owner_rating : 'N/A'}`}
+            </Container>
             { showMap ? 
                 <div>
                     <Button variant='outline-secondary' onClick={onViewMapClick}>Hide Map</Button>
