@@ -122,8 +122,12 @@ const User = ({baseURL}) => {
                                 <Col className='text-left'>{Moment(user.date_joined).format('MMMM Do, YYYY')}</Col>
                             </Row>
                             <Row>
-                                <Col className='text-right'>Rating:</Col>
-                                <Col className='text-left'>{user.rating ? user.rating : 'N/A'}</Col>
+                                <Col className='text-right'>Sitter Rating:</Col>
+                                <Col className='text-left'>{user.sitter_rating ? user.sitter_rating : 'N/A'}</Col>
+                            </Row>
+                            <Row>
+                                <Col className='text-right'>Owner Rating:</Col>
+                                <Col className='text-left'>{user.owner_rating ? user.owner_rating : 'N/A'}</Col>
                             </Row>
                             <Row>
                                 <Col className='text-muted mt-2'><small>{user.bio}</small></Col>
