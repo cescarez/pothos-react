@@ -17,7 +17,7 @@ const SitterList = ({ sitterList, currentUserData, maxRating }) => {
                         <th>Name</th>
                         <th>Address</th>
                         <th>Phone Number</th>
-                        <th>Sitter's Rating</th>
+                        <th>Sitter's Avg Rating</th>
                     </tr>
                 </thead>
                 <tbody>
