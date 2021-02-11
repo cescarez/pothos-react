@@ -6,9 +6,8 @@ import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import RatingForm from './RatingForm';
 import RatingStars from './RatingStars';
 
-const MAX_RATING = 4;
 
-const Rating = ({baseURL, request, currentUserData}) => {
+const Rating = ({baseURL, request, currentUserData, maxRating}) => {
     const [error, setError] = useState({});
     const [rating, setRating] = useState(null);
     const [ratingType, setRatingType] = useState(null);
@@ -46,7 +45,7 @@ const Rating = ({baseURL, request, currentUserData}) => {
             {error.message &&
                 <Alert variant={error.variant}>{error.message}</Alert> 
             }
-            { rating ? <RatingStars currentRating={rating} maxRating={MAX_RATING} /> : <RatingForm baseURL={baseURL} request={request} currentUserData={currentUserData} maxRating={MAX_RATING} onRatingSubmit={onRatingSubmitCallback} />}
+            { rating ? <RatingStars currentRating={rating} maxRating={maxRating} /> : <RatingForm baseURL={baseURL} request={request} currentUserData={currentUserData} maxRating={maxRating} onRatingSubmit={onRatingSubmitCallback} />}
         </Row>
     )
 }

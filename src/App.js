@@ -22,7 +22,8 @@ import Gallery from './components/Gallery'
 import './App.css';
 import OwnerDashboard from './components/OwnerDashboard';
 
-const BASE_URL = 'http://localhost:5000'
+const BASE_URL = 'http://localhost:5000';
+const MAX_RATING = 4;
 
 function App() {
 
@@ -48,7 +49,7 @@ function App() {
                         <Route exact path='/contact' component={ContactUs} />
                         <Route exact path='/gallery' component={Gallery} />
                         <Route exact path='/inbox'>
-                            <Inbox baseURL={BASE_URL} />
+                            <Inbox baseURL={BASE_URL} maxRating={MAX_RATING} />
                         </Route>
                         <PrivateRoute exact path='/update-email'>
                             <UpdateEmailPassword />
@@ -56,16 +57,9 @@ function App() {
                         <PrivateRoute exact path='/update-profile'>
                             <UpdateProfile baseURL={BASE_URL} />
                         </PrivateRoute>
-
-                        <PrivateRoute exact path='/owner-dashboard'>
-                            <OwnerDashboard baseURL={BASE_URL} />
-                        </PrivateRoute>
-
-
-
                         {/* removed 'exact' from home path so all invalid endpoints will redirect to Home*/}
                         <Route path='/'>
-                            <Home baseURL={BASE_URL} />
+                            <Home baseURL={BASE_URL} maxRating={MAX_RATING} />
                         </Route>
                     </Switch>
                     </div>
