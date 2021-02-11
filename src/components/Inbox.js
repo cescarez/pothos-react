@@ -1,11 +1,12 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Container, Alert, Table, Button } from 'react-bootstrap';
 import Moment from 'moment';
 import {Link} from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
+import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
-import Rating from './Rating';
+import Rating from './RequestRating';
 
 
 const Inbox= ({ baseURL, maxRating }) => {  

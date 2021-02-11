@@ -15,10 +15,12 @@ const ChatLog = ({ location }) => {
     const [body, setBody] = useState('')
     const match = useRouteMatch('/requests/:id');
     const requestID = match.params.id;
-    const {baseURL, currentUserID, otherUserName } = location.state;
+    const [baseURL, setBaseURL] = useState();
+    const [currentUserID, setCurrentUserID] = useState();
+    const [otherUserName, setOtherUserName] = useState();
 
-    const loadMessageList = () => {
-        axios.get(baseURL + '/messages-by-request/' + requestID)
+    const loadMessageList = (someURL) => {
+        axios.get(someURL + '/messages-by-request/' + requestID)
             .then((response) => {
                 const apiMessages = Object.values(response.data)
                 setMessageList(apiMessages);
@@ -29,8 +31,16 @@ const ChatLog = ({ location }) => {
             })
     }
 
+    const loadRequestParams = () => {
+        const requestParams = location.state;
+        setBaseURL(requestParams.baseURL);
+        setCurrentUserID(requestParams.currentUserID);
+        setOtherUserName(requestParams.otherUserName);
+        loadMessageList(requestParams.baseURL);
+    }
+
     useEffect(() => {
-        loadMessageList();
+        loadRequestParams();
     },[])
 
     const chatComponents = (() => {
@@ -78,11 +88,25 @@ const ChatLog = ({ location }) => {
             })
     }
 
+    const requestRouterParams = () => {
+        return ({
+            pathname: '/gallery/' + requestID,
+            state: {
+                baseURL: baseURL,
+                currentUserID: currentUserID,
+                otherUserName: otherUserName
+            }
+        })
+    } 
+
     return(
         <Container>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
             <h2>Chat with {otherUserName}</h2>
-            <Button className='gallery-button' variant='outline-info' as={Link} to={'/gallery/' + requestID}>View Gallery</Button>
+            {/* <Button className='gallery-button' variant='outline-info' as={Link} to={'/gallery/' + requestID}>View Gallery</Button> */}
+            <Button className='gallery-button' variant='outline-info'>
+                <Link to={requestRouterParams}>View Gallery</Link>
+            </Button>
             <div className='chat-log'>
                 {chatComponents()}
             </div>

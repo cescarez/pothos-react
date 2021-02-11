@@ -119,7 +119,7 @@ const User = ({baseURL, maxRating}) => {
                     </Card.Header>
                     <Card.Body className='py-2'>
                         <Card.Text className='mb-2'>
-                            <Row>
+                            <Row className='align-items'>
                                 <Col className='text-muted text-right'>Member Since:</Col>
                                 <Col className='text-left'>{Moment(user.date_joined).format('MMMM Do, YYYY')}</Col>
                             </Row>
