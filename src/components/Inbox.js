@@ -72,7 +72,7 @@ const Inbox= ({ baseURL }) => {
                             <th>Name</th>
                             <th>Request was Issued</th>
                             <th>Requested Date of Service</th>
-                            <th>Request Status</th>
+                            <th>Status</th>
                             <th>Rating</th>
                         </tr>
                     </thead>
@@ -96,13 +96,13 @@ const Inbox= ({ baseURL }) => {
                                             {Moment.parseZone(request.date_of_service).local().format('l LT')}
                                         </Link>
                                     </td>
-                                    <td>
+                                    <td className='align-middle'>
                                         <Link to={requestRouterParams(request.request_id, otherUserName)}>
                                             {request.status}
                                         </Link>
                                     </td>
-                                    <td>
-                                        <Rating baseURL={baseURL} requestID={request.request_id} user={request.owner} />
+                                    <td className='align-middle'>
+                                        <Rating baseURL={baseURL} request={request} currentUserData={user} />
                                     </td>
                                 </tr>
                             )
