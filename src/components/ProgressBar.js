@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import useStorage from '../hooks/useStorage'
 import './Gallery.css';
 
-const ProgressBar = ({ file, setFile }) => {
-    const { url, progress } = useStorage(file);
+const ProgressBar = ({ file, setFile, requestID, sender, baseURL }) => {
+    const { url, progress } = useStorage(file, requestID, sender, baseURL);
     
     useEffect(() => {
         if (url) {
