@@ -6,7 +6,9 @@ import axios from 'axios';
 
 import './RequestList.css'
 
-const RequestList = ({ baseURL, currentUserData }) => {  
+import RatingStars from './RatingStars';
+
+const RequestList = ({ baseURL, currentUserData, maxRating }) => {  
     const [requestList, setRequestList] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
 
@@ -74,6 +76,7 @@ const RequestList = ({ baseURL, currentUserData }) => {
                         <th>Request was Issued</th>
                         <th>Date of Service</th>
                         <th>Status</th>
+                        <th>Owner's Avg Rating</th>
                         <th>Confirm</th>
                         <th>Decline</th>
                     </tr>
@@ -101,6 +104,11 @@ const RequestList = ({ baseURL, currentUserData }) => {
                                 <td>
                                     <Link to={requestRouterParams(request.request_id, otherUserName)}>
                                         {request.status}
+                                    </Link>
+                                </td>
+                                <td>
+                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                        { request.owner_rating ? <RatingStars currentRating={request.owner_rating} maxRating={maxRating} /> : 'N/A'}
                                     </Link>
                                 </td>
                                 <td>

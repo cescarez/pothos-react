@@ -7,7 +7,9 @@ import axios from 'axios';
 import pothosPic from '../images/pothos_large.png';
 import RequestForm from './RequestForm';
 
-const User = ({baseURL}) => {
+import RatingStars from './RatingStars';
+
+const User = ({baseURL, maxRating}) => {
     const { currentUser } = useAuth();
     const [user, setUser] = useState({});
     const [error, setError] = useState('');
@@ -122,8 +124,20 @@ const User = ({baseURL}) => {
                                 <Col className='text-left'>{Moment(user.date_joined).format('MMMM Do, YYYY')}</Col>
                             </Row>
                             <Row>
-                                <Col className='text-right'>Rating:</Col>
-                                <Col className='text-left'>{user.rating ? user.rating : 'N/A'}</Col>
+                                <Col className='text-right'>Sitter Rating:</Col>
+                                <Col>
+                                    {user.sitter_rating ? 
+                                        <RatingStars currentRating={user.sitter_rating} maxRating={maxRating} /> 
+                                    : 'N/A'}
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col className='text-right'>Owner Rating:</Col>
+                                <Col>
+                                    {user.owner_rating ? 
+                                        <RatingStars currentRating={user.owner_rating} maxRating={maxRating} /> 
+                                    : 'N/A'}
+                                </Col>
                             </Row>
                             <Row>
                                 <Col className='text-muted mt-2'><small>{user.bio}</small></Col>
