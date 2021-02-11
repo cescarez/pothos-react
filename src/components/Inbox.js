@@ -96,7 +96,7 @@ const Inbox= ({ baseURL }) => {
                                     <td className='align-middle'>
                                         <Link to={requestRouterParams(request.request_id, otherUserName)}>
                                             <small>
-                                                {Moment.parseZone(request.date_of_service).local().format('l LT')}
+                                                {Moment.parseZone(request.date_of_service).local().format('l')}
                                             </small>
                                         </Link>
                                     </td>
