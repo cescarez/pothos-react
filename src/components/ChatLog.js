@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import ChatEntry from './ChatEntry';
 import './ChatLog.css';
+import UploadForm from './UploadForm';
 
 const ChatLog = ({ location }) => {
     const [messageList, setMessageList] = useState(null);
@@ -80,14 +81,18 @@ const ChatLog = ({ location }) => {
         <Container>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
             <h2>Chat with {otherUserName}</h2>
+            <Button className='gallery-button' variant='outline-info' as={Link} to={'/gallery'}>View Gallery</Button>
             <div className='chat-log'>
                 {chatComponents()}
             </div>
             <div className='chat-log'>
                 <Form className='chat-box' onSubmit={handleSubmit}>
                     <Form.Row>
-                        <Col xs={10}>
+                        <Col xs={8} md={9}>
                             <Form.Control type='text' name='message' value={body} onChange={handleChange}/>
+                        </Col>
+                        <Col>
+                            <UploadForm />
                         </Col>
                         <Col>
                             <Button type='submit' value='submit'>Submit</Button>
