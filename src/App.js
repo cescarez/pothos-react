@@ -34,7 +34,7 @@ function App() {
                     <Navigation baseURL={BASE_URL} />
                     <Switch>
                         <PrivateRoute exact path='/users/:id'>
-                            <User baseURL={BASE_URL} />
+                            <User baseURL={BASE_URL} maxRating={MAX_RATING} />
                         </PrivateRoute>
                         <PrivateRoute exact path='/requests/:id' component={ChatLog}>
                         </PrivateRoute>
