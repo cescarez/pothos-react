@@ -34,24 +34,25 @@ form{
     text-align: center;
 }
 
-label input{
+.upload-label input{
     height: 0;
     width: 0;
     opacity: 0;
 }
-label{
+.upload-label {
     display: block;
     width: 35px;
     height: 35px;
     border: 1px solid var(--primary);
     border-radius: 50%;
     /* margin: 10px auto; */
+    margin-left: 15px;
     line-height: 20px;
     color: var(--primary);
     font-weight: bold;
     font-size: 24px;
 }
-label:hover{
+.upload-label:hover{
     background: var(--primary);
     color: white;
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ProgressBar from './ProgressBar';
+import './Gallery.css';
 
 const UploadForm = ({requestID, sender, baseURL}) => {
     const [file, setFile] = useState(null);
@@ -21,7 +22,7 @@ const UploadForm = ({requestID, sender, baseURL}) => {
 
     return(
         <form>
-            <label>
+            <label className='upload-label'>
                 <input type='file' onChange={changeHandler} />
                 <span>+</span>
             </label>
