@@ -9,7 +9,7 @@ import OwnerDashboard from './OwnerDashboard';
 import SitterDashboard from './SitterDashboard';
 import UserForm from './UserForm';
 
-const Dashboard = ({baseURL}) => {
+const Dashboard = ({baseURL, maxRating}) => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState({});
     const { currentUser } = useAuth();
@@ -63,18 +63,18 @@ const Dashboard = ({baseURL}) => {
                 </Container>
                 { user ? 
                     <div>
-                        {error.message ?
+                        {error.message &&
                             <Alert variant={error.variant}>{error.message}</Alert> 
-                        : null}
+                        }
                         <Tabs border='primary'>
                             {user.owner  &&
                                 <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
-                                    <OwnerDashboard baseURL={baseURL} currentUserData={user} />
+                                    <OwnerDashboard baseURL={baseURL} currentUserData={user} maxRating={maxRating} />
                                 </Tab>
                             }
                             {user.sitter &&
                                 <Tab eventKey='sitterDashboard' title='Sitter Dashboard'>
-                                    <SitterDashboard baseURL={baseURL} userID={user.userID} />
+                                    <SitterDashboard baseURL={baseURL} currentUserData={user} maxRating={maxRating} />
                                 </Tab>
                             }
                         </Tabs>

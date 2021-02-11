@@ -23,6 +23,10 @@ table.request-list__table > tbody > tr > td > a {
     color:inherit;
 }
 
+table.request-list__table > tbody > tr > td.request-list__td--date-requested > a {
+    font-size: smaller;
+}
+
 table.request-list__table > tbody > tr > td {
     padding: 2px;
 }

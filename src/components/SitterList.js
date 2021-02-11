@@ -5,7 +5,9 @@ import {Link} from 'react-router-dom';
 
 import './SitterList.css'
 
-const SitterList = ({ sitterList, currentUserData }) => {
+import RatingStars from './RatingStars';
+
+const SitterList = ({ sitterList, currentUserData, maxRating }) => {
 
     const showSitterList = () => {
         return(
@@ -15,7 +17,7 @@ const SitterList = ({ sitterList, currentUserData }) => {
                         <th>Name</th>
                         <th>Address</th>
                         <th>Phone Number</th>
-                        <th>Rating</th>
+                        <th>Sitter's Avg Rating</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,7 +42,7 @@ const SitterList = ({ sitterList, currentUserData }) => {
                                     </td>
                                     <td>
                                         <Link to={`/users/${sitter.userID}`}>
-                                            { sitter.rating ? sitter.rating : 'N/A'}
+                                            { sitter.sitter_rating ? <RatingStars currentRating={sitter.sitter_rating} maxRating={maxRating} /> : 'N/A'}
                                         </Link>
                                     </td>
                                 </tr>

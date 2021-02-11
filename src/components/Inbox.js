@@ -1,20 +1,26 @@
-import React, {useState, useEffect} from 'react';
-import { Alert, Table, Button } from 'react-bootstrap';
+import React, {useState, useEffect, useRef} from 'react';
+import { Container, Alert, Table, Button } from 'react-bootstrap';
 import Moment from 'moment';
 import {Link} from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 
-const Inbox= ({ baseURL }) => {  
+import Rating from './Rating';
+
+
+const Inbox= ({ baseURL, maxRating }) => {  
     const [requestList, setRequestList] = useState(null);
+    const [user, setUser] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
     const { currentUser } = useAuth();
 
     const loadUserData = (auth_id) => {
         axios.get(`${baseURL}/users/current/${auth_id}`)
             .then((response) => {
-                const userID = Object.keys(response.data)[0]
-                return axios.get(baseURL + '/requests-by-user/' + userID)
+                const apiUser = Object.values(response.data)[0]
+                apiUser.userID = Object.keys(response.data)[0]
+                setUser(apiUser);
+                return axios.get(baseURL + '/requests-by-user/' + apiUser.userID)
                     .then((response) => {
                         const apiRequestList = Object.values(response.data)
                         if (Object.keys(response.data)[0] !== 'message') {
@@ -39,50 +45,80 @@ const Inbox= ({ baseURL }) => {
         loadUserData(currentUser.uid)
     }, [])
 
+    const getOtherUserName = (request) => {
+        if (user.userID !== request.owner) {
+            return request.owner_name
+        } else {
+            return request.sitter_name
+        }
+    }
+
+    const requestRouterParams = (requestID, otherUserName) => {
+        return ({
+            pathname: `/requests/${requestID}`,
+            state: {
+                baseURL: baseURL,
+                currentUserID: user.userID,
+                otherUserName: otherUserName
+            }
+        })
+    } 
+
     function showRequestList() {
         return(
-            <Table className='request-list__table'>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Chat</th>
-                        <th>Date Requested</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {(requestList).map((request) => {
-                        return(
-                            <tr key={request.request_id}>
-                                <td className='request-list__td--owner'>
-                                    <Link to={`/users/${request.owner}`}>
-                                        {request.owner_name}
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/requests/${request.request_id}`}>
-                                        Messages
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/requests/${request.request_id}`}>
-                                        {Moment(request.time_requested).format('MM-DD-YYYY')}
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/requests/${request.request_id}`}>
-                                        {request.status}
-                                    </Link>
-                                </td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </Table>
+            <Container fluid>
+                <Table className='request-list__table'>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Request was Issued</th>
+                            <th>Requested Date of Service</th>
+                            <th>Status</th>
+                            <th>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {(requestList).map((request) => {
+                            const otherUserName = getOtherUserName(request);
+                            return(
+                                <tr key={request.request_id}>
+                                    <td className='request-list__td--owner'>
+                                        <Link to={`/users/${request.owner}`}>
+                                            {otherUserName}
+                                        </Link>
+                                    </td>
+                                    <td className='align-middle'>
+                                        <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                            <small>
+                                                {Moment.parseZone(request.time_requested).local().format('l LT')}
+                                            </small>
+                                        </Link>
+                                    </td>
+                                    <td className='align-middle'>
+                                        <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                            <small>
+                                                {Moment.parseZone(request.date_of_service).local().format('l')}
+                                            </small>
+                                        </Link>
+                                    </td>
+                                    <td className='align-middle'>
+                                        <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                            {request.status}
+                                        </Link>
+                                    </td>
+                                    <td className='align-middle'>
+                                        <Rating baseURL={baseURL} request={request} currentUserData={user} maxRating={maxRating}/>
+                                    </td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </Table>
+            </Container>
         )
     }
 
-    if (!requestList) {
+    if (!requestList || !user) {
         return <div></div>;
     }
 

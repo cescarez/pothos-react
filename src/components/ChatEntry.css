@@ -88,3 +88,8 @@ background-color: #fefea2;
 .chat-entry.remote .entry-bubble:hover::before {
     background-color: #a9f6f6;
 }
+
+.chat-pic {
+    max-width: 150px;
+    max-height: 150px;
+}

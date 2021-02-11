@@ -6,12 +6,14 @@ import axios from 'axios';
 
 import './RequestList.css'
 
-const RequestList = ({ baseURL, userID }) => {  
+import RatingStars from './RatingStars';
+
+const RequestList = ({ baseURL, currentUserData, maxRating }) => {  
     const [requestList, setRequestList] = useState(null);
     const [error, setError] = useState({variant: '', message: ''});
 
     const loadRequestList = () => {
-        axios.get(baseURL + '/requests-by-sitter/' + userID)
+        axios.get(baseURL + '/requests-by-sitter/' + currentUserData.userID)
             .then((response) => {
                 const apiRequestList = Object.values(response.data)
                 if (Object.keys(response.data)[0] !== 'message') {
@@ -46,7 +48,24 @@ const RequestList = ({ baseURL, userID }) => {
             })
     }
 
+    const getOtherUserName = (request) => {
+        if (currentUserData.userID !== request.owner) {
+            return request.owner_name
+        } else {
+            return request.sitter_name
+        }
+    }
 
+    const requestRouterParams = (requestID, otherUserName) => {
+        return ({
+            pathname: `/requests/${requestID}`,
+            state: {
+                baseURL: baseURL,
+                currentUserID: currentUserData.userID,
+                otherUserName: otherUserName
+            }
+        })
+    } 
 
     const showRequestList = () => {
         return(
@@ -54,15 +73,17 @@ const RequestList = ({ baseURL, userID }) => {
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Chat</th>
-                        <th>Date Requested</th>
+                        <th>Request was Issued</th>
+                        <th>Date of Service</th>
                         <th>Status</th>
+                        <th>Owner's Avg Rating</th>
                         <th>Confirm</th>
                         <th>Decline</th>
                     </tr>
                 </thead>
                 <tbody>
                     {(requestList).map((request) => {
+                        const otherUserName = getOtherUserName(request);
                         return(
                             <tr key={request.request_id}>
                                 <td className='request-list__td--owner'>
@@ -71,18 +92,23 @@ const RequestList = ({ baseURL, userID }) => {
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/requests/${request.request_id}`}>
-                                        Messages
+                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                        {Moment.parseZone(request.time_requested).local().format('l LT')}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/requests/${request.request_id}`}>
-                                        {Moment(request.time_requested).format('MM-DD-YYYY')}
+                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                        {Moment.parseZone(request.date_of_service).local().format('l')}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={`/requests/${request.request_id}`}>
+                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
                                         {request.status}
+                                    </Link>
+                                </td>
+                                <td>
+                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                        { request.owner_rating ? <RatingStars currentRating={request.owner_rating} maxRating={maxRating} /> : 'N/A'}
                                     </Link>
                                 </td>
                                 <td>

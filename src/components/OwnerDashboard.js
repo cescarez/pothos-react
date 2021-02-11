@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { Button, Alert, Container } from 'react-bootstrap';
+import { Button, Alert, Container, Row, Col } from 'react-bootstrap';
 
 import SitterMap from './SitterMap';
 import SitterList from './SitterList';
 
-const OwnerDashboard = ({ baseURL, currentUserData }) => {
+const OwnerDashboard = ({ baseURL, currentUserData, maxRating }) => {
     const [error, setError] = useState({variant: '', message: ''});
     const [sitterList, setSitterList] = useState(null);
     const [showMap, setShowMap] = useState(false);
@@ -38,14 +38,17 @@ const OwnerDashboard = ({ baseURL, currentUserData }) => {
     return (
         <Container className='px-0' fluid>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>} 
+            <Container className='text-right'>
+                {`Current Owner Rating: ${currentUserData.owner_rating ? currentUserData.owner_rating : 'N/A'}`}
+            </Container>
             { showMap ? 
                 <div>
                     <Button variant='outline-secondary' onClick={onViewMapClick}>Hide Map</Button>
                     <SitterMap sitterList={sitterList} currentUserData={currentUserData} />
-                </div> 
+                </div>
             : <Button variant='outline-secondary' onClick={onViewMapClick}>View Map</Button>
             }            
-            <SitterList sitterList={sitterList} currentUserData={currentUserData}/>
+            <SitterList sitterList={sitterList} currentUserData={currentUserData} maxRating={maxRating}/>
         </Container>
     )
 }
