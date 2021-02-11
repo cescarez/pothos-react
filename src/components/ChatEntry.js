@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Timestamp from './Timestamp';
 import './ChatEntry.css';
 
-const ChatEntry = ({baseURL, sender, sender_name, body, timeStamp, currentUserID}) => {
+const ChatEntry = ({baseURL, sender, sender_name, text, photo, photo_url, timeStamp, currentUserID}) => {
     let senderClass = 'chat-entry local'
     if (sender === currentUserID) {
         senderClass = 'chat-entry remote'
@@ -13,7 +13,7 @@ const ChatEntry = ({baseURL, sender, sender_name, body, timeStamp, currentUserID
         <div className={senderClass}>
         <h2 className='entry-name'>{sender_name}</h2>
         <section className="entry-bubble">
-            <p>{body}</p>
+            { photo ? <img src={photo_url} alt='plant pic' /> : <p>{text}</p>}
             <p className='entry-time'><Timestamp time={timeStamp} /></p>
         </section>
         </div>

@@ -44,7 +44,9 @@ const ChatLog = ({ location }) => {
                         baseURL={baseURL} 
                         sender={messages.sender} 
                         sender_name={messages.sender_name} 
-                        body={messages.message} 
+                        text={messages.message}
+                        photo={messages.photo}
+                        photo_url={messages.photo_url}
                         timeStamp={messages.timestamp}
                         currentUserID={currentUserID} />
                     );
