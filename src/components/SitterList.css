@@ -20,3 +20,19 @@ table.sitter-list__table > tbody > tr > td > a {
 table.sitter-list__table > tbody > tr > td {
   padding: 0px;
 }
+
+.profile-pic{
+  max-width: 150px;
+  max-height: 300px;
+}
+
+.dashboard-container{
+  padding-top: 40px;
+  padding-bottom: 20px;
+}
+
+.dashboard-row:hover{
+  background-color: #f3969a;
+  color: whitesmoke;
+}
+
