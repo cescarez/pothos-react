@@ -32,14 +32,16 @@ table.sitter-list__table > tbody > tr > td {
 }
 
 .dashboard-row{
-  border: 2px solid #f5dbdc;
-  border-radius: 25px;
+  /* border: 2px solid #f5dbdc;
+  border-radius: 25px; */
   padding: 10px;
-  margin: 5px;
+  /* margin: 5px; */
 }
 
 .dashboard-row:hover{
-  background-color: #f5dbdc;
+  /* background-color: #f5dbdc; */
   /* color: whitesmoke; */
+  border: 2px solid  #f3969a;
+  border-radius: 25px;
 }
 
