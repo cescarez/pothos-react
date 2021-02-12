@@ -31,6 +31,13 @@ table.sitter-list__table > tbody > tr > td {
   padding-bottom: 20px;
 }
 
+.dashboard-row{
+  border: 2px solid #f5dbdc;
+  border-radius: 25px;
+  padding: 10px;
+  margin: 5px;
+}
+
 .dashboard-row:hover{
   background-color: #f5dbdc;
   /* color: whitesmoke; */
