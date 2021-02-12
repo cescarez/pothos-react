@@ -60,27 +60,19 @@ const SitterList = ({ sitterList, currentUserData, maxRating }) => {
                         <Link to={`/users/${sitter.userID}`}>
                         <Row className='dashboard-row'>
                             <Col>
-                                {/* <Link to={`/users/${sitter.userID}`}> */}
-                                    <img className='profile-pic' src={pothosPic} alt='profile pic'/>
-                                {/* </Link> */}
+                                <img className='profile-pic' src={pothosPic} alt='profile pic'/>
                             </Col>
                             <Col xs={6}>
-                                {/* <Link to={`/users/${sitter.userID}`}> */}
-                                    <h4>{sitter.full_name}</h4>
-                                    <p>{sitter.bio}</p>
-                                {/* </Link> */}
+                                <h4>{sitter.full_name}</h4>
+                                <p>{sitter.bio}</p>
                             </Col>
                             <Col>
-                                {/* <Link to={`/users/${sitter.userID}`}> */}
-                                    <h6>Avg Rating</h6>
-                                    { sitter.sitter_rating ? <RatingStars currentRating={sitter.sitter_rating} maxRating={maxRating} /> : 'N/A'}
-                                {/* </Link> */}
+                                <h6>Avg Rating</h6>
+                                { sitter.sitter_rating ? <RatingStars currentRating={sitter.sitter_rating} maxRating={maxRating} /> : 'N/A'}
                             </Col>
                             <Col>
-                                {/* <Link to={`/users/${sitter.userID}`}> */}
-                                    <h6>Watering Rate:</h6>
-                                    <p>${sitter.price_rate.water_by_plant}/plant</p>
-                                {/* </Link> */}
+                                <h6>Watering Rate:</h6>
+                                <p>${sitter.price_rate.water_by_plant}/plant</p>
                             </Col>
                         </Row>
                         </Link>

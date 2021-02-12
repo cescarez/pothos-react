@@ -32,7 +32,7 @@ table.sitter-list__table > tbody > tr > td {
 }
 
 .dashboard-row:hover{
-  background-color: #f3969a;
-  color: whitesmoke;
+  background-color: #f5dbdc;
+  /* color: whitesmoke; */
 }
 
