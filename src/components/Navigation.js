@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Navbar, Nav, Button, Alert, Dropdown, Container, Row } from 'react-bootstrap';
+import { Navbar, Nav, Button, Alert, Dropdown, Container } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import {useHistory, Link} from 'react-router-dom';
 import { BiCog, BiCart } from 'react-icons/bi';
@@ -53,9 +53,11 @@ const Navigation = () => {
                 </Container>
                 <Container className='d-inline-flex justify-content-end'>
                     {currentUser &&
-                        <Button className='checkout-button' variant='secondary'>
-                            <BiCart />
-                        </Button>
+                        <Nav.Link as={Link} to='/checkout'>
+                            <Button className='checkout-button' variant='secondary'>
+                                <BiCart />
+                            </Button>
+                        </Nav.Link>
                     }
                     {!currentUser &&
                         <Button variant='secondary' as={Link} to='/signup'>Sign Up</Button>

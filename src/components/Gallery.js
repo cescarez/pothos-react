@@ -30,9 +30,11 @@ export default function Gallery({location}) {
         <div>
             <h2>Gallery</h2>
             {/* <Button className='inbox-button' variant='outline-info' as={Link} to={'/inbox'}>Return to Inbox</Button> */}
-            <Button className='inbox-button' variant='outline-info'>
-                <Link to={requestRouterParams}>Return to Inbox</Link>
-            </Button>
+            <Link to={requestRouterParams}>
+                <Button className='inbox-button' variant='outline-info'>
+                    Return to Chat
+                </Button>
+            </Link>
             {/* <UploadForm /> */}
             <ImageGrid setSelectedImg={setSelectedImg}/>
             {selectedImg && <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg}/>}
