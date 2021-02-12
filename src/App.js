@@ -18,6 +18,7 @@ import AboutUs from './components/AboutUs'
 import ContactUs from './components/ContactUs'
 import Inbox from './components/Inbox'
 import Gallery from './components/Gallery'
+import Stripe from './components/Stripe';
 
 import './App.css';
 
@@ -45,8 +46,8 @@ function App() {
                         <Route exact path ='/forgot-password' component={ForgotPassword} />
                         <Route exact path='/about' component={AboutUs} />
                         <Route exact path='/contact' component={ContactUs} />
-                        <Route exact path='/gallery' component={Gallery} />
                         <Route exact path='/gallery/:id' component={Gallery} />
+                        <Route exact path='/checkout' component={Stripe} />
                         <Route exact path='/inbox'>
                             <Inbox baseURL={BASE_URL} maxRating={MAX_RATING} />
                         </Route>

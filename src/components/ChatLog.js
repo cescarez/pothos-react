@@ -107,9 +107,11 @@ const ChatLog = ({ location }) => {
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
             <h2>Chat with {otherUserName}</h2>
             {/* <Button className='gallery-button' variant='outline-info' as={Link} to={'/gallery/' + requestID}>View Gallery</Button> */}
-            <Button className='gallery-button' variant='outline-info'>
-                <Link to={requestRouterParams}>View Gallery</Link>
-            </Button>
+            <Link to={requestRouterParams}>
+                <Button className='gallery-button' variant='outline-info'>
+                    View Gallery
+                </Button>
+            </Link>
             <div className='chat-log'>
                 {chatComponents()}
             </div>
@@ -128,7 +130,7 @@ const ChatLog = ({ location }) => {
                     </Form.Row>
                 </Form>
                 <Container className='d-inline-flex justify-content-around'>
-                        <Button className='inbox-button' variant='secondary' as={Link} to={'/'}>Return to Dashboard</Button>
+                        {/* <Button className='inbox-button' variant='secondary' as={Link} to={'/'}>Return to Dashboard</Button> */}
                         <Button className='inbox-button' variant='secondary' as={Link} to={'/inbox'}>Return to Inbox</Button>
                 </Container>
 

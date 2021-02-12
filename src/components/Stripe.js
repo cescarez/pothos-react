@@ -4,7 +4,7 @@ import { loadStripe } from "@stripe/stripe-js";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
+const stripePromise = loadStripe('pk_test_51IJcCmDqXqMV98IIcKn53LMqLUGVLgSYKsZGWVked8QVfzYRye95mWra1cbG5NtEquWsj7Df5CsKYAPeW8X0Ljag0052QuXo9c');
 const ProductDisplay = ({ handleClick }) => (
   <section>
     <div className="product">
@@ -50,7 +50,7 @@ export default function Stripe() {
 
   const handleClick = async (event) => {
     const stripe = await stripePromise;
-    const response = await fetch("/create-checkout-session", {
+    const response = await fetch("http://localhost:5000/create-checkout-session", {
       method: "POST",
     });
 
