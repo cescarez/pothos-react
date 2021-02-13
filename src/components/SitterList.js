@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Card, Container, Row, Col } from 'react-bootstrap';
+import {Table, Card, Container, Row, Col, Image } from 'react-bootstrap';
 import Moment from 'moment';
 import {Link} from 'react-router-dom';
 import pothosPic from '../images/pothos_large.png';
@@ -60,7 +60,7 @@ const SitterList = ({ sitterList, currentUserData, maxRating }) => {
                         <Link to={`/users/${sitter.userID}`}>
                         <Row className='dashboard-row'>
                             <Col>
-                                <img className='profile-pic' src={pothosPic} alt='profile pic'/>
+                                <Image className='profile-pic' src={pothosPic} alt='profile pic' roundedCircle/>
                             </Col>
                             <Col xs={6}>
                                 <h4>{sitter.full_name}</h4>
