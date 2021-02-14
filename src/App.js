@@ -21,6 +21,7 @@ import Gallery from './components/Gallery'
 import Stripe from './components/Stripe';
 
 import './App.css';
+import UserForm from './components/UserForm';
 
 const BASE_URL = 'https://pothos-api.herokuapp.com'
 const MAX_RATING = 4;
@@ -43,11 +44,12 @@ function App() {
                         </PrivateRoute>
                         <Route exact path='/signup' component={Signup} />
                         <Route exact path='/login' component={Login} />
-                        <Route exact path ='/forgot-password' component={ForgotPassword} />
+                        <Route exact path='/forgot-password' component={ForgotPassword} />
                         <Route exact path='/about' component={AboutUs} />
                         <Route exact path='/contact' component={ContactUs} />
                         <Route exact path='/gallery/:id' component={Gallery} />
                         <Route exact path='/checkout' component={Stripe} />
+                        <Route exact path='/userform' component={UserForm} />
                         <Route exact path='/inbox'>
                             <Inbox baseURL={BASE_URL} maxRating={MAX_RATING} />
                         </Route>

@@ -54,7 +54,7 @@ const Dashboard = ({baseURL, maxRating}) => {
                 <Container>
                     <Jumbotron style={{ backgroundImage: `url(${bgimage})`, backgroundSize: 'cover' }}>
                         <h1>Welcome 
-                            { user && <> Back,<br/><Link to={`/users/${user.userID}`}>{user.full_name}</Link></>}
+                            { user && <> Back,<br/><Link className='jumbotron-name' to={`/users/${user.userID}`}>{user.full_name}</Link></>}
                         !</h1>
                         <p>This is your dashboard.
                             { !user && ' Please complete your profile to view available plant sitters.'}
