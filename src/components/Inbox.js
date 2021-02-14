@@ -76,12 +76,14 @@ const Inbox= ({ baseURL, maxRating }) => {
                             <th>Request was Issued</th>
                             <th>Requested Date of Service</th>
                             <th>Status</th>
+                            <th>Payment</th>
                             <th>Rating</th>
                         </tr>
                     </thead>
                     <tbody>
                         {(requestList).map((request) => {
                             const otherUserName = getOtherUserName(request);
+                            console.log(request)
                             return(
                                 <tr key={request.request_id}>
                                     <td className='request-list__td--owner'>
@@ -112,6 +114,9 @@ const Inbox= ({ baseURL, maxRating }) => {
                                         <Link to={requestRouterParams(request.request_id, otherUserName)}>
                                             {request.status}
                                         </Link>
+                                    </td>
+                                    <td>
+                                        <Button>Submit Payment</Button>
                                     </td>
                                     <td className='align-middle'>
                                         <Rating baseURL={baseURL} request={request} currentUserData={user} maxRating={maxRating}/>
