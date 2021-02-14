@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
+import UploadProfilePic from './UploadProfilePic'
 
 
 export default function UserForm({ baseURL, setDashboardUser }) {
@@ -66,6 +67,10 @@ export default function UserForm({ baseURL, setDashboardUser }) {
             ...user,
             [event.target.name]: !user[event.target.name]
         });
+    }
+    
+    const uploadPhoto = () =>  {
+
     }
 
     //check for if all form fields are populated
@@ -177,15 +182,19 @@ export default function UserForm({ baseURL, setDashboardUser }) {
                     <Card.Body>
                         <Form onSubmit={handleSubmit}>
                             <h2 className='text-center mb-4'>Create Profile</h2>
+                            {/* <Form.Row className='d-flex justify-content-center'>
+                                <UploadProfilePic baseURL={baseURL}/>
+                            </Form.Row> */}
+
                             <Form.Row>
-                                <Form.Group as={Col}></Form.Group>
+                                <Col></Col>
                                 <Form.Group as={Col} >
                                     <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck} checked={user.sitter ? true : false} />
                                 </Form.Group>
                                 <Form.Group as={Col} >
                                     <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck} checked={user.owner ? true : false} />
                                 </Form.Group>
-                                <Form.Group as={Col}></Form.Group>
+                                <Col></Col>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col}>
@@ -195,6 +204,12 @@ export default function UserForm({ baseURL, setDashboardUser }) {
                                 <Form.Group as={Col}>
                                     <Form.Label>Phone Number</Form.Label>
                                     <Form.Control type="tel" name='phone_number' value={user.phone_number} onChange={handleChange} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder='###-###-####'/>
+                                </Form.Group>
+                            </Form.Row>
+                            <Form.Row>
+                                <Form.Group>
+                                    <Form.Label>Upload Photo</Form.Label>
+                                    <Form.Control type="text" name='avatar_url' value={user.avatar_url} onChange={uploadPhoto} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
