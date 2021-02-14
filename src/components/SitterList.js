@@ -57,24 +57,24 @@ const SitterList = ({ sitterList, currentUserData, maxRating }) => {
             <Container className='dashboard-container'>
                 {(sitterList).map((sitter) => {
                     return(
-                        <Link to={`/users/${sitter.userID}`}>
-                        <Row className='dashboard-row'>
-                            <Col>
-                                <Image className='profile-pic' src={pothosPic} alt='profile pic' roundedCircle/>
-                            </Col>
-                            <Col xs={6}>
-                                <h4>{sitter.full_name}</h4>
-                                <p>{sitter.bio}</p>
-                            </Col>
-                            <Col>
-                                <h6>Avg Rating</h6>
-                                { sitter.sitter_rating ? <RatingStars currentRating={sitter.sitter_rating} maxRating={maxRating} /> : 'N/A'}
-                            </Col>
-                            <Col>
-                                <h6>Watering Rate:</h6>
-                                <p>${sitter.price_rate.water_by_plant}/plant</p>
-                            </Col>
-                        </Row>
+                        <Link className='dashboard-link' to={`/users/${sitter.userID}`}>
+                            <Row className='dashboard-row'>
+                                <Col>
+                                    <Image className='profile-pic' src={pothosPic} alt='profile pic' roundedCircle/>
+                                </Col>
+                                <Col xs={6}>
+                                    <h4>{sitter.full_name}</h4>
+                                    <p>{sitter.bio}</p>
+                                </Col>
+                                <Col>
+                                    <h6>Avg Rating</h6>
+                                    { sitter.sitter_rating ? <RatingStars currentRating={sitter.sitter_rating} maxRating={maxRating} /> : 'N/A'}
+                                </Col>
+                                <Col>
+                                    <h6>Watering Rate:</h6>
+                                    <p>${sitter.price_rate.water_by_plant}/plant</p>
+                                </Col>
+                            </Row>
                         </Link>
                     );
                 })}
