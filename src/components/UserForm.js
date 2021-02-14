@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
+import { projectStorage } from '../firebase'
 import axios from 'axios';
-
 
 export default function UserForm({ baseURL, setDashboardUser }) {
     const { currentUser } = useAuth();
 
     const [error, setError] = useState('');
+    const [file, setFile] = useState(null);
+    const [url, setUrl] = useState(null);
+    const types = ['image/png', 'image/jpeg'];
 
     const [user, setUser] = useState({
         auth_id: currentUser.uid,
@@ -67,6 +70,25 @@ export default function UserForm({ baseURL, setDashboardUser }) {
             [event.target.name]: !user[event.target.name]
         });
     }
+
+    const uploadPhoto = (e) => {
+        let selected = e.target.files[0];
+
+        if (selected && types.includes(selected.type)) {
+            setFile(selected);
+            setError('');
+        } else {
+            setFile(null);
+            setError('Please select an image file (png or jpeg)');
+        }
+    }
+
+    // useEffect(() => {
+    //     const storageRef = projectStorage.ref(file.name);
+    //     storageRef.put(file).on('state_changed', (snap) => {
+
+    //     })
+    // },[file])
 
     //check for if all form fields are populated
     //note: sitter/owner attributes are excluded from this function since checkUserType() exists
@@ -178,14 +200,22 @@ export default function UserForm({ baseURL, setDashboardUser }) {
                         <Form onSubmit={handleSubmit}>
                             <h2 className='text-center mb-4'>Create Profile</h2>
                             <Form.Row>
-                                <Form.Group as={Col}></Form.Group>
+                                <Col></Col>
                                 <Form.Group as={Col} >
                                     <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck} checked={user.sitter ? true : false} />
                                 </Form.Group>
                                 <Form.Group as={Col} >
                                     <Form.Check type="checkbox" label="Owner" name='owner' value={user.owner} onChange={handleCheck} checked={user.owner ? true : false} />
                                 </Form.Group>
-                                <Form.Group as={Col}></Form.Group>
+                                <Col></Col>
+                            </Form.Row>
+                            <Form.Row className='d-flex justify-content-center'>
+                                <Form.Group>
+                                    <Form.Label>Upload Photo</Form.Label>
+                                    <Form.Control type="file" name='avatar_url' value={user.avatar_url} onChange={uploadPhoto}/>
+                                    {file && <div>{file.name}</div>}
+                                    { error && <div className='error'>{error}</div>}
+                                </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col}>
