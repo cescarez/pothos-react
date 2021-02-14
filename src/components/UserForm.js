@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
+import { projectStorage } from '../firebase'
 import axios from 'axios';
-import UploadProfilePic from './UploadProfilePic'
-
 
 export default function UserForm({ baseURL, setDashboardUser }) {
     const { currentUser } = useAuth();
 
     const [error, setError] = useState('');
+    const [file, setFile] = useState(null);
+    const [url, setUrl] = useState(null);
+    const types = ['image/png', 'image/jpeg'];
 
     const [user, setUser] = useState({
         auth_id: currentUser.uid,
@@ -68,10 +70,25 @@ export default function UserForm({ baseURL, setDashboardUser }) {
             [event.target.name]: !user[event.target.name]
         });
     }
-    
-    const uploadPhoto = () =>  {
 
+    const uploadPhoto = (e) => {
+        let selected = e.target.files[0];
+
+        if (selected && types.includes(selected.type)) {
+            setFile(selected);
+            setError('');
+        } else {
+            setFile(null);
+            setError('Please select an image file (png or jpeg)');
+        }
     }
+
+    // useEffect(() => {
+    //     const storageRef = projectStorage.ref(file.name);
+    //     storageRef.put(file).on('state_changed', (snap) => {
+
+    //     })
+    // },[file])
 
     //check for if all form fields are populated
     //note: sitter/owner attributes are excluded from this function since checkUserType() exists
@@ -182,10 +199,6 @@ export default function UserForm({ baseURL, setDashboardUser }) {
                     <Card.Body>
                         <Form onSubmit={handleSubmit}>
                             <h2 className='text-center mb-4'>Create Profile</h2>
-                            {/* <Form.Row className='d-flex justify-content-center'>
-                                <UploadProfilePic baseURL={baseURL}/>
-                            </Form.Row> */}
-
                             <Form.Row>
                                 <Col></Col>
                                 <Form.Group as={Col} >
@@ -196,6 +209,14 @@ export default function UserForm({ baseURL, setDashboardUser }) {
                                 </Form.Group>
                                 <Col></Col>
                             </Form.Row>
+                            <Form.Row className='d-flex justify-content-center'>
+                                <Form.Group>
+                                    <Form.Label>Upload Photo</Form.Label>
+                                    <Form.Control type="file" name='avatar_url' value={user.avatar_url} onChange={uploadPhoto}/>
+                                    {file && <div>{file.name}</div>}
+                                    { error && <div className='error'>{error}</div>}
+                                </Form.Group>
+                            </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col}>
                                     <Form.Label>Full Name</Form.Label>
@@ -204,12 +225,6 @@ export default function UserForm({ baseURL, setDashboardUser }) {
                                 <Form.Group as={Col}>
                                     <Form.Label>Phone Number</Form.Label>
                                     <Form.Control type="tel" name='phone_number' value={user.phone_number} onChange={handleChange} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder='###-###-####'/>
-                                </Form.Group>
-                            </Form.Row>
-                            <Form.Row>
-                                <Form.Group>
-                                    <Form.Label>Upload Photo</Form.Label>
-                                    <Form.Control type="text" name='avatar_url' value={user.avatar_url} onChange={uploadPhoto} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
