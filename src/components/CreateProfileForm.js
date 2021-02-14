@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { projectStorage } from '../firebase'
 import axios from 'axios';
 
-export default function UserForm({ baseURL, setDashboardUser }) {
+export default function CreateProfileForm({ baseURL, setDashboardUser }) {
     const { currentUser } = useAuth();
 
     const [error, setError] = useState('');

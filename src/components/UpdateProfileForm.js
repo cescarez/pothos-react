@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 
-export default function UpdateProfile({baseURL}) {
+export default function UpdateProfileForm({baseURL}) {
     const { currentUser } = useAuth();
     const [error, setError] = useState('');
     const [user, setUser] = useState(null);
@@ -141,7 +141,7 @@ export default function UpdateProfile({baseURL}) {
                 });
         }
     }
-    //this conditional makes it so the userform doesn't flash while waiting on the axios response
+    //this conditional makes it so the CreateProfileForm doesn't flash while waiting on the axios response
     if (!user) {
         return(
             <div></div>

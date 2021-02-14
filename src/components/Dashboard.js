@@ -7,7 +7,7 @@ import bgimage from '../images/wallpaper.png'
 
 import OwnerDashboard from './OwnerDashboard';
 import SitterDashboard from './SitterDashboard';
-import UserForm from './UserForm';
+import CreateProfileForm from './CreateProfileForm';
 
 const Dashboard = ({baseURL, maxRating}) => {
     const [user, setUser] = useState(null);
@@ -80,7 +80,7 @@ const Dashboard = ({baseURL, maxRating}) => {
                         </Tabs>
                     </div>
                 : 
-                    <UserForm baseURL={baseURL} setDashboardUser={loadUserCallback} />
+                    <CreateProfileForm baseURL={baseURL} setDashboardUser={loadUserCallback} />
                 }
             </div>
         )
