@@ -69,31 +69,6 @@ export default function UpdateProfileForm({baseURL}) {
         });
     }
 
-    //check for if all form fields are populated
-    //note: sitter/owner attributes are excluded from this function since checkUserType() exists
-    // const checkFormPopulated = () => {
-    //     const fields = 
-    //         Object.values(user)
-    //             .filter((element) => {
-    //                 return typeof(element) !== 'object' && typeof(element) !== 'boolean'
-    //             })
-    //             .concat(Object.values(user.address))
-    //             .concat(Object.values(user.price_rate))
-
-    //     if (user.sitter) {
-    //         fields.concat(Object.values(user.price_rate));
-    //     }
-    //     if (fields.every((field) => field)) {
-    //         return true
-    //     } else {
-    //         setError({
-    //             variant: 'warning', 
-    //             message: 'All form fields must be populated.'
-    //         })
-    //         return false;
-    //     }
-    // }
-
     //check if at least one user type is selected
     const checkUserType = () => {
         if (user.sitter || user.owner) {
@@ -125,7 +100,6 @@ export default function UpdateProfileForm({baseURL}) {
             return true;
         }
     }
-
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -211,21 +185,33 @@ export default function UpdateProfileForm({baseURL}) {
                                         <Form.Row>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Watering / Plant</Form.Label>
-                                                <Form.Control  name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange}  required={user.sitter ? true : false}/>
+                                                <Form.Control  name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange}  required={user.sitter} isInvalid={user.price_rate.water_by_plant}/>
+                                                <Form.Control.Feedback type='invalid'>
+                                                    { 'All price rates must be numbers.' }
+                                                </Form.Control.Feedback>
                                             </Form.Group>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Watering / 30 min</Form.Label>
-                                                <Form.Control  name='water_by_time' value={user.price_rate.water_by_time} onChange={handleChange} required={user.sitter ? true : false} />
+                                                <Form.Control  name='water_by_time' value={user.price_rate.water_by_time} onChange={handleChange} required={user.sitter} isInvalid={isNaN(user.price_rate.water_by_time)} />
+                                                <Form.Control.Feedback type='invalid'>
+                                                    { 'All price rates must be numbers.' }
+                                                </Form.Control.Feedback>
                                             </Form.Group>
                                         </Form.Row>
                                         <Form.Row>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Repotting / Plant</Form.Label>
-                                                <Form.Control  name='repot_by_plant' value={user.price_rate.repot_by_plant} onChange={handleChange}  required={user.sitter ? true : false}/>
+                                                <Form.Control  name='repot_by_plant' value={user.price_rate.repot_by_plant} onChange={handleChange}  required={user.sitter} isInvalid={isNaN(user.price_rate.repot_by_plant)}/>
+                                                <Form.Control.Feedback type='invalid'>
+                                                    { 'All price rates must be numbers.' }
+                                                </Form.Control.Feedback>
                                             </Form.Group>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Repotting / 30 min</Form.Label>
-                                                <Form.Control  name='repot_by_time' value={user.price_rate.repot_by_time} onChange={handleChange} required={user.sitter ? true : false} />
+                                                <Form.Control  name='repot_by_time' value={user.price_rate.repot_by_time} onChange={handleChange} required={user.sitter} isInvalid={isNaN(user.price_rate.repot_by_time)} />
+                                            <Form.Control.Feedback type='invalid'>
+                                                { 'All price rates must be numbers.' }
+                                            </Form.Control.Feedback>
                                             </Form.Group>
                                         </Form.Row>
                                     </Card.Body>
