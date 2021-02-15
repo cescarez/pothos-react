@@ -16,8 +16,7 @@ import Footer from './components/Footer'
 import ChatLog from './components/ChatLog'
 import AboutUs from './components/AboutUs'
 import ContactUs from './components/ContactUs'
-// import Inbox from './components/Inbox'
-import MessageInbox from './components/Inbox'
+import Inbox from './components/Inbox'
 import Gallery from './components/Gallery'
 import Stripe from './components/Stripe';
 
@@ -54,8 +53,7 @@ function App() {
                         <Route exact path='/checkout' component={Stripe} />
                         {/* <Route exact path='/create-profile' component={CreateProfileForm} /> */}
                         <Route exact path='/inbox'>
-                            {/* <Inbox baseURL={BASE_URL} maxRating={MAX_RATING} /> */}
-                            <MessageInbox baseURL={BASE_URL} maxRating={MAX_RATING} />
+                            <Inbox baseURL={BASE_URL} maxRating={MAX_RATING} />
                         </Route>
                         <PrivateRoute exact path='/update-email'>
                             <UpdateEmailPassword />

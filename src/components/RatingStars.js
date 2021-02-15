@@ -10,13 +10,13 @@ const RatingStars = ({currentRating, maxRating, disabled}) => {
 
         for(let i = 0; i < currentRating; i++){
             ratingIcons.push(
-                <AiFillStar opacity={disabled ? '0.3' : '1'} /> 
+                <AiFillStar opacity={disabled ? '0.2' : '1'} /> 
             )
         }
         if (currentRating < maxRating) {
             for(let i = currentRating; i < maxRating; i++){
                 ratingIcons.push(
-                    <AiOutlineStar opacity={disabled ? '0.4' : '1'} /> 
+                    <AiOutlineStar opacity={disabled ? '0.3' : '1'} /> 
                     // <AiOutlineStar /> 
                 )
             }
