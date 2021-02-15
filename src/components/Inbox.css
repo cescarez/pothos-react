@@ -1,0 +1,20 @@
+.inbox__container--message-date {
+    font-size: 12px;
+    /* font-size: 10px;
+    text-transform: uppercase; */
+}
+
+.inbox__container--message-title {
+    font-weight: bolder;
+    font-size: smaller;
+}
+
+.inbox__container--message-body {
+    /* padding-top: 2px; */
+    /* font-size: smaller; */
+    /* color: #aaa; */
+}
+
+.photo-message {
+    font-style: italic;
+}
