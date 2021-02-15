@@ -7,10 +7,10 @@ import axios from 'axios';
 export default function CreateProfileForm({ baseURL, setDashboardUser }) {
     const { currentUser } = useAuth();
 
-    const [error, setError] = useState('');
+    const [error, setError] = useState({});
     const [file, setFile] = useState(null);
-    const [url, setUrl] = useState(null);
-    const types = ['image/png', 'image/jpeg'];
+    // const [url, setUrl] = useState(null);
+    // const types = ['image/png', 'image/jpeg'];
 
     const [user, setUser] = useState({
         auth_id: currentUser.uid,
@@ -33,6 +33,7 @@ export default function CreateProfileForm({ baseURL, setDashboardUser }) {
             repot_by_time: ''
         }
     });
+
 
     const handleChange = (event) => {
         const newInput = event.target.name
@@ -71,17 +72,17 @@ export default function CreateProfileForm({ baseURL, setDashboardUser }) {
         });
     }
 
-    const uploadPhoto = (e) => {
-        let selected = e.target.files[0];
+    // const uploadPhoto = (e) => {
+    //     let selected = e.target.files[0];
 
-        if (selected && types.includes(selected.type)) {
-            setFile(selected);
-            setError('');
-        } else {
-            setFile(null);
-            setError('Please select an image file (png or jpeg)');
-        }
-    }
+    //     if (selected && types.includes(selected.type)) {
+    //         setFile(selected);
+    //         setError('');
+    //     } else {
+    //         setFile(null);
+    //         setError('Please select an image file (png or jpeg)');
+    //     }
+    // }
 
     // useEffect(() => {
     //     const storageRef = projectStorage.ref(file.name);
@@ -122,44 +123,84 @@ export default function CreateProfileForm({ baseURL, setDashboardUser }) {
         }
     }
 
+    let uspsRequestXML = 
+        `<AddressValidateRequest USERID="111NASTU3329">
+            <Address>
+                <Address1/>
+                <Address2>${user.address.street}</Address2>
+                <City>${user.address.city}</City>
+                <State>${user.address.state}</State>
+                <Zip5>${user.address.postal_code}</Zip5>
+                <Zip4/>
+            </Address>
+        </AddressValidateRequest>`
+
+    const verifyAddress = () => {
+        console.log(uspsRequestXML)
+        axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=verify&XML=${uspsRequestXML}`, {headers: {'Content-Type': 'application/xml; charset=utf=8'}})
+        .then((response) => {
+            const errorMessage = response.data.split(/<[/]?Description>/)[1]
+            if (errorMessage) {
+                setError({variant: 'danger', message: `Address is not valid. ${errorMessage}`, validAddress: false});
+                console.log(errorMessage)
+                return false
+            } else {
+                setError({validAddress: true});
+                console.log(`Address verified.`)
+                return true
+            }
+        })
+        .catch((error)=>{
+            const message=`Failed to verify address. ${error.message}`;
+            setError({variant: 'danger', message: message, validAddress: false});
+            console.log(error)
+            return false
+        })
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
+        const promises = []
+        promises.push(verifyAddress());
         if (checkUserType() && checkPriceRates()) {
-            axios.post(baseURL + '/users', user)
-                .then((response) => {
-                    //callback to dashboard
-                    setDashboardUser(response);
+            console.log(error.validAddress)
+            if (error.validAddress) {
+                axios.post(baseURL + '/users', user)
+                    .then((response) => {
+                        //callback to dashboard
+                        setDashboardUser(response);
 
-                    setUser({
-                        auth_id: currentUser.uid,
-                        username: '',
-                        full_name: '',
-                        phone_number: '',
-                        avatar_url: currentUser.photoURL,
-                        sitter: false,
-                        owner: false,
-                        bio: '',
-                        address: {
-                            street: '',
-                            city: '',
-                            state: '',
-                            postal_code: '',
-                            country: ''
-                        },
-                        price_rate: {
-                            water_by_plant: '',
-                            water_by_time: '',
-                            repot_by_plant: '',
-                            repot_by_time: ''
-                        }
+                        setUser({
+                            auth_id: currentUser.uid,
+                            username: '',
+                            full_name: '',
+                            phone_number: '',
+                            avatar_url: currentUser.photoURL,
+                            sitter: false,
+                            owner: false,
+                            bio: '',
+                            address: {
+                                street: '',
+                                city: '',
+                                state: '',
+                                postal_code: '',
+                                country: ''
+                            },
+                            price_rate: {
+                                water_by_plant: '',
+                                water_by_time: '',
+                                repot_by_plant: '',
+                                repot_by_time: ''
+                            }
+                        })
+                        setError({ variant: 'success', message: response.data.message });
                     })
-                    setError({ variant: 'success', message: response.data.message });
-                })
-                .catch((error) => {
-                    const message=`There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
-                    setError({ variant: 'danger', message: message });
-                    console.log(message);
-                });
+                    .catch((error) => {
+                        const message=`There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
+                        setError({ variant: 'danger', message: message });
+                        console.log(message);
+                    });
+            }
         }
     }
 
@@ -185,14 +226,14 @@ export default function CreateProfileForm({ baseURL, setDashboardUser }) {
                                 </Form.Group>
                                 <Col></Col>
                             </Form.Row>
-                            <Form.Row className='d-flex justify-content-center'>
+                            {/* <Form.Row className='d-flex justify-content-center'>
                                 <Form.Group>
                                     <Form.Label>Upload Photo</Form.Label>
                                     <Form.Control type="file" name='avatar_url' value={user.avatar_url} onChange={uploadPhoto}/>
                                     {file && <div>{file.name}</div>}
                                     { error && <div className='error'>{error}</div>}
                                 </Form.Group>
-                            </Form.Row>
+                            </Form.Row> */}
                             <Form.Row>
                                 <Form.Group as={Col}>
                                     <Form.Label>Full Name</Form.Label>
@@ -206,21 +247,21 @@ export default function CreateProfileForm({ baseURL, setDashboardUser }) {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridAddress1" >
                                     <Form.Label>Street</Form.Label>
-                                    <Form.Control name='street' value={user.address.street} onChange={handleChange} required/>
+                                    <Form.Control name='street' value={user.address.street} onChange={handleChange} required isInvalid={error.validAddress ? !error.validAddress : false}/>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId='formGridCity' >
                                     <Form.Label>City</Form.Label>
-                                    <Form.Control name='city' value={user.address.city} onChange={handleChange} required/>
+                                    <Form.Control name='city' value={user.address.city} onChange={handleChange} required isInvalid={error.validAddress ? !error.validAddress : false}/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridState" >
                                     <Form.Label>State</Form.Label>
-                                    <Form.Control name='state' value={user.address.state} onChange={handleChange} required/>
+                                    <Form.Control name='state' value={user.address.state} onChange={handleChange} required isInvalid={error.validAddress ? !error.validAddress : false}/>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridZip" >
                                     <Form.Label>Postal Code</Form.Label>
-                                    <Form.Control name='postal_code' value={user.address.postal_code} onChange={handleChange} required/>
+                                    <Form.Control name='postal_code' value={user.address.postal_code} onChange={handleChange} required isInvalid={error.validAddress ? !error.validAddress : false}/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group>

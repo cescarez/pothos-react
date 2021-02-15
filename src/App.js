@@ -50,7 +50,7 @@ function App() {
                         <Route exact path='/contact' component={ContactUs} />
                         <Route exact path='/gallery/:id' component={Gallery} />
                         <Route exact path='/checkout' component={Stripe} />
-                        <Route exact path='/CreateProfileForm' component={CreateProfileForm} />
+                        {/* <Route exact path='/create-profile' component={CreateProfileForm} /> */}
                         <Route exact path='/inbox'>
                             <Inbox baseURL={BASE_URL} maxRating={MAX_RATING} />
                         </Route>
