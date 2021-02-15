@@ -82,7 +82,7 @@ const User = ({baseURL, maxRating}) => {
         return (
             <Container className='container-lg'>
                 <Card className='mx-auto w-50' border='plant'>
-                    <Card.Img variant='bottom' src={pothosPic} rounded />
+                    <Card.Img variant='bottom' src={user.avatar_url ? user.avatar_url : pothosPic} rounded />
                     <Card.Header className='bg-plant'>
                         <Row>
                             <Col>

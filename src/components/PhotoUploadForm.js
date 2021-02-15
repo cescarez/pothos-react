@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ProgressBar from './ProgressBar';
 import './Gallery.css';
 
-const UploadForm = ({loadMessageList, requestID, sender, baseURL}) => {
+const PhotoUploadForm = ({loadMessageList, requestID, sender, baseURL}) => {
     const [file, setFile] = useState(null);
     const [error, setError] = useState(null);
 
@@ -22,7 +22,7 @@ const UploadForm = ({loadMessageList, requestID, sender, baseURL}) => {
 
     return(
         <form>
-            <label className='upload-label'>
+            <label className='upload-label mx-auto my-auto'>
                 <input type='file' onChange={changeHandler} />
                 <span>+</span>
             </label>
@@ -42,4 +42,4 @@ const UploadForm = ({loadMessageList, requestID, sender, baseURL}) => {
     )
 }
 
-export default UploadForm;
+export default PhotoUploadForm;
