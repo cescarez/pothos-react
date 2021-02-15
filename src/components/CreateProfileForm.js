@@ -2,15 +2,32 @@ import React, { useState, useEffect } from 'react'
 import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import { projectStorage } from '../firebase'
+import ProgressBarProfile from './ProgressBarProfile'
+import useStorageProfile from '../hooks/useStorageProfile'
 import axios from 'axios';
+
+
+// const ProgressBarProfile = ({ file, setFile }) => {
+//     const { url, progress } = useStorageProfile(file);
+    
+//     useEffect(() => {
+//         if (url) {
+//             setFile(null);
+//         }
+//     },[url, setFile])
+    
+//     return (
+//         <div className='progress-bar' style={{ width: progress + '%' }} />
+//     )
+// }
 
 export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeocodeURL }) {
     const { currentUser } = useAuth();
 
     const [error, setError] = useState({});
     const [file, setFile] = useState(null);
-    // const [url, setUrl] = useState(null);
-    // const types = ['image/png', 'image/jpeg'];
+    const [url, setUrl] = useState(null);
+    const types = ['image/png', 'image/jpeg'];
 
     const [user, setUser] = useState({
         auth_id: currentUser.uid,
@@ -76,24 +93,51 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
         });
     }
 
-    // const uploadPhoto = (e) => {
-    //     let selected = e.target.files[0];
+    const uploadPhoto = (e) => {
+        let selected = e.target.files[0];
 
-    //     if (selected && types.includes(selected.type)) {
-    //         setFile(selected);
-    //         setError('');
-    //     } else {
-    //         setFile(null);
-    //         setError('Please select an image file (png or jpeg)');
-    //     }
-    // }
+        if (selected && types.includes(selected.type)) {
+            setFile(selected);
+            setError('');
+        } else {
+            setFile(null);
+            setError({
+                variant: 'warning',
+                message: 'Please select an image file (png or jpeg)'
+            });
+        }
+
+        console.log(user);
+        console.log(url);
+    }
 
     // useEffect(() => {
     //     const storageRef = projectStorage.ref(file.name);
     //     storageRef.put(file).on('state_changed', (snap) => {
-
+    //         let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
+    //     }, (err) => {
+    //         setError({
+    //             variant: 'warning',
+    //             message: err
+    //         });
+    //     }, async () => {
+    //         const url = await storageRef.getDownloadURL();
+    //         setUrl(url);
     //     })
     // },[file])
+
+    // useEffect(() => {
+    //     setUser({
+    //         ...user,
+    //         avatar_url: url,
+    //     });
+    // },[url, user])
+
+    // useEffect(() => {
+    //     if (url) {
+    //         setFile(null);
+    //     }
+    // },[url, setFile])
 
     //check if at least one user type is selected
     const checkUserType = () => {
@@ -248,14 +292,14 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
                                 </Form.Group>
                                 <Col></Col>
                             </Form.Row>
-                            {/* <Form.Row className='d-flex justify-content-center'>
+                            <Form.Row className='d-flex justify-content-center'>
                                 <Form.Group>
                                     <Form.Label>Upload Photo</Form.Label>
                                     <Form.Control type="file" name='avatar_url' value={user.avatar_url} onChange={uploadPhoto}/>
-                                    {file && <div>{file.name}</div>}
-                                    { error && <div className='error'>{error}</div>}
+                                    { file && <ProgressBarProfile file={file} setFile={setFile} setUrl={setUrl}/> }
+                                    { file && console.log(url) }
                                 </Form.Group>
-                            </Form.Row> */}
+                            </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col}>
                                     <Form.Label>Full Name</Form.Label>
