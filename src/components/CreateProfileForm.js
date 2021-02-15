@@ -147,7 +147,7 @@ export default function CreateProfileForm({ baseURL, setDashboardUser }) {
             } else {
                 setError({validAddress: true});
                 console.log(`Address verified.`)
-                return true
+                return createUserProfile()
             }
         })
         .catch((error)=>{
@@ -158,50 +158,97 @@ export default function CreateProfileForm({ baseURL, setDashboardUser }) {
         })
     }
 
+    const createUserProfile = () => {
+        axios.post(baseURL + '/users', user)
+            .then((response) => {
+                //callback to dashboard
+                setDashboardUser(response);
+
+                setUser({
+                    auth_id: currentUser.uid,
+                    username: '',
+                    full_name: '',
+                    phone_number: '',
+                    avatar_url: currentUser.photoURL,
+                    sitter: false,
+                    owner: false,
+                    bio: '',
+                    address: {
+                        street: '',
+                        city: '',
+                        state: '',
+                        postal_code: '',
+                        country: ''
+                    },
+                    price_rate: {
+                        water_by_plant: '',
+                        water_by_time: '',
+                        repot_by_plant: '',
+                        repot_by_time: ''
+                    }
+                })
+                setError({ variant: 'success', message: response.data.message });
+            })
+            .catch((error) => {
+                const message=`There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
+                setError({ variant: 'danger', message: message });
+                console.log(message);
+            });
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        // const promises = []
-        // promises.push(verifyAddress());
-        verifyAddress();
         if (checkUserType() && checkPriceRates()) {
-            console.log(error.validAddress)
-            if (error.validAddress) {
-                axios.post(baseURL + '/users', user)
-                    .then((response) => {
-                        //callback to dashboard
-                        setDashboardUser(response);
+            axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=verify&XML=${uspsRequestXML}`, {headers: {'Content-Type': 'application/xml; charset=utf=8'}})
+            .then((response) => {
+                const errorMessage = response.data.split(/<[/]?Description>/)[1]
+                if (errorMessage) {
+                    setError({variant: 'danger', message: `Address is not valid. ${errorMessage}`, invalidAddress: true});
+                    console.log(errorMessage)
+                    return false
+                } else {
+                    setError({});
+                    console.log(`Address verified.`)
+                    return (
+                        axios.post(baseURL + '/users', user)
+                        .then((response) => {
+                            //callback to dashboard
+                            setDashboardUser(response);
 
-                        setUser({
-                            auth_id: currentUser.uid,
-                            username: '',
-                            full_name: '',
-                            phone_number: '',
-                            avatar_url: currentUser.photoURL,
-                            sitter: false,
-                            owner: false,
-                            bio: '',
-                            address: {
-                                street: '',
-                                city: '',
-                                state: '',
-                                postal_code: '',
-                                country: ''
-                            },
-                            price_rate: {
-                                water_by_plant: '',
-                                water_by_time: '',
-                                repot_by_plant: '',
-                                repot_by_time: ''
-                            }
+                            setUser({
+                                auth_id: currentUser.uid,
+                                username: '',
+                                full_name: '',
+                                phone_number: '',
+                                avatar_url: currentUser.photoURL,
+                                sitter: false,
+                                owner: false,
+                                bio: '',
+                                address: {
+                                    street: '',
+                                    city: '',
+                                    state: '',
+                                    postal_code: '',
+                                    country: ''
+                                },
+                                price_rate: {
+                                    water_by_plant: '',
+                                    water_by_time: '',
+                                    repot_by_plant: '',
+                                    repot_by_time: ''
+                                }
+                            })
+                            setError({ variant: 'success', message: response.data.message });
                         })
-                        setError({ variant: 'success', message: response.data.message });
-                    })
-                    .catch((error) => {
-                        const message=`There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
-                        setError({ variant: 'danger', message: message });
-                        console.log(message);
-                    });
-            }
+                    )
+                }
+            })
+            .catch((error) => {
+                const message=`There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
+                setError({ variant: 'danger', message: message });
+                console.log(message);
+            })
+
         }
     }
 
