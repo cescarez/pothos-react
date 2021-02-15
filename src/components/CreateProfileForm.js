@@ -146,16 +146,7 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
 
 
     let uspsRequestXML =
-        `<AddressValidateRequest USERID="111NASTU3329">
-            <Address>
-                <Address1/>
-                <Address2>${user.address.street}</Address2>
-                <City>${user.address.city}</City>
-                <State>${user.address.state}</State>
-                <Zip5>${user.address.postal_code}</Zip5>
-                <Zip4/>
-            </Address>
-        </AddressValidateRequest>`
+        `<AddressValidateRequest USERID="111NASTU3329"><Address><Address1/><Address2>${user.address.street}</Address2><City>${user.address.city}</City><State>${user.address.state}</State><Zip5>${user.address.postal_code}</Zip5><Zip4/></Address></AddressValidateRequest>`
 
     const saveUserProfile = (newUser) => {
         axios.post(baseURL + '/users', newUser)
