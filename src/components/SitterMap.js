@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Alert, Spinner } from 'react-bootstrap';
+import { Alert} from 'react-bootstrap';
 import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import axios from 'axios';
 import userPin from '../images/map_icons/pin_danger.png';
@@ -11,8 +11,6 @@ const SitterMap = ({ sitterList, currentUserData, baseGeocodeURL }) => {
     //default center is center of the U.S.
     const [mapCenter, setMapCenter] = useState({ lat: 39.8097343, lng: -98.5556199 });
     const [zoom, setZoom] = useState(8);
-    const [sitterCoords, setSitterCoords] = useState(null);
-    const [isLoaded, setIsLoaded] = useState(false);
 
    const formattedAddress = (user) => {
         return (
@@ -86,16 +84,7 @@ const SitterMap = ({ sitterList, currentUserData, baseGeocodeURL }) => {
     return (
         <div className='h-100'>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
-            { isLoaded ?
-                showSitterMap()
-                :
-                <Container>
-                    <div className='invisible'>{setTimeout(() => {
-                        setIsLoaded(true)
-                    }, 500)}</div>
-                    <Spinner animation="border" variant="secondary" style={{ height: '200px', width: '200px' }} />
-                </Container>
-            }
+            { showSitterMap() }
         </div>
     )
 }
