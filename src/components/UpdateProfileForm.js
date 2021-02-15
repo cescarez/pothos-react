@@ -145,7 +145,7 @@ export default function UpdateProfileForm({baseURL, baseGeocodeURL}) {
     const uspsRequestXML = () => {
         if (user) {
             return (
-                `<AddressValidateRequest USERID="111NASTU3329"><Address><Address1/><Address2>${user.address.street}</Address2><City>${user.address.city}</City><State>${user.address.state}</State><Zip5>${user.address.postal_code}</Zip5><Zip4/></Address></AddressValidateRequest>`
+                `<AddressValidateRequest USERID="${process.env.REACT_APP_USPS_API_KEY}"><Address><Address1/><Address2>${user.address.street}</Address2><City>${user.address.city}</City><State>${user.address.state}</State><Zip5>${user.address.postal_code}</Zip5><Zip4/></Address></AddressValidateRequest>`
             )
         }
     }
@@ -181,6 +181,7 @@ export default function UpdateProfileForm({baseURL, baseGeocodeURL}) {
         event.preventDefault();
         console.log(user)
         if (checkUserType() && checkPriceRates()) {
+            console.log(uspsRequestXML())
             axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=verify&XML=${uspsRequestXML()}`, { headers: { 'Content-Type': 'application/xml; charset=utf=8' } })
                 .then((response) => {
                     const errorMessage = response.data.split(/<[/]?Description>/)[1]
