@@ -11,6 +11,9 @@ import Request from './Request';
 
 import './Inbox.css';
 
+// TODO: group requests by inbox
+// TODO: implement unread format change
+
 const Inbox = ({ baseURL, maxRating }) => {
     const [requestList, setRequestList] = useState(null);
     const [user, setUser] = useState(null);
@@ -69,8 +72,8 @@ const Inbox = ({ baseURL, maxRating }) => {
 
     function showRequestList() {
         return (
-            <Container fluid>
-                <Table className='request-list__table'>
+            <Container>
+                <Table className='request-list__table' responsive='xl'>
                     <thead>
                         <tr>
                             <th>Conversations</th>
@@ -106,7 +109,7 @@ const Inbox = ({ baseURL, maxRating }) => {
                                     <td className='align-middle'>
                                         <Rating baseURL={baseURL} request={request} currentUserData={user} maxRating={maxRating} />
                                     </td>
-                                    <td>
+                                    <td className='align-middle'>
                                         {user.userID === request.owner &&
                                             <Button><FaStripeS /></Button>
                                         }
