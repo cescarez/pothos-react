@@ -5,7 +5,7 @@ import { Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import SitterMap from './SitterMap';
 import SitterList from './SitterList';
 
-const OwnerDashboard = ({ baseURL, currentUserData, maxRating }) => {
+const OwnerDashboard = ({ baseURL, currentUserData, maxRating, baseGeocodeURL }) => {
     const [error, setError] = useState({variant: '', message: ''});
     const [sitterList, setSitterList] = useState(null);
     const [showMap, setShowMap] = useState(false);
@@ -44,7 +44,7 @@ const OwnerDashboard = ({ baseURL, currentUserData, maxRating }) => {
             { showMap ? 
                 <div>
                     <Button variant='outline-secondary' onClick={onViewMapClick}>Hide Map</Button>
-                    <SitterMap sitterList={sitterList} currentUserData={currentUserData} />
+                    <SitterMap sitterList={sitterList} currentUserData={currentUserData} baseGeocodeURL={baseGeocodeURL}/>
                 </div>
             : <Button variant='outline-secondary' onClick={onViewMapClick}>View Map</Button>
             }            

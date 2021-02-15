@@ -6,6 +6,7 @@ import pothosPic from '../images/pothos_large.png';
 
 import './SitterList.css'
 
+import LoadingSpinner from './LoadingSpinner';
 import RatingStars from './RatingStars';
 
 const SitterList = ({ sitterList, currentUserData, maxRating }) => {
@@ -59,9 +60,9 @@ const SitterList = ({ sitterList, currentUserData, maxRating }) => {
                     if (sitter.userID !== currentUserData.userID) {
                         return(
                             <Link className='dashboard-link' to={`/users/${sitter.userID}`}>
-                                <Row className='dashboard-row'>
+                                <Row className='dashboard-row' id={`sitter-card-${sitter.userID}`}>
                                     <Col>
-                                        <Image className='profile-pic' src={pothosPic} alt='profile pic' roundedCircle/>
+                                        <Image className='profile-pic' src={sitter.avatar_url? sitter.avatar_url : pothosPic} alt='profile pic' roundedCircle/>
                                     </Col>
                                     <Col xs={6}>
                                         <h4>{sitter.full_name}</h4>
@@ -85,7 +86,7 @@ const SitterList = ({ sitterList, currentUserData, maxRating }) => {
     }
 
     if (!sitterList) {
-        return <div></div>;
+        return <div><LoadingSpinner/></div>;
     }
 
     return (

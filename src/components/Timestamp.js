@@ -4,9 +4,19 @@ import moment from 'moment';
 const Timestamp = (props) => {
     const time = moment.utc(props.time);
     const absolute = time.format('MMMM Do YYYY, h:mm:ss a');
+    const absoluteLocal = time.format('l LT');
     const relative = time.fromNow();
+    const inboxThreshold = moment.utc().subtract(1, 'days')
 
-    return <span title={absolute}>{relative}</span>;
+    const returnTime = () => {
+        if (props.inbox && time < inboxThreshold) {
+           return absoluteLocal 
+        } else {
+            return relative
+        }
+    }
+
+    return <span title={absolute}>{returnTime()}</span>;
 };
 
 
