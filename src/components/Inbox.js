@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Row, Container, Alert, Table, Button} from 'react-bootstrap';
+import { OverlayTrigger, Tooltip, Col, Row, Container, Alert, Table, Button } from 'react-bootstrap';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -35,7 +35,9 @@ const Inbox = ({ baseURL, maxRating }) => {
                             for (let i in requestIDs) {
                                 apiRequestList[i].request_id = requestIDs[i];
                             }
-                            setRequestList(apiRequestList);
+                            const sortedRequestList = sortByServiceDate(apiRequestList)
+                            console.log(sortedRequestList)
+                            setRequestList(sortedRequestList);
                         } else {
                             setError({ variant: 'warning', message: Object.values(response.data)[0] })
                         }
@@ -71,6 +73,20 @@ const Inbox = ({ baseURL, maxRating }) => {
         })
     }
 
+    const sortByServiceDate = (list) => {
+        return (
+            list.sort((a, b) => {
+                return Moment.utc(a.date_of_service) - Moment.utc(b.date_of_service)
+            })
+        )
+    }
+
+    const inboxTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            {props.message}
+        </Tooltip>
+    )
+
     function showRequestList() {
         return (
             <Container fluid>
@@ -83,21 +99,36 @@ const Inbox = ({ baseURL, maxRating }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {(requestList).map((request) => {
+                        {sortByServiceDate(requestList).map((request) => {
                             const otherUserName = getOtherUserName(request);
-                            console.log(request)
                             return (
                                 <tr key={request.request_id}>
                                     <td className='align-middle'>
                                         <Link to={requestRouterParams(request.request_id, otherUserName)}>
                                             <Container fluid>
                                                 <Row>
-                                                    <Container as={Col} xs={3}  className='inbox__container--message-date'>
-                                                        <Timestamp time={request.last_message.timestamp} inbox />
-                                                    </Container>
+                                                    <OverlayTrigger
+                                                        placement="top"
+                                                        delay={{ show: 250, hide: 400 }}
+                                                        overlay={inboxTooltip({ message: 'Date of last received message' })}
+                                                    >
+                                                        <Container as={Col} xs={3} className='inbox__container--message-date' onHover={() => 'Time of last message'}>
+
+                                                            <Timestamp time={request.last_message.timestamp} inbox />
+                                                        </Container>
+                                                    </OverlayTrigger>
                                                     <Container as={Col} className='inbox__container--message-title text-left'>
-                                                        Request For {Moment.parseZone(request.date_of_service).local().format('l')} {user.userID === request.owner ? 'To' : 'From'} {otherUserName}
+                                                        {user.userID === request.owner ? 'To' : 'From'} {otherUserName}
                                                     </Container>
+                                                    <OverlayTrigger
+                                                        placement="top"
+                                                        delay={{ show: 250, hide: 400 }}
+                                                        overlay={inboxTooltip({ message: 'Requested Date of Service' })}
+                                                    >
+                                                        <Container as={Col} xs={3} className='inbox__container--message-date'>
+                                                            {Moment.parseZone(request.date_of_service).local().format('l')}
+                                                        </Container>
+                                                    </OverlayTrigger>
                                                 </Row>
                                                 <Container>
                                                     <Container className={`inbox__container--message-body text-left text-truncate ${request.last_message.message.startsWith('Photo') ? 'photo-message' : null}`}>
