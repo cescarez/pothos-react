@@ -2,30 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import { projectStorage } from '../firebase'
-// import ProgressBarProfile from './ProgressBarProfile'
-// import useStorageProfile from '../hooks/useStorageProfile'
 import axios from 'axios';
 
-
-// const ProgressBarProfile = ({ file, setFile }) => {
-//     const { url, progress } = useStorageProfile(file);
-    
-//     useEffect(() => {
-//         if (url) {
-//             setFile(null);
-//         }
-//     },[url, setFile])
-    
-//     return (
-//         <div className='progress-bar' style={{ width: progress + '%' }} />
-//     )
-// }
 
 export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeocodeURL }) {
     const { currentUser } = useAuth();
 
     const [error, setError] = useState({});
-    // const [file, setFile] = useState(null);
     const [url, setUrl] = useState(null);
     const types = ['image/png', 'image/jpeg'];
 
@@ -107,52 +90,18 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
             }, async () => {
                 const url = await storageRef.getDownloadURL();
                 console.log(url)
-                // setUrl(url);
                 setUser({
                     ...user,
                     avatar_url: url
                 });
             })
-            // setFile(selected);
-            // setError('');
         } else {
-            // setFile(null);
             setError({
                 variant: 'warning',
                 message: 'Please select an image file (png or jpeg)'
             });
         }
-        // console.log(file);
     }
-
-
-    // useEffect(() => {
-    //     const storageRef = projectStorage.ref(file.name);
-    //     storageRef.put(file).on('state_changed', (snap) => {
-    //         let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
-    //     }, (err) => {
-    //         setError({
-    //             variant: 'warning',
-    //             message: err
-    //         });
-    //     }, async () => {
-    //         const url = await storageRef.getDownloadURL();
-    //         setUrl(url);
-    //     })
-    // },[file])
-
-    // useEffect(() => {
-    //     setUser({
-    //         ...user,
-    //         avatar_url: url,
-    //     });
-    // },[url, user])
-
-    // useEffect(() => {
-    //     if (url) {
-    //         setFile(null);
-    //     }
-    // },[url, setFile])
 
     //check if at least one user type is selected
     const checkUserType = () => {
@@ -311,8 +260,6 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
                                 <Form.Group>
                                     <Form.Label>Upload Photo</Form.Label>
                                     <Form.Control type="file" onChange={uploadPhoto}/>
-                                    {/* { file && <ProgressBarProfile file={file} setFile={setFile} setUrl={setUrl}/> } */}
-                                    {/* { file && console.log(url) } */}
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
