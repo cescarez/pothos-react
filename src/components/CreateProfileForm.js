@@ -135,65 +135,37 @@ export default function CreateProfileForm({ baseURL, setDashboardUser }) {
             </Address>
         </AddressValidateRequest>`
 
-    const verifyAddress = () => {
-        console.log(uspsRequestXML)
-        axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=verify&XML=${uspsRequestXML}`, {headers: {'Content-Type': 'application/xml; charset=utf=8'}})
-        .then((response) => {
-            const errorMessage = response.data.split(/<[/]?Description>/)[1]
-            if (errorMessage) {
-                setError({variant: 'danger', message: `Address is not valid. ${errorMessage}`, validAddress: false});
-                console.log(errorMessage)
-                return false
-            } else {
-                setError({validAddress: true});
-                console.log(`Address verified.`)
-                return createUserProfile()
-            }
-        })
-        .catch((error)=>{
-            const message=`Failed to verify address. ${error.message}`;
-            setError({variant: 'danger', message: message, validAddress: false});
-            console.log(error)
-            return false
-        })
-    }
-
     const createUserProfile = () => {
         axios.post(baseURL + '/users', user)
-            .then((response) => {
-                //callback to dashboard
-                setDashboardUser(response);
+        .then((response) => {
+            //callback to dashboard
+            setDashboardUser(response);
 
-                setUser({
-                    auth_id: currentUser.uid,
-                    username: '',
-                    full_name: '',
-                    phone_number: '',
-                    avatar_url: currentUser.photoURL,
-                    sitter: false,
-                    owner: false,
-                    bio: '',
-                    address: {
-                        street: '',
-                        city: '',
-                        state: '',
-                        postal_code: '',
-                        country: ''
-                    },
-                    price_rate: {
-                        water_by_plant: '',
-                        water_by_time: '',
-                        repot_by_plant: '',
-                        repot_by_time: ''
-                    }
-                })
-                setError({ variant: 'success', message: response.data.message });
+            setUser({
+                auth_id: currentUser.uid,
+                username: '',
+                full_name: '',
+                phone_number: '',
+                avatar_url: currentUser.photoURL,
+                sitter: false,
+                owner: false,
+                bio: '',
+                address: {
+                    street: '',
+                    city: '',
+                    state: '',
+                    postal_code: '',
+                    country: ''
+                },
+                price_rate: {
+                    water_by_plant: '',
+                    water_by_time: '',
+                    repot_by_plant: '',
+                    repot_by_time: ''
+                }
             })
-            .catch((error) => {
-                const message=`There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
-                setError({ variant: 'danger', message: message });
-                console.log(message);
-            });
+            setError({ variant: 'success', message: response.data.message });
+        })
     }
 
     const handleSubmit = (event) => {
@@ -209,38 +181,7 @@ export default function CreateProfileForm({ baseURL, setDashboardUser }) {
                 } else {
                     setError({});
                     console.log(`Address verified.`)
-                    return (
-                        axios.post(baseURL + '/users', user)
-                        .then((response) => {
-                            //callback to dashboard
-                            setDashboardUser(response);
-
-                            setUser({
-                                auth_id: currentUser.uid,
-                                username: '',
-                                full_name: '',
-                                phone_number: '',
-                                avatar_url: currentUser.photoURL,
-                                sitter: false,
-                                owner: false,
-                                bio: '',
-                                address: {
-                                    street: '',
-                                    city: '',
-                                    state: '',
-                                    postal_code: '',
-                                    country: ''
-                                },
-                                price_rate: {
-                                    water_by_plant: '',
-                                    water_by_time: '',
-                                    repot_by_plant: '',
-                                    repot_by_time: ''
-                                }
-                            })
-                            setError({ variant: 'success', message: response.data.message });
-                        })
-                    )
+                    return (createUserProfile())
                 }
             })
             .catch((error) => {
