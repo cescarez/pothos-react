@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Row, Container, Alert, Table, Button } from 'react-bootstrap';
+import { Col, Row, Container, Alert, Table, Button} from 'react-bootstrap';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,7 +7,8 @@ import axios from 'axios';
 import { FaStripeS } from 'react-icons/fa';
 
 import Rating from './RequestRating';
-import Request from './Request';
+import Timestamp from './Timestamp';
+import LoadingSpinner from './LoadingSpinner';
 
 import './Inbox.css';
 
@@ -18,6 +19,7 @@ const Inbox = ({ baseURL, maxRating }) => {
     const [requestList, setRequestList] = useState(null);
     const [user, setUser] = useState(null);
     const [error, setError] = useState({ variant: '', message: '' });
+    const [isLoaded, setIsLoaded] = useState(false);
     const { currentUser } = useAuth();
 
     const loadUserData = (auth_id) => {
@@ -92,7 +94,8 @@ const Inbox = ({ baseURL, maxRating }) => {
                                             <Container fluid>
                                                 <Row>
                                                     <Container as={Col} xs={3}  className='inbox__container--message-date'>
-                                                        {Moment.utc(request.last_message.timestamp).fromNow()}
+                                                        {/* {Moment.utc(request.last_message.timestamp).fromNow()} */}
+                                                        <Timestamp time={request.last_message.timestamp} />
                                                     </Container>
                                                     <Container as={Col} className='inbox__container--message-title text-left'>
                                                         Request For {Moment.parseZone(request.date_of_service).local().format('l')} {user.userID === request.owner ? 'To' : 'From'} {otherUserName}
@@ -122,14 +125,18 @@ const Inbox = ({ baseURL, maxRating }) => {
             </Container>
         )
     }
-    if (!requestList || !user) {
-        return <div></div>;
-    }
+    // if (!requestList || !user) {
+    //     return (
+    //         <div className='align-middle'>
+    //             <LoadingSpinner /></div>
+    //     )
+    // }
 
     return (
         <div className='request-list'>
-            { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
-            {showRequestList()}
+            {error.message && <Alert variant={error.variant}>{error.message}</Alert>}
+            {requestList && user ? showRequestList() : <LoadingSpinner setIsLoaded={setIsLoaded} />}
+            {/* {showRequestList()} */}
             <Button variant='secondary w-90' as={Link} to={'/'}>Return to Dashboard</Button>
         </div>
     )
