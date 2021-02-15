@@ -14,18 +14,15 @@ const SitterMap = ({ sitterList, currentUserData, baseGeocodeURL }) => {
     const [sitterCoords, setSitterCoords] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
 
-   const createGeocodeURL = (user) => {
+   const formattedAddress = (user) => {
         return (
-            baseGeocodeURL +
-            (`${user.address.street}+${user.address.city}+${user.address.state}+${user.address.postal_code}`).replace(' ', '+')
-            + '&key='
-            + process.env.REACT_APP_GOOGLE_CLOUD_API_KEY
+            (`${user.address.street} ${user.address.city} ${user.address.state} ${user.address.postal_code}`)
         )
     }
 
     useEffect(() => {
         currentUserData &&
-            axios.get(createGeocodeURL(currentUserData))
+            axios.get(baseGeocodeURL + formattedAddress(currentUserData) + '&key=' + process.env.REACT_APP_GOOGLE_CLOUD_API_KEY)
                 .then((response) => {
                     currentUserData.addressString = `${currentUserData.address.street}, ${currentUserData.address.city}, ${currentUserData.address.state} ${currentUserData.address.postal_code}`
 
@@ -38,39 +35,19 @@ const SitterMap = ({ sitterList, currentUserData, baseGeocodeURL }) => {
                 })
     }, [])
 
-    const loadSitterListMarkers = () => {
-        const apiSitterCoords = []
-        sitterList.forEach((sitter) => {
-            if (sitter.userID !== currentUserData.userID) {
-                axios.get(createGeocodeURL(sitter))
-                    .then((response) => {
-                        const apiSitter = {
-                            title: sitter.full_name,
-                            addressString: `${sitter.address.street}, ${sitter.address.city}, ${sitter.address.state} ${sitter.address.postal_code}`
-                        }
-                        apiSitter.addressCoords = response.data.results[0].geometry.location
-                        apiSitterCoords.push(apiSitter);
-
-                        console.log(`successfully set user address coords for user ${sitter.full_name}`)
-                    })
-                    .catch((error) => {
-                        const message = `Did not load sitter ${sitter.full_name} user data. ${error.response && error.response.data.message ? error.response.data.message : error.message}`
-                        setError({ variant: 'warning', message: message })
-                        console.log(message);
-                    })
-            }
-        })
-        setSitterCoords(apiSitterCoords)
-    }
-
-    useEffect(() => {
-        sitterList &&
-            loadSitterListMarkers();
-    }, [])
-
-
 
     const showSitterMarkers = () => {
+        const sitterCoords = []
+        sitterList.forEach((sitter) => { 
+            if (sitter.userID !== currentUserData.userID) {
+                sitterCoords.push( {
+                    title: sitter.full_name, 
+                    addressCoords: sitter.address_coords,
+                    addressString: formattedAddress(sitter)
+                } )
+            }
+        })
+
         return (
             <div>
                 {sitterCoords.map((sitter, i) => {
@@ -100,7 +77,7 @@ const SitterMap = ({ sitterList, currentUserData, baseGeocodeURL }) => {
                     }}
                 >
                     {currentUserData && <Marker position={mapCenter} title={currentUserData.full_name + '\n' + currentUserData.addressString} icon={userPin} />}
-                    {sitterCoords && showSitterMarkers()}
+                    {sitterList && showSitterMarkers()}
                 </GoogleMap>
             </LoadScript>
         )
