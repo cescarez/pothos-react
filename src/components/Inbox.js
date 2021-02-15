@@ -73,7 +73,7 @@ const Inbox = ({ baseURL, maxRating }) => {
 
     function showRequestList() {
         return (
-            <Container>
+            <Container fluid>
                 <Table className='request-list__table' responsive='xl'>
                     <thead>
                         <tr>
