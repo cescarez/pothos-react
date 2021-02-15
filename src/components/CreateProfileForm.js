@@ -160,8 +160,9 @@ export default function CreateProfileForm({ baseURL, setDashboardUser }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const promises = []
-        promises.push(verifyAddress());
+        // const promises = []
+        // promises.push(verifyAddress());
+        verifyAddress();
         if (checkUserType() && checkPriceRates()) {
             console.log(error.validAddress)
             if (error.validAddress) {
