@@ -6,6 +6,7 @@ import pothosPic from '../images/pothos_large.png';
 
 import './SitterList.css'
 
+import LoadingSpinner from './LoadingSpinner';
 import RatingStars from './RatingStars';
 
 const SitterList = ({ sitterList, currentUserData, maxRating }) => {
@@ -85,7 +86,7 @@ const SitterList = ({ sitterList, currentUserData, maxRating }) => {
     }
 
     if (!sitterList) {
-        return <div></div>;
+        return <div><LoadingSpinner/></div>;
     }
 
     return (

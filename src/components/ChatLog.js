@@ -5,6 +5,7 @@ import axios from 'axios';
 import ChatEntry from './ChatEntry';
 import './ChatLog.css';
 import PhotoUploadForm from './PhotoUploadForm';
+import LoadingSpinner from './LoadingSpinner';
 
 const ChatLog = ({ location }) => {
     const [messageList, setMessageList] = useState(null);
@@ -17,7 +18,6 @@ const ChatLog = ({ location }) => {
     const [otherUserName, setOtherUserName] = useState();
 
     const loadMessageList = (someURL) => {
-        console.log(someURL);
         axios.get(someURL + '/messages-by-request/' + requestID)
             .then((response) => {
                 const apiMessages = Object.values(response.data)
@@ -43,7 +43,7 @@ const ChatLog = ({ location }) => {
 
     const chatComponents = (() => {
         if (!messageList) {
-            return (<div></div>);
+            return (<div><LoadingSpinner /></div>);
         } else {
             return (
                 messageList.map((messages, i) => {

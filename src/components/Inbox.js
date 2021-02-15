@@ -19,7 +19,6 @@ const Inbox = ({ baseURL, maxRating }) => {
     const [requestList, setRequestList] = useState(null);
     const [user, setUser] = useState(null);
     const [error, setError] = useState({ variant: '', message: '' });
-    const [isLoaded, setIsLoaded] = useState(false);
     const { currentUser } = useAuth();
 
     const loadUserData = (auth_id) => {
@@ -125,18 +124,11 @@ const Inbox = ({ baseURL, maxRating }) => {
             </Container>
         )
     }
-    // if (!requestList || !user) {
-    //     return (
-    //         <div className='align-middle'>
-    //             <LoadingSpinner /></div>
-    //     )
-    // }
 
     return (
         <div className='request-list'>
             {error.message && <Alert variant={error.variant}>{error.message}</Alert>}
-            {requestList && user ? showRequestList() : <LoadingSpinner setIsLoaded={setIsLoaded} />}
-            {/* {showRequestList()} */}
+            {requestList && user ? showRequestList() : <LoadingSpinner />}
             <Button variant='secondary w-90' as={Link} to={'/'}>Return to Dashboard</Button>
         </div>
     )
