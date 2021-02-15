@@ -36,7 +36,6 @@ const SitterMap = ({ sitterList, currentUserData, baseGeocodeURL }) => {
     }, [])
 
     const onMarkerClick = (userID) => {
-        console.log(userID)
         window.location.href = `#sitter-card-${userID}`
     }
 
