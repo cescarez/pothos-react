@@ -4,7 +4,7 @@ import { Container, Button, Form, Col, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import ChatEntry from './ChatEntry';
 import './ChatLog.css';
-import UploadForm from './PhotoUploadForm';
+import PhotoUploadForm from './PhotoUploadForm';
 
 const ChatLog = ({ location }) => {
     const [messageList, setMessageList] = useState(null);
@@ -23,8 +23,8 @@ const ChatLog = ({ location }) => {
                 const apiMessages = Object.values(response.data)
                 setMessageList(apiMessages);
             }).catch((error) => {
-                const message=`There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
-                setError({variant: 'danger', message: message});
+                const message = `There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}`;
+                setError({ variant: 'danger', message: message });
                 console.log(message);
             })
     }
@@ -39,24 +39,24 @@ const ChatLog = ({ location }) => {
 
     useEffect(() => {
         loadRequestParams();
-    },[])
+    }, [])
 
     const chatComponents = (() => {
         if (!messageList) {
             return (<div></div>);
         } else {
-            return(
+            return (
                 messageList.map((messages, i) => {
-                    return(
-                        <ChatEntry key={i} 
-                        baseURL={baseURL} 
-                        sender={messages.sender} 
-                        sender_name={messages.sender_name} 
-                        text={messages.message}
-                        photo={messages.photo}
-                        photo_url={messages.photo_url}
-                        timeStamp={messages.timestamp}
-                        currentUserID={currentUserID} />
+                    return (
+                        <ChatEntry key={i}
+                            baseURL={baseURL}
+                            sender={messages.sender}
+                            sender_name={messages.sender_name}
+                            text={messages.message}
+                            photo={messages.photo}
+                            photo_url={messages.photo_url}
+                            timeStamp={messages.timestamp}
+                            currentUserID={currentUserID} />
                     );
                 })
             )
@@ -97,13 +97,12 @@ const ChatLog = ({ location }) => {
                 otherUserName: otherUserName
             }
         })
-    } 
+    }
 
-    return(
+    return (
         <Container>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
             <h2>Chat with {otherUserName}</h2>
-            {/* <Button className='gallery-button' variant='outline-info' as={Link} to={'/gallery/' + requestID}>View Gallery</Button> */}
             <Link to={requestRouterParams}>
                 <Button className='gallery-button' variant='outline-info'>
                     View Gallery
@@ -116,10 +115,10 @@ const ChatLog = ({ location }) => {
                 <Form className='chat-box' onSubmit={handleSubmit}>
                     <Form.Row>
                         <Col xs={8} md={9}>
-                            <Form.Control type='text' name='message' value={body} onChange={handleChange}/>
+                            <Form.Control type='text' name='message' value={body} onChange={handleChange} />
                         </Col>
                         <Col>
-                            <UploadForm loadMessageList={loadMessageList} requestID={requestID} sender={currentUserID} baseURL={baseURL}/>
+                            <PhotoUploadForm loadMessageList={loadMessageList} requestID={requestID} sender={currentUserID} baseURL={baseURL} />
                         </Col>
                         <Col>
                             <Button type='submit' value='submit'>Submit</Button>
@@ -127,8 +126,7 @@ const ChatLog = ({ location }) => {
                     </Form.Row>
                 </Form>
                 <Container className='d-inline-flex justify-content-around'>
-                        {/* <Button className='inbox-button' variant='secondary' as={Link} to={'/'}>Return to Dashboard</Button> */}
-                        <Button className='inbox-button' variant='secondary' as={Link} to={'/inbox'}>Return to Inbox</Button>
+                    <Button className='inbox-button' variant='secondary' as={Link} to={'/inbox'}>Return to Inbox</Button>
                 </Container>
 
             </div>
