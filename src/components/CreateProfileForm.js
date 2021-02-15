@@ -9,7 +9,6 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
     const { currentUser } = useAuth();
 
     const [error, setError] = useState({});
-    const [url, setUrl] = useState(null);
     const types = ['image/png', 'image/jpeg'];
 
     const [user, setUser] = useState({
