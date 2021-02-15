@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert} from 'react-bootstrap';
 import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import axios from 'axios';
+import {useHistory} from 'react-router-dom'
 import userPin from '../images/map_icons/pin_danger.png';
 import sitterPin from '../images/map_icons/pin_success.png';
 
@@ -11,6 +12,7 @@ const SitterMap = ({ sitterList, currentUserData, baseGeocodeURL }) => {
     //default center is center of the U.S.
     const [mapCenter, setMapCenter] = useState({ lat: 39.8097343, lng: -98.5556199 });
     const [zoom, setZoom] = useState(8);
+    const history = useHistory();
 
    const formattedAddress = (user) => {
         return (
@@ -50,11 +52,14 @@ const SitterMap = ({ sitterList, currentUserData, baseGeocodeURL }) => {
             <div>
                 {sitterCoords.map((sitter, i) => {
                     // console.log(`dropped marker for ${sitter.title}`)
+                    const initials = sitter.title.split(' ').map((word) => word[0]).join('')
                     return (
                         <Marker
                             position={sitter.addressCoords}
                             title={sitter.title + '\n' + sitter.addressString}
                             icon={sitterPin}
+                            label={initials}
+                            onClick={()=>{history.push(`sitter-card-${i}`)}}
                         />
                     )
                 })}

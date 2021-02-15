@@ -55,11 +55,11 @@ const SitterList = ({ sitterList, currentUserData, maxRating }) => {
             //     </tbody>
             // </Table>
             <Container className='dashboard-container'>
-                {(sitterList).map((sitter) => {
+                {(sitterList).map((sitter, i) => {
                     if (sitter.userID !== currentUserData.userID) {
                         return(
                             <Link className='dashboard-link' to={`/users/${sitter.userID}`}>
-                                <Row className='dashboard-row'>
+                                <Row className='dashboard-row' id={`sitter-card-${i}`}>
                                     <Col>
                                         <Image className='profile-pic' src={pothosPic} alt='profile pic' roundedCircle/>
                                     </Col>
