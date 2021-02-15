@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Form, Button, Container, Card, Col, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import { projectStorage } from '../firebase'
-import ProgressBarProfile from './ProgressBarProfile'
-import useStorageProfile from '../hooks/useStorageProfile'
+// import ProgressBarProfile from './ProgressBarProfile'
+// import useStorageProfile from '../hooks/useStorageProfile'
 import axios from 'axios';
 
 
@@ -25,7 +25,7 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
     const { currentUser } = useAuth();
 
     const [error, setError] = useState({});
-    const [file, setFile] = useState(null);
+    // const [file, setFile] = useState(null);
     const [url, setUrl] = useState(null);
     const types = ['image/png', 'image/jpeg'];
 
@@ -97,19 +97,34 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
         let selected = e.target.files[0];
 
         if (selected && types.includes(selected.type)) {
-            setFile(selected);
-            setError('');
+            const storageRef = projectStorage.ref(selected.name);
+
+            storageRef.put(selected).on('state_changed', (snap) => {
+                let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
+                // setProgress(percentage);
+            }, (err) => {
+                setError(err);
+            }, async () => {
+                const url = await storageRef.getDownloadURL();
+                console.log(url)
+                // setUrl(url);
+                setUser({
+                    ...user,
+                    avatar_url: url
+                });
+            })
+            // setFile(selected);
+            // setError('');
         } else {
-            setFile(null);
+            // setFile(null);
             setError({
                 variant: 'warning',
                 message: 'Please select an image file (png or jpeg)'
             });
         }
-
-        console.log(user);
-        console.log(url);
+        // console.log(file);
     }
+
 
     // useEffect(() => {
     //     const storageRef = projectStorage.ref(file.name);
@@ -295,9 +310,9 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
                             <Form.Row className='d-flex justify-content-center'>
                                 <Form.Group>
                                     <Form.Label>Upload Photo</Form.Label>
-                                    <Form.Control type="file" name='avatar_url' value={user.avatar_url} onChange={uploadPhoto}/>
-                                    { file && <ProgressBarProfile file={file} setFile={setFile} setUrl={setUrl}/> }
-                                    { file && console.log(url) }
+                                    <Form.Control type="file" onChange={uploadPhoto}/>
+                                    {/* { file && <ProgressBarProfile file={file} setFile={setFile} setUrl={setUrl}/> } */}
+                                    {/* { file && console.log(url) } */}
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
