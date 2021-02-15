@@ -20,6 +20,9 @@
     position: relative;
     opacity: 0.8;
 }
+.img-wrap:hover {
+    cursor: pointer;
+}
 .img-wrap img{
     min-width: 100%;
     min-height: 100%;
