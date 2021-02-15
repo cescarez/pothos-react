@@ -4,13 +4,13 @@ import { useAuth } from '../contexts/AuthContext';
 import { projectStorage } from '../firebase'
 import axios from 'axios';
 
-export default function UserForm({ baseURL, setDashboardUser }) {
+export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeocodeURL }) {
     const { currentUser } = useAuth();
 
-    const [error, setError] = useState('');
+    const [error, setError] = useState({});
     const [file, setFile] = useState(null);
-    const [url, setUrl] = useState(null);
-    const types = ['image/png', 'image/jpeg'];
+    // const [url, setUrl] = useState(null);
+    // const types = ['image/png', 'image/jpeg'];
 
     const [user, setUser] = useState({
         auth_id: currentUser.uid,
@@ -26,6 +26,10 @@ export default function UserForm({ baseURL, setDashboardUser }) {
             state: '',
             postal_code: '',
         },
+        address_coords: {
+            lat: '',
+            lng: ''
+        },
         price_rate: {
             water_by_plant: '',
             water_by_time: '',
@@ -33,6 +37,7 @@ export default function UserForm({ baseURL, setDashboardUser }) {
             repot_by_time: ''
         }
     });
+
 
     const handleChange = (event) => {
         const newInput = event.target.name
@@ -71,17 +76,17 @@ export default function UserForm({ baseURL, setDashboardUser }) {
         });
     }
 
-    const uploadPhoto = (e) => {
-        let selected = e.target.files[0];
+    // const uploadPhoto = (e) => {
+    //     let selected = e.target.files[0];
 
-        if (selected && types.includes(selected.type)) {
-            setFile(selected);
-            setError('');
-        } else {
-            setFile(null);
-            setError('Please select an image file (png or jpeg)');
-        }
-    }
+    //     if (selected && types.includes(selected.type)) {
+    //         setFile(selected);
+    //         setError('');
+    //     } else {
+    //         setFile(null);
+    //         setError('Please select an image file (png or jpeg)');
+    //     }
+    // }
 
     // useEffect(() => {
     //     const storageRef = projectStorage.ref(file.name);
@@ -89,30 +94,6 @@ export default function UserForm({ baseURL, setDashboardUser }) {
 
     //     })
     // },[file])
-
-    //check for if all form fields are populated
-    //note: sitter/owner attributes are excluded from this function since checkUserType() exists
-    const checkFormPopulated = () => {
-        const fields =
-            Object.values(user)
-                .filter((element) => {
-                    return typeof (element) !== 'object' && typeof (element) !== 'boolean'
-                })
-                .concat(Object.values(user.address))
-
-        if (user.sitter) {
-            fields.concat(Object.values(user.price_rate));
-        }
-        if (fields.every((field) => field)) {
-            return true
-        } else {
-            setError({
-                variant: 'warning',
-                message: 'All form fields must be populated.'
-            })
-            return false;
-        }
-    }
 
     //check if at least one user type is selected
     const checkUserType = () => {
@@ -146,44 +127,102 @@ export default function UserForm({ baseURL, setDashboardUser }) {
         }
     }
 
+
+    const createGeocodeURL = () => {
+        return (
+            baseGeocodeURL +
+            (`${user.address.street}+${user.address.city}+${user.address.state}+${user.address.postal_code}`).replace(' ', '+')
+            + '&key='
+            + process.env.REACT_APP_GOOGLE_CLOUD_API_KEY
+        )
+    }
+
+
+    let uspsRequestXML =
+        `<AddressValidateRequest USERID="111NASTU3329">
+            <Address>
+                <Address1/>
+                <Address2>${user.address.street}</Address2>
+                <City>${user.address.city}</City>
+                <State>${user.address.state}</State>
+                <Zip5>${user.address.postal_code}</Zip5>
+                <Zip4/>
+            </Address>
+        </AddressValidateRequest>`
+
+    const saveUserProfile = (newUser) => {
+        axios.post(baseURL + '/users', newUser)
+            .then((response) => {
+                //callback to dashboard
+                setDashboardUser(response);
+
+                setUser({
+                    auth_id: currentUser.uid,
+                    username: '',
+                    full_name: '',
+                    phone_number: '',
+                    avatar_url: currentUser.photoURL,
+                    sitter: false,
+                    owner: false,
+                    bio: '',
+                    address: {
+                        street: '',
+                        city: '',
+                        state: '',
+                        postal_code: '',
+                        country: ''
+                    },
+                    address_coords: {
+                        lat: '',
+                        lng: ''
+                    },
+                    price_rate: {
+                        water_by_plant: '',
+                        water_by_time: '',
+                        repot_by_plant: '',
+                        repot_by_time: ''
+                    }
+                })
+                setError({ variant: 'success', message: response.data.message });
+            })
+    }
+
+    const getAddressCoords = () => {
+        axios.get(createGeocodeURL())
+            .then((response) => {
+                const newUser = { ...user }
+                newUser.address_coords = {
+                    lat: response.data.results[0].geometry.location.lat,
+                    lng: response.data.results[0].geometry.location.lng
+                }
+                setUser(newUser);
+                return (saveUserProfile(newUser))
+            })
+    }
+
+    //request async flow: (1) validate address w/USPS API (2)get address coords with Google Maps Geocoding API (3) post to server to save profile information
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (checkFormPopulated() && checkUserType() && checkPriceRates()) {
-            axios.post(baseURL + '/users', user)
+        if (checkUserType() && checkPriceRates()) {
+            axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=verify&XML=${uspsRequestXML}`, { headers: { 'Content-Type': 'application/xml; charset=utf=8' } })
                 .then((response) => {
-                    //callback to dashboard
-                    setDashboardUser(response);
-
-                    setUser({
-                        auth_id: currentUser.uid,
-                        username: '',
-                        full_name: '',
-                        phone_number: '',
-                        avatar_url: currentUser.photoURL,
-                        sitter: false,
-                        owner: false,
-                        bio: '',
-                        address: {
-                            street: '',
-                            city: '',
-                            state: '',
-                            postal_code: '',
-                            country: ''
-                        },
-                        price_rate: {
-                            water_by_plant: '',
-                            water_by_time: '',
-                            repot_by_plant: '',
-                            repot_by_time: ''
-                        }
-                    })
-                    setError({ variant: 'success', message: response.data.message });
+                    const errorMessage = response.data.split(/<[/]?Description>/)[1]
+                    if (errorMessage) {
+                        setError({ variant: 'danger', message: `Address is not valid. ${errorMessage}`, invalidAddress: true });
+                        console.log(errorMessage)
+                        return false
+                    } else {
+                        setError({});
+                        console.log(`Address verified.`)
+                        return (getAddressCoords())
+                    }
                 })
                 .catch((error) => {
-                    const message=`There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
+                    const message = `There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
                     setError({ variant: 'danger', message: message });
                     console.log(message);
-                });
+                })
+
         }
     }
 
@@ -209,47 +248,47 @@ export default function UserForm({ baseURL, setDashboardUser }) {
                                 </Form.Group>
                                 <Col></Col>
                             </Form.Row>
-                            <Form.Row className='d-flex justify-content-center'>
+                            {/* <Form.Row className='d-flex justify-content-center'>
                                 <Form.Group>
                                     <Form.Label>Upload Photo</Form.Label>
                                     <Form.Control type="file" name='avatar_url' value={user.avatar_url} onChange={uploadPhoto}/>
                                     {file && <div>{file.name}</div>}
                                     { error && <div className='error'>{error}</div>}
                                 </Form.Group>
-                            </Form.Row>
+                            </Form.Row> */}
                             <Form.Row>
                                 <Form.Group as={Col}>
                                     <Form.Label>Full Name</Form.Label>
-                                    <Form.Control type="text" name='full_name' value={user.full_name} onChange={handleChange} />
+                                    <Form.Control type="text" name='full_name' value={user.full_name} onChange={handleChange} required />
                                 </Form.Group>
                                 <Form.Group as={Col}>
                                     <Form.Label>Phone Number</Form.Label>
-                                    <Form.Control type="tel" name='phone_number' value={user.phone_number} onChange={handleChange} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder='###-###-####'/>
+                                    <Form.Control type="tel" name='phone_number' value={user.phone_number} onChange={handleChange} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder='###-###-####' required />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridAddress1" >
                                     <Form.Label>Street</Form.Label>
-                                    <Form.Control name='street' value={user.address.street} onChange={handleChange} />
+                                    <Form.Control name='street' value={user.address.street} onChange={handleChange} required isInvalid={error.validAddress ? !error.validAddress : false} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId='formGridCity' >
                                     <Form.Label>City</Form.Label>
-                                    <Form.Control name='city' value={user.address.city} onChange={handleChange} />
+                                    <Form.Control name='city' value={user.address.city} onChange={handleChange} required isInvalid={error.validAddress ? !error.validAddress : false} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridState" >
                                     <Form.Label>State</Form.Label>
-                                    <Form.Control name='state' value={user.address.state} onChange={handleChange} />
+                                    <Form.Control name='state' value={user.address.state} onChange={handleChange} required isInvalid={error.validAddress ? !error.validAddress : false} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridZip" >
                                     <Form.Label>Postal Code</Form.Label>
-                                    <Form.Control name='postal_code' value={user.address.postal_code} onChange={handleChange} />
+                                    <Form.Control name='postal_code' value={user.address.postal_code} onChange={handleChange} required isInvalid={error.validAddress ? !error.validAddress : false} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group>
                                 <Form.Label>About Me</Form.Label>
-                                <Form.Control name='bio' value={user.bio} onChange={handleChange} as='textarea' />
+                                <Form.Control name='bio' value={user.bio} onChange={handleChange} as='textarea' required />
                             </Form.Group>
                             {user.sitter &&
                                 <Card>
@@ -258,21 +297,33 @@ export default function UserForm({ baseURL, setDashboardUser }) {
                                         <Form.Row>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Watering / Plant</Form.Label>
-                                                <Form.Control name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange} />
+                                                <Form.Control name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange} required={user.sitter} isInvalid={isNaN(user.price_rate.water_by_plant)} />
+                                                <Form.Control.Feedback type='invalid'>
+                                                    {'All price rates must be numbers.'}
+                                                </Form.Control.Feedback>
                                             </Form.Group>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Watering / 30 min</Form.Label>
-                                                <Form.Control name='water_by_time' value={user.price_rate.water_by_time} onChange={handleChange} />
+                                                <Form.Control name='water_by_time' value={user.price_rate.water_by_time} onChange={handleChange} required={user.sitter} isInvalid={isNaN(user.price_rate.water_by_time)} />
+                                                <Form.Control.Feedback type='invalid'>
+                                                    {'All price rates must be numbers.'}
+                                                </Form.Control.Feedback>
                                             </Form.Group>
                                         </Form.Row>
                                         <Form.Row>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Repotting / Plant</Form.Label>
-                                                <Form.Control name='repot_by_plant' value={user.price_rate.repot_by_plant} onChange={handleChange} />
+                                                <Form.Control name='repot_by_plant' value={user.price_rate.repot_by_plant} onChange={handleChange} required={user.sitter} isInvalid={isNaN(user.price_rate.repot_by_plant)} />
+                                                <Form.Control.Feedback type='invalid'>
+                                                    {'All price rates must be numbers.'}
+                                                </Form.Control.Feedback>
                                             </Form.Group>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Repotting / 30 min</Form.Label>
-                                                <Form.Control name='repot_by_time' value={user.price_rate.repot_by_time} onChange={handleChange} />
+                                                <Form.Control name='repot_by_time' value={user.price_rate.repot_by_time} onChange={handleChange} required={user.sitter} isInvalid={isNaN(user.price_rate.repot_by_time)} />
+                                                <Form.Control.Feedback type='invalid'>
+                                                    {'All price rates must be numbers.'}
+                                                </Form.Control.Feedback>
                                             </Form.Group>
                                         </Form.Row>
                                     </Card.Body>

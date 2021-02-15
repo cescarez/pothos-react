@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import UploadForm from './UploadForm';
+import UploadForm from './PhotoUploadForm';
 import { Button } from 'react-bootstrap'
 import { Link, useRouteMatch } from 'react-router-dom'
 import './Gallery.css';
 import ImageGrid from './ImageGrid';
-import Modal from './Modal'
+import Modal from './PhotoModal'
 
 export default function Gallery({location}) {
     const [selectedImg, setSelectedImg] = useState(null);

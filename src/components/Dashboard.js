@@ -7,9 +7,9 @@ import bgimage from '../images/wallpaper.png'
 
 import OwnerDashboard from './OwnerDashboard';
 import SitterDashboard from './SitterDashboard';
-import UserForm from './UserForm';
+import CreateProfileForm from './CreateProfileForm';
 
-const Dashboard = ({baseURL, maxRating}) => {
+const Dashboard = ({baseURL, maxRating, baseGeocodeURL}) => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState({});
     const { currentUser } = useAuth();
@@ -36,8 +36,6 @@ const Dashboard = ({baseURL, maxRating}) => {
     }, [])
 
     const loadUserCallback = (response) => {
-        console.log(response)
-        console.log(response.data)
         if (response.status === 201) {
             loadUserData(response.data.auth_id);
             setError({variant: 'success', message: 'User profile successfully saved.'});
@@ -69,7 +67,7 @@ const Dashboard = ({baseURL, maxRating}) => {
                         <Tabs border='primary'>
                             {user.owner  &&
                                 <Tab eventKey='ownerDashboard' title='Owner Dashboard'>
-                                    <OwnerDashboard baseURL={baseURL} currentUserData={user} maxRating={maxRating} />
+                                    <OwnerDashboard baseURL={baseURL} currentUserData={user} maxRating={maxRating} baseGeocodeURL={baseGeocodeURL} />
                                 </Tab>
                             }
                             {user.sitter &&
@@ -80,7 +78,7 @@ const Dashboard = ({baseURL, maxRating}) => {
                         </Tabs>
                     </div>
                 : 
-                    <UserForm baseURL={baseURL} setDashboardUser={loadUserCallback} />
+                    <CreateProfileForm baseURL={baseURL} setDashboardUser={loadUserCallback} baseGeocodeURL={baseGeocodeURL} />
                 }
             </div>
         )

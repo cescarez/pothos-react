@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useRouteMatch, Link } from 'react-router-dom'
 import { Container, Button, Form, Col, Alert } from 'react-bootstrap';
-// import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import ChatEntry from './ChatEntry';
 import './ChatLog.css';
-import UploadForm from './UploadForm';
+import UploadForm from './PhotoUploadForm';
 
 const ChatLog = ({ location }) => {
     const [messageList, setMessageList] = useState(null);
     const [error, setError] = useState('');
-    // const { currentUser } = useAuth();
-    // const [user, setUser] = useState(null);
     const [body, setBody] = useState('')
     const match = useRouteMatch('/requests/:id');
     const requestID = match.params.id;

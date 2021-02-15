@@ -11,7 +11,7 @@ import ForgotPassword from './components/ForgotPassword'
 import User from './components/User'
 import PrivateRoute from './components/PrivateRoute'
 import UpdateEmailPassword from './components/UpdateEmailPassword'
-import UpdateProfile from './components/UpdateProfile'
+import UpdateProfileForm from './components/UpdateProfileForm'
 import Footer from './components/Footer'
 import ChatLog from './components/ChatLog'
 import AboutUs from './components/AboutUs'
@@ -21,10 +21,11 @@ import Gallery from './components/Gallery'
 import Stripe from './components/Stripe';
 
 import './App.css';
-import UserForm from './components/UserForm';
+import CreateProfileForm from './components/CreateProfileForm';
 
 
 const BASE_URL = 'http://localhost:5000';
+const BASE_GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
 const MAX_RATING = 4;
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
             <Router>
                 <AuthProvider>  
                 <div className="content-wrap">
-                    <Navigation baseURL={BASE_URL} />
+                    <Navigation baseURL={BASE_URL} baseGeocodeURL={BASE_GEOCODE_URL} />
                     <Switch>
                         <PrivateRoute exact path='/users/:id'>
                             <User baseURL={BASE_URL} maxRating={MAX_RATING} />
@@ -50,7 +51,7 @@ function App() {
                         <Route exact path='/contact' component={ContactUs} />
                         <Route exact path='/gallery/:id' component={Gallery} />
                         <Route exact path='/checkout' component={Stripe} />
-                        <Route exact path='/userform' component={UserForm} />
+                        {/* <Route exact path='/create-profile' component={CreateProfileForm} /> */}
                         <Route exact path='/inbox'>
                             <Inbox baseURL={BASE_URL} maxRating={MAX_RATING} />
                         </Route>
@@ -58,11 +59,11 @@ function App() {
                             <UpdateEmailPassword />
                         </PrivateRoute>
                         <PrivateRoute exact path='/update-profile'>
-                            <UpdateProfile baseURL={BASE_URL} />
+                            <UpdateProfileForm baseURL={BASE_URL} baseGeocodeURL={BASE_GEOCODE_URL} />
                         </PrivateRoute>
                         {/* removed 'exact' from home path so all invalid endpoints will redirect to Home*/}
                         <Route path='/'>
-                            <Home baseURL={BASE_URL} maxRating={MAX_RATING} />
+                            <Home baseURL={BASE_URL} maxRating={MAX_RATING} baseGeocodeURL={BASE_GEOCODE_URL} />
                         </Route>
                     </Switch>
                     </div>
