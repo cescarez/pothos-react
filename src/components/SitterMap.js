@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Alert, Spinner } from 'react-bootstrap';
-import { LoadScript, GoogleMap, Marker} from '@react-google-maps/api';
+import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import axios from 'axios';
 import userPin from '../images/map_icons/pin_danger.png';
 import sitterPin from '../images/map_icons/pin_success.png';
 
-const BASE_GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
 
-const SitterMap = ({ sitterList, currentUserData }) => {
+const SitterMap = ({ sitterList, currentUserData, baseGeocodeURL }) => {
     const [error, setError] = useState({});
     //default center is center of the U.S.
     const [mapCenter, setMapCenter] = useState({ lat: 39.8097343, lng: -98.5556199 });
     const [zoom, setZoom] = useState(8);
     const [sitterCoords, setSitterCoords] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
+
+   const createGeocodeURL = (user) => {
+        return (
+            baseGeocodeURL +
+            (`${user.address.street}+${user.address.city}+${user.address.state}+${user.address.postal_code}`).replace(' ', '+')
+            + '&key='
+            + process.env.REACT_APP_GOOGLE_CLOUD_API_KEY
+        )
+    }
 
     useEffect(() => {
         currentUserData &&
@@ -25,7 +33,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                     setMapCenter(response.data.results[0].geometry.location);
                 })
                 .catch((error) => {
-                    const message = `Did not load current user data. ${ error.response ? error.response.data.message : null}`
+                    const message = `Did not load current user data. ${error.response ? error.response.data.message : null}`
                     setError({ variant: 'warning', message: message })
                 })
     }, [])
@@ -60,21 +68,14 @@ const SitterMap = ({ sitterList, currentUserData }) => {
             loadSitterListMarkers();
     }, [])
 
-    const createGeocodeURL = (user) => {
-        return (
-            BASE_GEOCODE_URL +
-            (`${user.address.street}+${user.address.city}+${user.address.state}+${user.address.postal_code}`).replace(' ', '+')
-            + '&key='
-            + process.env.REACT_APP_GOOGLE_CLOUD_API_KEY
-        )
-    }
+
 
     const showSitterMarkers = () => {
         return (
             <div>
-                {sitterCoords.map((sitter, i)=>{
+                {sitterCoords.map((sitter, i) => {
                     // console.log(`dropped marker for ${sitter.title}`)
-                    return(
+                    return (
                         <Marker
                             position={sitter.addressCoords}
                             title={sitter.title + '\n' + sitter.addressString}
@@ -98,7 +99,7 @@ const SitterMap = ({ sitterList, currentUserData }) => {
                         width: 'auto'
                     }}
                 >
-                    {currentUserData && <Marker position={mapCenter} title={currentUserData.full_name + '\n' + currentUserData.addressString} icon={userPin}/>}
+                    {currentUserData && <Marker position={mapCenter} title={currentUserData.full_name + '\n' + currentUserData.addressString} icon={userPin} />}
                     {sitterCoords && showSitterMarkers()}
                 </GoogleMap>
             </LoadScript>
@@ -108,14 +109,14 @@ const SitterMap = ({ sitterList, currentUserData }) => {
     return (
         <div className='h-100'>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>}
-            { isLoaded ? 
-                showSitterMap() 
-            : 
+            { isLoaded ?
+                showSitterMap()
+                :
                 <Container>
                     <div className='invisible'>{setTimeout(() => {
                         setIsLoaded(true)
                     }, 500)}</div>
-                    <Spinner animation="border" variant="secondary" style={{height: '200px', width: '200px'}}/>
+                    <Spinner animation="border" variant="secondary" style={{ height: '200px', width: '200px' }} />
                 </Container>
             }
         </div>

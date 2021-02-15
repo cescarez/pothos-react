@@ -25,6 +25,7 @@ import CreateProfileForm from './components/CreateProfileForm';
 
 
 const BASE_URL = 'http://localhost:5000';
+const BASE_GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
 const MAX_RATING = 4;
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
             <Router>
                 <AuthProvider>  
                 <div className="content-wrap">
-                    <Navigation baseURL={BASE_URL} />
+                    <Navigation baseURL={BASE_URL} baseGeocodeURL={BASE_GEOCODE_URL} />
                     <Switch>
                         <PrivateRoute exact path='/users/:id'>
                             <User baseURL={BASE_URL} maxRating={MAX_RATING} />
@@ -62,7 +63,7 @@ function App() {
                         </PrivateRoute>
                         {/* removed 'exact' from home path so all invalid endpoints will redirect to Home*/}
                         <Route path='/'>
-                            <Home baseURL={BASE_URL} maxRating={MAX_RATING} />
+                            <Home baseURL={BASE_URL} maxRating={MAX_RATING} baseGeocodeURL={BASE_GEOCODE_URL} />
                         </Route>
                     </Switch>
                     </div>
