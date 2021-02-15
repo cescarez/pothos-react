@@ -59,7 +59,7 @@ function App() {
                             <UpdateEmailPassword />
                         </PrivateRoute>
                         <PrivateRoute exact path='/update-profile'>
-                            <UpdateProfileForm baseURL={BASE_URL} />
+                            <UpdateProfileForm baseURL={BASE_URL} baseGeocodeURL={BASE_GEOCODE_URL} />
                         </PrivateRoute>
                         {/* removed 'exact' from home path so all invalid endpoints will redirect to Home*/}
                         <Route path='/'>

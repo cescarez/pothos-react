@@ -191,10 +191,6 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
         axios.get(createGeocodeURL())
             .then((response) => {
                 const newUser = { ...user }
-                const address_coords = response.data.results[0].geometry.location;
-                console.log(address_coords)
-                console.log(address_coords.lat)
-                console.log(address_coords.lng)
                 newUser.address_coords = {
                     lat: response.data.results[0].geometry.location.lat,
                     lng: response.data.results[0].geometry.location.lng
@@ -204,6 +200,7 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
             })
     }
 
+    //request async flow: (1) validate address w/USPS API (2)get address coords with Google Maps Geocoding API (3) post to server to save profile information
     const handleSubmit = (event) => {
         event.preventDefault();
         if (checkUserType() && checkPriceRates()) {

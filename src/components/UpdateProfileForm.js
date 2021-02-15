@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 
-export default function UpdateProfileForm({baseURL}) {
+export default function UpdateProfileForm({baseURL, baseGeocodeURL}) {
     const { currentUser } = useAuth();
     const [error, setError] = useState('');
     const [user, setUser] = useState(null);
@@ -101,19 +101,82 @@ export default function UpdateProfileForm({baseURL}) {
         }
     }
 
+
+    const createGeocodeURL = () => {
+        return (
+            baseGeocodeURL +
+            (`${user.address.street}+${user.address.city}+${user.address.state}+${user.address.postal_code}`).replace(' ', '+')
+            + '&key='
+            + process.env.REACT_APP_GOOGLE_CLOUD_API_KEY
+        )
+    }
+
+
+    const uspsRequestXML = () => {
+        if (user) {
+            return (
+                `<AddressValidateRequest USERID="111NASTU3329">
+                    <Address>
+                        <Address1/>
+                        <Address2>${user.address.street}</Address2>
+                        <City>${user.address.city}</City>
+                        <State>${user.address.state}</State>
+                        <Zip5>${user.address.postal_code}</Zip5>
+                        <Zip4/>
+                    </Address>
+                </AddressValidateRequest>`
+            )
+        }
+    }
+
+    const saveUserProfile = (newUser) => {
+        axios.put(baseURL + '/users/' + user.userID, newUser)
+        .then((response) => {
+            setError({variant:'success', message: response.data.message});
+            history.push('/');
+        })
+        .catch((error) => {
+            const message=`There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
+            setError({variant: 'danger', message: message});
+            console.log(message);
+        });
+    }
+
+    const getAddressCoords = () => {
+        axios.get(createGeocodeURL())
+            .then((response) => {
+                const newUser = { ...user }
+                newUser.address_coords = {
+                    lat: response.data.results[0].geometry.location.lat,
+                    lng: response.data.results[0].geometry.location.lng
+                }
+                setUser(newUser);
+                return (saveUserProfile(newUser))
+            })
+    }
+
+    //request async flow: (1) validate address w/USPS API (2)get address coords with Google Maps Geocoding API (3) post to server to save profile information
     const handleSubmit = (event) => {
         event.preventDefault();
         if (checkUserType() && checkPriceRates()) {
-            axios.put(baseURL + '/users/' + user.userID, user)
+            axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=verify&XML=${uspsRequestXML()}`, { headers: { 'Content-Type': 'application/xml; charset=utf=8' } })
                 .then((response) => {
-                    setError({variant:'success', message: response.data.message});
-                    history.push('/');
+                    const errorMessage = response.data.split(/<[/]?Description>/)[1]
+                    if (errorMessage) {
+                        setError({ variant: 'danger', message: `Address is not valid. ${errorMessage}`, invalidAddress: true });
+                        console.log(errorMessage)
+                        return false
+                    } else {
+                        setError({});
+                        console.log(`Address verified.`)
+                        return (getAddressCoords())
+                    }
                 })
                 .catch((error) => {
-                    const message=`There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
-                    setError({variant: 'danger', message: message});
+                    const message = `There was an error with your request. User profile was not saved. ${error.response && error.response.data.message ? error.response.data.message : error.message}.`;
+                    setError({ variant: 'danger', message: message });
                     console.log(message);
-                });
+                })
         }
     }
     //this conditional makes it so the CreateProfileForm doesn't flash while waiting on the axios response
@@ -185,7 +248,7 @@ export default function UpdateProfileForm({baseURL}) {
                                         <Form.Row>
                                             <Form.Group as={Col} >
                                                 <Form.Label>Watering / Plant</Form.Label>
-                                                <Form.Control  name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange}  required={user.sitter} isInvalid={user.price_rate.water_by_plant}/>
+                                                <Form.Control  name='water_by_plant' value={user.price_rate.water_by_plant} onChange={handleChange}  required={user.sitter} isInvalid={isNaN(user.price_rate.water_by_plant)}/>
                                                 <Form.Control.Feedback type='invalid'>
                                                     { 'All price rates must be numbers.' }
                                                 </Form.Control.Feedback>
