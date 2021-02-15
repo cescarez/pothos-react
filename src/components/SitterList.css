@@ -22,8 +22,8 @@ table.sitter-list__table > tbody > tr > td {
 }
 
 .profile-pic{
-  max-width: 150px;
-  max-height: 300px;
+  width: 125px;
+  height: 125px;
 }
 
 .dashboard-container{
