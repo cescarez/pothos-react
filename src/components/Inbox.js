@@ -93,8 +93,7 @@ const Inbox = ({ baseURL, maxRating }) => {
                                             <Container fluid>
                                                 <Row>
                                                     <Container as={Col} xs={3}  className='inbox__container--message-date'>
-                                                        {/* {Moment.utc(request.last_message.timestamp).fromNow()} */}
-                                                        <Timestamp time={request.last_message.timestamp} />
+                                                        <Timestamp time={request.last_message.timestamp} inbox />
                                                     </Container>
                                                     <Container as={Col} className='inbox__container--message-title text-left'>
                                                         Request For {Moment.parseZone(request.date_of_service).local().format('l')} {user.userID === request.owner ? 'To' : 'From'} {otherUserName}
