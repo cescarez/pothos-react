@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button, Container, Card, Col, Alert, Pagination } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext';
+import { projectStorage } from '../firebase'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 
@@ -9,6 +10,8 @@ export default function UpdateProfileForm({baseURL, baseGeocodeURL}) {
     const [error, setError] = useState('');
     const [user, setUser] = useState(null);
     const history = useHistory();
+    const types = ['image/png', 'image/jpeg'];
+
 
     const loadUserData = () => {
         currentUser && 
@@ -67,6 +70,33 @@ export default function UpdateProfileForm({baseURL, baseGeocodeURL}) {
             ...user,
             [event.target.name]: !user[event.target.name]
         });
+    }
+
+    const uploadPhoto = (e) => {
+        let selected = e.target.files[0];
+
+        if (selected && types.includes(selected.type)) {
+            const storageRef = projectStorage.ref(selected.name);
+
+            storageRef.put(selected).on('state_changed', (snap) => {
+                let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
+                // setProgress(percentage);
+            }, (err) => {
+                setError(err);
+            }, async () => {
+                const url = await storageRef.getDownloadURL();
+                console.log(url)
+                setUser({
+                    ...user,
+                    avatar_url: url
+                });
+            })
+        } else {
+            setError({
+                variant: 'warning',
+                message: 'Please select an image file (png or jpeg)'
+            });
+        }
     }
 
     //check if at least one user type is selected
@@ -158,6 +188,7 @@ export default function UpdateProfileForm({baseURL, baseGeocodeURL}) {
     //request async flow: (1) validate address w/USPS API (2)get address coords with Google Maps Geocoding API (3) post to server to save profile information
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(user)
         if (checkUserType() && checkPriceRates()) {
             axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=verify&XML=${uspsRequestXML()}`, { headers: { 'Content-Type': 'application/xml; charset=utf=8' } })
                 .then((response) => {
@@ -206,6 +237,12 @@ export default function UpdateProfileForm({baseURL, baseGeocodeURL}) {
                                     <Form.Check type="checkbox" label="Sitter" name='sitter' value={user.sitter} onChange={handleCheck} checked={user.sitter ? true : false } />
                                 </Form.Group>
                                 <Form.Group as={Col}></Form.Group>
+                            </Form.Row>
+                            <Form.Row className='d-flex justify-content-center'>
+                                <Form.Group>
+                                    <Form.Label>Upload Photo</Form.Label>
+                                    <Form.Control type="file" onChange={uploadPhoto}/>
+                                </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col}>

@@ -4,13 +4,12 @@ import { useAuth } from '../contexts/AuthContext';
 import { projectStorage } from '../firebase'
 import axios from 'axios';
 
+
 export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeocodeURL }) {
     const { currentUser } = useAuth();
 
     const [error, setError] = useState({});
-    const [file, setFile] = useState(null);
-    // const [url, setUrl] = useState(null);
-    // const types = ['image/png', 'image/jpeg'];
+    const types = ['image/png', 'image/jpeg'];
 
     const [user, setUser] = useState({
         auth_id: currentUser.uid,
@@ -76,24 +75,32 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
         });
     }
 
-    // const uploadPhoto = (e) => {
-    //     let selected = e.target.files[0];
+    const uploadPhoto = (e) => {
+        let selected = e.target.files[0];
 
-    //     if (selected && types.includes(selected.type)) {
-    //         setFile(selected);
-    //         setError('');
-    //     } else {
-    //         setFile(null);
-    //         setError('Please select an image file (png or jpeg)');
-    //     }
-    // }
+        if (selected && types.includes(selected.type)) {
+            const storageRef = projectStorage.ref(selected.name);
 
-    // useEffect(() => {
-    //     const storageRef = projectStorage.ref(file.name);
-    //     storageRef.put(file).on('state_changed', (snap) => {
-
-    //     })
-    // },[file])
+            storageRef.put(selected).on('state_changed', (snap) => {
+                let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
+                // setProgress(percentage);
+            }, (err) => {
+                setError(err);
+            }, async () => {
+                const url = await storageRef.getDownloadURL();
+                console.log(url)
+                setUser({
+                    ...user,
+                    avatar_url: url
+                });
+            })
+        } else {
+            setError({
+                variant: 'warning',
+                message: 'Please select an image file (png or jpeg)'
+            });
+        }
+    }
 
     //check if at least one user type is selected
     const checkUserType = () => {
@@ -248,14 +255,12 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
                                 </Form.Group>
                                 <Col></Col>
                             </Form.Row>
-                            {/* <Form.Row className='d-flex justify-content-center'>
+                            <Form.Row className='d-flex justify-content-center'>
                                 <Form.Group>
                                     <Form.Label>Upload Photo</Form.Label>
-                                    <Form.Control type="file" name='avatar_url' value={user.avatar_url} onChange={uploadPhoto}/>
-                                    {file && <div>{file.name}</div>}
-                                    { error && <div className='error'>{error}</div>}
+                                    <Form.Control type="file" onChange={uploadPhoto}/>
                                 </Form.Group>
-                            </Form.Row> */}
+                            </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col}>
                                     <Form.Label>Full Name</Form.Label>
