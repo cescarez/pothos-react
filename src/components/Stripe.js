@@ -5,7 +5,8 @@ import { FaStripeS } from 'react-icons/fa';
 import axios from 'axios';
 
 
-const Stripe = ({baseURL, request, currentUserData}) => {
+const Stripe = ({baseURL, request, currentUserData, setError}) => {
+
     const stripePromise = loadStripe('pk_test_51IJcCmDqXqMV98IIcKn53LMqLUGVLgSYKsZGWVked8QVfzYRye95mWra1cbG5NtEquWsj7Df5CsKYAPeW8X0Ljag0052QuXo9c');
 
     const handleClick = async (event) => {
