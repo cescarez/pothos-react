@@ -93,7 +93,8 @@ const Inbox = ({ baseURL, maxRating }) => {
                                     baseURL={baseURL} 
                                     maxRating={maxRating} 
                                     request={request} 
-                                    currentUserData={user} 
+                                    currentUserData={user}
+                                    setError={setError} 
                                 />
                             )
                         })}

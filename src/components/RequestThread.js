@@ -12,7 +12,7 @@ import Stripe from './Stripe';
 
 // TODO: implement unread format change
 
-const RequestThread = ({ baseURL, maxRating, request, currentUserData, handleClick }) => {
+const RequestThread = ({ baseURL, maxRating, request, currentUserData, setError }) => {
     const [otherUserName, setOtherUserName] = useState(null);
     const [userRole, setUserRole] = useState(null);
 
@@ -103,7 +103,7 @@ const RequestThread = ({ baseURL, maxRating, request, currentUserData, handleCli
                     <Rating baseURL={baseURL} request={request} currentUserData={currentUserData} maxRating={maxRating} />
                 </td>
                 <td className='align-middle'>
-                    <Stripe baseURL={baseURL} request={request} currentUserData={currentUserData} />
+                    <Stripe baseURL={baseURL} request={request} currentUserData={currentUserData} setError={setError}/>
                 </td>
             </tr>
         )
