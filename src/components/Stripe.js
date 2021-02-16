@@ -8,12 +8,16 @@ import axios from 'axios';
 const Stripe = ({baseURL, request, currentUserData, setError}) => {
     const stripePromise = loadStripe('pk_test_51IJcCmDqXqMV98IIcKn53LMqLUGVLgSYKsZGWVked8QVfzYRye95mWra1cbG5NtEquWsj7Df5CsKYAPeW8X0Ljag0052QuXo9c');
 
+    const lineItems = () => {
+
+    }
+
     const handleClick = async (event) => {
         event.preventDefault()
         const stripe = await stripePromise;
         const response = await fetch(baseURL + "/create-checkout-session", {
             method: "POST",
-            // body: JSON.stringify()
+            body: JSON.stringify(request)
         });
 
         axios.put(baseURL + '/request-payment/' + request.request_id)
