@@ -6,8 +6,6 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import RequestThread from './RequestThread';
 import LoadingSpinner from './LoadingSpinner';
-import { loadStripe } from "@stripe/stripe-js";
-
 
 import './Inbox.css';
 
@@ -18,7 +16,6 @@ const Inbox = ({ baseURL, maxRating }) => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState({ variant: '', message: '' });
     const { currentUser } = useAuth();
-    const stripePromise = loadStripe('pk_test_51IJcCmDqXqMV98IIcKn53LMqLUGVLgSYKsZGWVked8QVfzYRye95mWra1cbG5NtEquWsj7Df5CsKYAPeW8X0Ljag0052QuXo9c');
 
     // const [userRole, setUserRole] = useState(null);
 
@@ -78,26 +75,6 @@ const Inbox = ({ baseURL, maxRating }) => {
         }
     }, []);
 
-    const handleClick = async (event) => {
-        const stripe = await stripePromise;
-        const response = await fetch(baseURL + "/create-checkout-session", {
-            method: "POST",
-        });
-    
-        const session = await response.json();
-        // When the customer clicks on the button, redirect them to Checkout.
-        const result = await stripe.redirectToCheckout({
-            sessionId: session.id,
-        });
-    
-        if (result.error) {
-            setError({
-                variant: 'warning',
-                message: result.error.message
-            })
-        }
-    };
-
     function showRequestList() {
         return (
             <Container fluid>
@@ -112,7 +89,12 @@ const Inbox = ({ baseURL, maxRating }) => {
                     <tbody>
                         {requestList.map((request) => {
                             return (
-                                <RequestThread baseURL={baseURL} maxRating={maxRating} request={request} currentUserData={user} handleClick={handleClick}/>
+                                <RequestThread 
+                                    baseURL={baseURL} 
+                                    maxRating={maxRating} 
+                                    request={request} 
+                                    currentUserData={user} 
+                                />
                             )
                         })}
                     </tbody>
