@@ -55,14 +55,22 @@ const RequestList = ({ baseURL, currentUserData, maxRating }) => {
             return request.sitter_name
         }
     }
+    const getUserRole = (request) => {
+        if (currentUserData.userID === request.owner) {
+            return 'owner'
+        } else {
+            return 'sitter' 
+        }
+    }
 
-    const requestRouterParams = (requestID, otherUserName) => {
+    const requestRouterParams = (requestID, otherUserName, userRole) => {
         return ({
             pathname: `/requests/${requestID}`,
             state: {
                 baseURL: baseURL,
                 currentUserID: currentUserData.userID,
-                otherUserName: otherUserName
+                otherUserName: otherUserName,
+                userRole: userRole
             }
         })
     } 
@@ -85,6 +93,7 @@ const RequestList = ({ baseURL, currentUserData, maxRating }) => {
                 <tbody>
                     {(requestList).map((request) => {
                         const otherUserName = getOtherUserName(request);
+                        const userRole = getUserRole(request)
                         return(
                             <tr key={request.request_id}>
                                 <td className='request-list__td--owner'>
@@ -93,27 +102,27 @@ const RequestList = ({ baseURL, currentUserData, maxRating }) => {
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                    <Link to={requestRouterParams(request.request_id, otherUserName, userRole)}>
                                         {Moment.parseZone(request.time_requested).local().format('l LT')}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                    <Link to={requestRouterParams(request.request_id, otherUserName, userRole)}>
                                         {Moment.parseZone(request.date_of_service).local().format('l')}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                    <Link to={requestRouterParams(request.request_id, otherUserName, userRole)}>
                                         {request.status}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                    <Link to={requestRouterParams(request.request_id, otherUserName, userRole)}>
                                         {request.paid ? 'complete' : 'pending'}
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to={requestRouterParams(request.request_id, otherUserName)}>
+                                    <Link to={requestRouterParams(request.request_id, otherUserName, userRole)}>
                                         { request.owner_rating ? <RatingStars currentRating={request.owner_rating} maxRating={maxRating} /> : 'N/A'}
                                     </Link>
                                 </td>

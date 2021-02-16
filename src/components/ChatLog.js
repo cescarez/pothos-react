@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { useRouteMatch, Link } from 'react-router-dom'
 import { Container, Button, Form, Col, Alert } from 'react-bootstrap';
 import axios from 'axios';
+import Moment from 'moment';
 import ChatEntry from './ChatEntry';
-import './ChatLog.css';
 import PhotoUploadForm from './PhotoUploadForm';
 import LoadingSpinner from './LoadingSpinner';
+
+import './ChatLog.css';
 
 const ChatLog = ({ location }) => {
     const [messageList, setMessageList] = useState(null);
@@ -16,6 +18,7 @@ const ChatLog = ({ location }) => {
     const [baseURL, setBaseURL] = useState();
     const [currentUserID, setCurrentUserID] = useState();
     const [otherUserName, setOtherUserName] = useState();
+    const [userRole, setUserRole] = useState();
 
     const loadMessageList = (someURL) => {
         axios.get(someURL + '/messages-by-request/' + requestID)
@@ -35,6 +38,13 @@ const ChatLog = ({ location }) => {
         setCurrentUserID(requestParams.currentUserID);
         setOtherUserName(requestParams.otherUserName);
         loadMessageList(requestParams.baseURL);
+        setUserRole(requestParams.userRole);
+        updateLastAccessed(requestParams.baseURL, requestParams.userRole);
+    }
+
+    const updateLastAccessed = (paramBaseURL, paramUserRole) => {
+        const lastAccessed = {[`last_accessed_by_${paramUserRole}`]: Moment().utc()}
+        axios.put(paramBaseURL + '/request-last-accessed/' + requestID, lastAccessed)
     }
 
     useEffect(() => {
