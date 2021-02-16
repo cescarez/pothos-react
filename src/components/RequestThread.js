@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Badge, OverlayTrigger, Tooltip, Col, Row, Container, Button } from 'react-bootstrap';
+import { Badge, OverlayTrigger, Tooltip, Col, Row, Container } from 'react-bootstrap';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
-import { FaStripeS } from 'react-icons/fa';
 
 import Rating from './RequestRating';
 import Timestamp from './Timestamp';
 import LoadingSpinner from './LoadingSpinner';
 
 import './Inbox.css';
+import Stripe from './Stripe';
 
 // TODO: implement unread format change
 
@@ -103,10 +103,7 @@ const RequestThread = ({ baseURL, maxRating, request, currentUserData, handleCli
                     <Rating baseURL={baseURL} request={request} currentUserData={currentUserData} maxRating={maxRating} />
                 </td>
                 <td className='align-middle'>
-                    {request.paid? <div>Paid</div> :
-                        currentUserData.userID === request.owner &&
-                        <Button onClick={handleClick}><FaStripeS /></Button>
-                    }
+                    <Stripe baseURL={baseURL} request={request} currentUserData={currentUserData} />
                 </td>
             </tr>
         )
