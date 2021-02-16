@@ -84,6 +84,7 @@ const RequestList = ({ baseURL, currentUserData, maxRating }) => {
                         <th>Request was Issued</th>
                         <th>Date of Service</th>
                         <th>Status</th>
+                        <th>Payment</th>
                         <th>Owner's Avg Rating</th>
                         <th>Confirm</th>
                         <th>Decline</th>
@@ -113,6 +114,11 @@ const RequestList = ({ baseURL, currentUserData, maxRating }) => {
                                 <td>
                                     <Link to={requestRouterParams(request.request_id, otherUserName, userRole)}>
                                         {request.status}
+                                    </Link>
+                                </td>
+                                <td>
+                                    <Link to={requestRouterParams(request.request_id, otherUserName, userRole)}>
+                                        {request.paid ? 'complete' : 'pending'}
                                     </Link>
                                 </td>
                                 <td>

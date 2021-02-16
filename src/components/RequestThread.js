@@ -12,7 +12,7 @@ import './Inbox.css';
 
 // TODO: implement unread format change
 
-const RequestThread = ({ baseURL, maxRating, request, currentUserData }) => {
+const RequestThread = ({ baseURL, maxRating, request, currentUserData, handleClick }) => {
     const [otherUserName, setOtherUserName] = useState(null);
     const [userRole, setUserRole] = useState(null);
 
@@ -103,8 +103,9 @@ const RequestThread = ({ baseURL, maxRating, request, currentUserData }) => {
                     <Rating baseURL={baseURL} request={request} currentUserData={currentUserData} maxRating={maxRating} />
                 </td>
                 <td className='align-middle'>
-                    {currentUserData.userID === request.owner &&
-                        <Button><FaStripeS /></Button>
+                    {request.paid? <div>Paid</div> :
+                        currentUserData.userID === request.owner &&
+                        <Button onClick={handleClick}><FaStripeS /></Button>
                     }
                 </td>
             </tr>
