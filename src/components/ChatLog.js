@@ -39,16 +39,16 @@ const ChatLog = ({ location }) => {
         setOtherUserName(requestParams.otherUserName);
         loadMessageList(requestParams.baseURL);
         setUserRole(requestParams.userRole);
+        updateLastAccessed(requestParams.baseURL, requestParams.userRole);
     }
 
-    const updateLastAccessed = () => {
-        const lastAccessed = {[`last_accessed_by_${userRole}`]: Moment.utc()}
-        axios.put(baseURL + '/requests/' + requestID, lastAccessed)
+    const updateLastAccessed = (paramBaseURL, paramUserRole) => {
+        const lastAccessed = {[`last_accessed_by_${paramUserRole}`]: Moment().utc()}
+        axios.put(paramBaseURL + '/request-last-accessed/' + requestID, lastAccessed)
     }
 
     useEffect(() => {
         loadRequestParams();
-
     }, [])
 
     const chatComponents = (() => {
