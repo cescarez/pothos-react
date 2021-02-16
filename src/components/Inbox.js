@@ -4,7 +4,6 @@ import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
-
 import RequestThread from './RequestThread';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -17,6 +16,7 @@ const Inbox = ({ baseURL, maxRating }) => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState({ variant: '', message: '' });
     const { currentUser } = useAuth();
+
     // const [userRole, setUserRole] = useState(null);
 
     const loadUserData = (auth_id) => {
@@ -58,6 +58,23 @@ const Inbox = ({ baseURL, maxRating }) => {
         )
     }
 
+    useEffect(() => {
+        // Check to see if this is a redirect back from Checkout
+        const query = new URLSearchParams(window.location.search);
+        if (query.get('success')) {
+            setError({
+                variant: 'success',
+                message: 'Payment confirmed!'
+            });
+        }
+        if (query.get('canceled')) {
+            setError({
+                variant: 'warning',
+                message: 'Payment canceled.'
+            });
+        }
+    }, []);
+
     function showRequestList() {
         return (
             <Container fluid>
@@ -72,7 +89,13 @@ const Inbox = ({ baseURL, maxRating }) => {
                     <tbody>
                         {requestList.map((request) => {
                             return (
-                                <RequestThread baseURL={baseURL} maxRating={maxRating} request={request} currentUserData={user} />
+                                <RequestThread 
+                                    baseURL={baseURL} 
+                                    maxRating={maxRating} 
+                                    request={request} 
+                                    currentUserData={user}
+                                    setError={setError} 
+                                />
                             )
                         })}
                     </tbody>

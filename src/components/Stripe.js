@@ -1,76 +1,44 @@
-
-import React, { useState, useEffect } from "react";
+import React from 'react'
 import { loadStripe } from "@stripe/stripe-js";
+import { Button } from 'react-bootstrap'
+import { FaStripeS } from 'react-icons/fa';
+import axios from 'axios';
 
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
-const stripePromise = loadStripe('pk_test_51IJcCmDqXqMV98IIcKn53LMqLUGVLgSYKsZGWVked8QVfzYRye95mWra1cbG5NtEquWsj7Df5CsKYAPeW8X0Ljag0052QuXo9c');
-const ProductDisplay = ({ handleClick }) => (
-  <section>
-    <div className="product">
-      <img
-        src="https://i.imgur.com/EHyR2nP.png"
-        alt="The cover of Stubborn Attachments"
-      />
-      <div className="description">
-        <h3>Stubborn Attachments</h3>
-        <h5>$20.00</h5>
-      </div>
-    </div>
 
-    <button type="button" id="checkout-button" role="link" onClick={handleClick}>
-      Checkout
-    </button>
-  </section>
+const Stripe = ({baseURL, request, currentUserData, setError}) => {
+    const stripePromise = loadStripe('pk_test_51IJcCmDqXqMV98IIcKn53LMqLUGVLgSYKsZGWVked8QVfzYRye95mWra1cbG5NtEquWsj7Df5CsKYAPeW8X0Ljag0052QuXo9c');
 
-);
+    const handleClick = async (event) => {
+        event.preventDefault()
+        const stripe = await stripePromise;
+        const response = await fetch(baseURL + "/create-checkout-session", {
+            method: "POST",
+            // body: JSON.stringify()
+        });
 
-const Message = ({ message }) => (
-  <section>
-    <p>{message}</p>
-  </section>
-);
+        axios.put(baseURL + '/request-payment/' + request.request_id)
 
-export default function Stripe() {
-  const [message, setMessage] = useState("");
-  useEffect(() => {
-    // Check to see if this is a redirect back from Checkout
-    const query = new URLSearchParams(window.location.search);
-    if (query.get("success")) {
-      setMessage("Order placed! You will receive an email confirmation.");
-    }
+        const session = await response.json();
+        // When the customer clicks on the button, redirect them to Checkout.
+        const result = await stripe.redirectToCheckout({
+            sessionId: session.id,
+        });
 
-    if (query.get("canceled")) {
-      setMessage(
-        "Order canceled -- continue to shop around and checkout when you're ready."
-      );
-    }
+        if (result.error) {
+            setError({
+                variant: 'warning',
+                message: result.error.message
+            })
+        }
+    };
 
-  }, []);
-
-  const handleClick = async (event) => {
-    const stripe = await stripePromise;
-    const response = await fetch("http://localhost:5000/create-checkout-session", {
-      method: "POST",
-    });
-
-    const session = await response.json();
-    // When the customer clicks on the button, redirect them to Checkout.
-
-    const result = await stripe.redirectToCheckout({
-      sessionId: session.id,
-    });
-
-    if (result.error) {
-      // If `redirectToCheckout` fails due to a browser or network
-      // error, display the localized error message to your customer
-      // using `result.error.message`.
-    }
-  };
-
-  return message ? (
-    <Message message={message} />
-  ) : (
-    <ProductDisplay handleClick={handleClick} />
-  );
+    return(             
+        <div>
+            {request.paid? <div>Paid</div> :
+            currentUserData.userID === request.owner &&
+            <Button onClick={handleClick}><FaStripeS /></Button>}
+        </div>       
+    )
 }
+
+export default Stripe;

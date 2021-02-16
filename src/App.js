@@ -18,7 +18,6 @@ import AboutUs from './components/AboutUs'
 import ContactUs from './components/ContactUs'
 import Inbox from './components/Inbox'
 import Gallery from './components/Gallery'
-import Stripe from './components/Stripe';
 
 import './App.css';
 import CreateProfileForm from './components/CreateProfileForm';
@@ -49,7 +48,6 @@ function App() {
                         <Route exact path='/about' component={AboutUs} />
                         <Route exact path='/contact' component={ContactUs} />
                         <Route exact path='/gallery/:id' component={Gallery} />
-                        <Route exact path='/checkout' component={Stripe} />
                         <Route exact path='/create-profile' component={CreateProfileForm} />
                         <Route exact path='/inbox'>
                             <Inbox baseURL={BASE_URL} maxRating={MAX_RATING} />

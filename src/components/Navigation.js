@@ -52,13 +52,6 @@ const Navigation = () => {
                     <Navbar.Brand as={Link} to='/'>Pothos</Navbar.Brand>
                 </Container>
                 <Container className='d-inline-flex justify-content-end'>
-                    {currentUser &&
-                        <Nav.Link as={Link} to='/checkout'>
-                            <Button className='checkout-button' variant='secondary'>
-                                <BiCart />
-                            </Button>
-                        </Nav.Link>
-                    }
                     {!currentUser &&
                         <Button variant='secondary' as={Link} to='/signup'>Sign Up</Button>
                     } 

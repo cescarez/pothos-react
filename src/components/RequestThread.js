@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { OverlayTrigger, Tooltip, Col, Row, Container, Alert, Table, Button } from 'react-bootstrap';
+import { Badge, OverlayTrigger, Tooltip, Col, Row, Container } from 'react-bootstrap';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import axios from 'axios';
-import { FaStripeS } from 'react-icons/fa';
 
 import Rating from './RequestRating';
 import Timestamp from './Timestamp';
 import LoadingSpinner from './LoadingSpinner';
 
 import './Inbox.css';
+import Stripe from './Stripe';
 
 // TODO: implement unread format change
 
-const RequestThread = ({ baseURL, maxRating, request, currentUserData }) => {
+const RequestThread = ({ baseURL, maxRating, request, currentUserData, setError }) => {
     const [otherUserName, setOtherUserName] = useState(null);
     const [userRole, setUserRole] = useState(null);
 
@@ -47,20 +45,36 @@ const RequestThread = ({ baseURL, maxRating, request, currentUserData }) => {
         </Tooltip>
     )
 
+    const checkForUnread = () => {
+        if (request.last_message) {
+            let role = 'sitter'
+            if (currentUserData.userID === request.owner) {
+                role = 'owner'
+            }
+            const wasLastSender = request.last_message.sender !== currentUserData.userID
+            const anyUnreadMessages = Moment(request[`last_accessed_by_${role}`]).isBefore(request.last_message.timestamp)
+
+            return (!wasLastSender && anyUnreadMessages)
+        }
+    }
+
     function showRequest() {
         return (
-            <tr key={request.request_id}>
+            <tr key={request.request_id} className={checkForUnread() ? `font-weight-bold` : null }>
                 <td className='align-middle'>
                     <Link to={requestRouterParams(request.request_id, otherUserName, userRole)}>
+                        {checkForUnread() && <Badge variant='danger' >New</Badge>}
                         <Container fluid>
-                            <Row>
+                            <Row >
                                 <OverlayTrigger
                                     placement="top"
                                     delay={{ show: 250, hide: 400 }}
                                     overlay={inboxTooltip({ message: 'Date of last received message' })}
                                 >
-                                    <Container as={Col} xs={3} className='inbox__container--message-date' onHover={() => 'Time of last message'}>
-                                        <Timestamp time={request.last_message.timestamp} inbox />
+                                    <Container as={Col} xs={3} className='inbox__container--message-date' onHover={() => 'Time of Last Message'}>
+                                        {request.last_message &&
+                                            <Timestamp time={request.last_message.timestamp} inbox />
+                                        }
                                     </Container>
                                 </OverlayTrigger>
                                 <Container as={Col} className='inbox__container--message-title text-left'>
@@ -77,8 +91,9 @@ const RequestThread = ({ baseURL, maxRating, request, currentUserData }) => {
                                 </OverlayTrigger>
                             </Row>
                             <Container>
-                                <Container className={`inbox__container--message-body text-left text-truncate ${request.last_message.message.startsWith('Photo') ? 'photo-message' : null}`}>
-                                    {request.last_message.message}
+                                <Container className={`inbox__container--message-body text-left text-truncate ${request.last_message && request.last_message.message.startsWith('Photo') ? 'photo-message' : null}`}>
+                                    {request.last_message && 
+                                        request.last_message.message}
                                 </Container>
                             </Container>
                         </Container>
@@ -88,9 +103,7 @@ const RequestThread = ({ baseURL, maxRating, request, currentUserData }) => {
                     <Rating baseURL={baseURL} request={request} currentUserData={currentUserData} maxRating={maxRating} />
                 </td>
                 <td className='align-middle'>
-                    {currentUserData.userID === request.owner &&
-                        <Button><FaStripeS /></Button>
-                    }
+                    <Stripe baseURL={baseURL} request={request} currentUserData={currentUserData} setError={setError}/>
                 </td>
             </tr>
         )
