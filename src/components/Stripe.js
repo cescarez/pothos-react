@@ -12,6 +12,16 @@ const Stripe = ({baseURL, request, currentUserData, setError}) => {
 
     }
 
+    const checkPayment = () => {
+        if (request.paid && currentUserData.userID === request.owner) {
+            return(<div>Paid</div>)
+        } else if (currentUserData.userID === request.owner) {
+            return(<Button onClick={handleClick}><FaStripeS /></Button>)
+        } else {
+            return(<div></div>)
+        }
+    }
+
     const handleClick = async (event) => {
         event.preventDefault()
         const stripe = await stripePromise;
@@ -38,9 +48,7 @@ const Stripe = ({baseURL, request, currentUserData, setError}) => {
 
     return(             
         <div>
-            {request.paid? <div>Paid</div> :
-            currentUserData.userID === request.owner &&
-            <Button onClick={handleClick}><FaStripeS /></Button>}
+            {checkPayment()}
         </div>       
     )
 }
