@@ -20,6 +20,8 @@ const Dashboard = ({baseURL, maxRating, baseGeocodeURL}) => {
                 .then((response) => {
                     const apiUser = Object.values(response.data)[0]
                     apiUser.userID = Object.keys(response.data)[0]
+                    apiUser.owner_rating = Object.values(response.data)[1]
+                    apiUser.sitter_rating = Object.values(response.data)[2]
                     setUser(apiUser);
                 })
                 .catch((error) => {

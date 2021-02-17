@@ -9,6 +9,7 @@ const OwnerDashboard = ({ baseURL, currentUserData, maxRating, baseGeocodeURL })
     const [error, setError] = useState({variant: '', message: ''});
     const [sitterList, setSitterList] = useState(null);
     const [showMap, setShowMap] = useState(false);
+    console.log(currentUserData)
 
     useEffect(()=>{
         axios.get(baseURL + '/sitters')
