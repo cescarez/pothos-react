@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import UploadForm from './PhotoUploadForm';
 import { Button } from 'react-bootstrap'
 import { Link, useRouteMatch } from 'react-router-dom'
@@ -11,8 +11,8 @@ export default function Gallery({location}) {
 
     const match = useRouteMatch('/gallery/:id');
     const requestID = match.params.id;
-
     const {baseURL, currentUserID, otherUserName } = location.state;
+
 
     const requestRouterParams = () => {
         return ({
