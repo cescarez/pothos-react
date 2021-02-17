@@ -12,7 +12,6 @@ export default function Gallery({location}) {
     const match = useRouteMatch('/gallery/:id');
     const requestID = match.params.id;
 
-    console.log(location)
     const {baseURL, currentUserID, otherUserName } = location.state;
 
     const requestRouterParams = () => {

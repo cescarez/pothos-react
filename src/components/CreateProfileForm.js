@@ -88,7 +88,6 @@ export default function CreateProfileForm({ baseURL, setDashboardUser, baseGeoco
                 setError(err);
             }, async () => {
                 const url = await storageRef.getDownloadURL();
-                console.log(url)
                 setUser({
                     ...user,
                     avatar_url: url

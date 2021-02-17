@@ -85,7 +85,6 @@ export default function UpdateProfileForm({baseURL, baseGeocodeURL}) {
                 setError(err);
             }, async () => {
                 const url = await storageRef.getDownloadURL();
-                console.log(url)
                 setUser({
                     ...user,
                     avatar_url: url
@@ -179,9 +178,7 @@ export default function UpdateProfileForm({baseURL, baseGeocodeURL}) {
     //request async flow: (1) validate address w/USPS API (2)get address coords with Google Maps Geocoding API (3) post to server to save profile information
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(user)
         if (checkUserType() && checkPriceRates()) {
-            console.log(uspsRequestXML())
             axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=verify&XML=${uspsRequestXML()}`, { headers: { 'Content-Type': 'application/xml; charset=utf=8' } })
                 .then((response) => {
                     const errorMessage = response.data.split(/<[/]?Description>/)[1]
