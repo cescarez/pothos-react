@@ -11,8 +11,8 @@ const ImageGrid = ({ setSelectedImg }) => {
     const [error, setError] = useState('');
     const [photoList, setPhotoList] = useState(null);
 
-    const loadPhotoList = () => {
-        axios.get('http://localhost:5000/photos-by-request/' + requestID)
+    const loadPhotoList = ({baseURL}) => {
+        axios.get(baseURL + '/photos-by-request/' + requestID)
             .then((response) => {
                 const apiPhotos = Object.values(response.data)
                 setPhotoList(apiPhotos);

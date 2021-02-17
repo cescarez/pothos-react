@@ -35,7 +35,7 @@ export default function Gallery({location}) {
                 </Button>
             </Link>
             {/* <UploadForm /> */}
-            <ImageGrid setSelectedImg={setSelectedImg}/>
+            <ImageGrid baseURL={baseURL} setSelectedImg={setSelectedImg}/>
             {selectedImg && <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg}/>}
         </div>
     )
