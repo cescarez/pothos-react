@@ -9,7 +9,6 @@ const OwnerDashboard = ({ baseURL, currentUserData, maxRating, baseGeocodeURL })
     const [error, setError] = useState({variant: '', message: ''});
     const [sitterList, setSitterList] = useState(null);
     const [showMap, setShowMap] = useState(false);
-    console.log(currentUserData)
 
     useEffect(()=>{
         axios.get(baseURL + '/sitters')
@@ -40,7 +39,7 @@ const OwnerDashboard = ({ baseURL, currentUserData, maxRating, baseGeocodeURL })
         <Container className='px-0' fluid>
             { error.message && <Alert variant={error.variant}>{error.message}</Alert>} 
             <Container className='text-right'>
-                {`Current Owner Rating: ${currentUserData.owner_rating ? currentUserData.owner_rating : 'N/A'}`}
+                {`Current Owner Rating: ${currentUserData.owner_rating && !isNaN(currentUserData.owner_rating) ? currentUserData.owner_rating.toFixed(2) : 'N/A'}`}
             </Container>
             { showMap ? 
                 <div>
