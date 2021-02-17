@@ -1,70 +1,64 @@
-# Getting Started with Create React App
+# Pothos
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Pothos is the #1 plant sitting and houseplant services app. Get trusted houseplant care in your neighborhood. The Pothos app was created for plant people by plant people (but not in a scary sci fi way). Through the app, get photo updates, an easy way to message sitters or manage your business, and a secure way to book and pay.
 
-## Available Scripts
+## Table of Contents
+  - [Getting Started as a Plant Owner](#getting-started-as-a-plant-owner)
+  - [Getting Started as a Plant Sitter](#getting-started-as-a-plant-sitter)
+  - [Technologies](#technologies)
+  - [Road Map](#road-map)
+  - [Contributing](#contributing)
+  - [License](#license)
 
-In the project directory, you can run:
+---
 
-### `yarn start`
+## Getting Started as a Plant Owner
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Sign up for an account with [Pothos](https://pothos-webapp.herokuapp.com/login).
+- Fill out your user profile as a plant owner (or as both a plant owner and plant sitter!)
+- Browse the full list of registered plant sitters 
+  + Tip: you can view the map to find a plant sitter closest to you!
+<img src='./src/images/gifs/sitter-list.gif' height='450' alt='browse plant sitters'/>  
+- Select a plant sitter and send them a request.<!-- <img src='./src/images/gifs/sitter-request.gif' height='450' alt='send plant sitting request'/>   -->
+- Now that you've been connected with your potential plant sitter, it's up to them to confirm/decline the request and it's up to the two of you to coordinate the details of the plant sitting (including payment) through your inbox!
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Getting Started as a Plant Sitter
 
-### `yarn test`
+- Sign up for an account with [Pothos](https://pothos-webapp.herokuapp.com/login).
+- Fill out your user profile as a plant sitter (or as both a plant owner and plant owner!)  
+- Browse your list of plant sitting requests and confirm or deny requests on your dashboard. 
+- Coordinate the details of a plant sitting request through chat threads in your inbox. *Each plant sitting request will create a new chat thread.*
+<img src='./src/images/gifs/confirm-request.gif' height='450' alt='browse plant sitters'/>  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `yarn build`
+## Technologies
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+[Pothos web application](https://github.com/cescarez/pothos-react) and [Pothos API](https://github.com/cescarez/pothos-flask) was created with:
+Core Technology | version
+-----------|-------
+Python | ###
+Flask | ###
+JavaScript | ###
+React | ###
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Library | version
+-----------|-------
+react-bootstrap | ###
+@react-google-maps | ###
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+External API | Tool
+--------------| ------
+Firebase | Authentication  Realtime Database  Storage
+Google Maps | JS Maps  Geocoding
+USPS | Address Verification
+Stripe | Payment
 
-### `yarn eject`
+## Road Map
+* List of Sitters to be sorted by distance to owner
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## License
+This software is licensed under the [GPL license](https://choosealicense.com/licenses/gpl/). :seedling: *Copyright (c) 2021 Jessica Chan and Christabel E. Sebastian*
