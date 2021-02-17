@@ -22,7 +22,7 @@ import Gallery from './components/Gallery'
 import './App.css';
 import CreateProfileForm from './components/CreateProfileForm';
 
-const BASE_URL = 'http://localhost:5000'
+const BASE_URL = 'http://pothos-api.herokuapp.com'
 const BASE_GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
 const MAX_RATING = 4;
 
