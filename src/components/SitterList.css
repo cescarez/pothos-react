@@ -32,6 +32,11 @@ table.sitter-list__table > tbody > tr > td {
   max-height: 200px;
 }
 
+/* .profile-pic{
+  width: 125px;
+  height: 125px;
+} */
+
 .dashboard-container{
   padding-top: 40px;
   padding-bottom: 20px;

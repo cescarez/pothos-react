@@ -64,6 +64,9 @@ const SitterList = ({ sitterList, currentUserData, maxRating }) => {
                                     <Col className='profile-container'>
                                         <Image className='profile-pic' src={sitter.avatar_url? sitter.avatar_url : pothosPic} alt='profile pic'/>
                                     </Col>
+                                    {/* <Col className='profile-container'>
+                                        <Image className='profile-pic' src={sitter.avatar_url? sitter.avatar_url : pothosPic} alt='profile pic' roundedCircle/>
+                                    </Col> */}
                                     <Col xs={6}>
                                         <h4>{sitter.full_name}</h4>
                                         <p>{sitter.bio}</p>
