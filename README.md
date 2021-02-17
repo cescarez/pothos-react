@@ -25,7 +25,7 @@ Pothos is the #1 plant sitting and houseplant services app. Get trusted housepla
 ## Getting Started as a Plant Sitter
 
 - Sign up for an account with [Pothos](https://pothos-webapp.herokuapp.com/login).
-- Fill out your user profile as a plant sitter (or as both a plant owner and plant owner!)  
+- Fill out your user profile as a plant sitter (or as both a plant owner and plant sitter!)  
 - Browse your list of plant sitting requests and confirm or deny requests on your dashboard. 
 - Coordinate the details of a plant sitting request through chat threads in your inbox. *Each plant sitting request will create a new chat thread.*  
 <img src='./src/images/gifs/confirm-request.gif' height='450' alt='browse plant sitters'/>  
