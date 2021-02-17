@@ -72,10 +72,6 @@ const User = ({baseURL, maxRating}) => {
         })
     }
 
-    //write method to display the number of emoji stars as a rounding up? of the user rating
-
-
-
     const showUserData = () => {
         return (
             <Container className='container-lg'>
