@@ -86,7 +86,7 @@ const RequestThread = ({ baseURL, maxRating, request, currentUserData, setError 
                                     overlay={inboxTooltip({ message: 'Requested Date of Service' })}
                                 >
                                     <Container as={Col} xs={3} className='inbox__container--message-date'>
-                                        {Moment.parseZone(request.date_of_service).local().format('l')}
+                                        {Moment.utc(request.date_of_service).format('l')}
                                     </Container>
                                 </OverlayTrigger>
                             </Row>
