@@ -15,7 +15,6 @@ const Dashboard = ({baseURL, maxRating, baseGeocodeURL}) => {
     const { currentUser } = useAuth();
 
     const loadUserData = (auth_id) => {
-        // console.log(`loading backend user profile with frontend auth_id: ${auth_id}`)
         if (!user) {
             axios.get(`${baseURL}/users/current/${auth_id}`)
                 .then((response) => {

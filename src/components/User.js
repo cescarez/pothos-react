@@ -33,8 +33,6 @@ const User = ({baseURL, maxRating}) => {
                     }
                 })
                 .catch((error) => {
-                    console.log(error.response)
-                    console.log(error.message)
                     const message=`There was an error with your request. ${error.response && error.response.data.message ? error.response.data.message : error.message}`
                     setError({variant: 'danger', message: message});
                     console.log(message);

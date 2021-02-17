@@ -38,7 +38,6 @@ export default function RequestForm({ onSubmitRequestCallback, sitterPrices }) {
         Object.entries(sitterPrices).forEach(([service, rate]) => {
             sum += (rate * parseInt(services[service]))
         })
-        console.log(`estimated service cost: ${sum}`)
         return sum
     }
 
