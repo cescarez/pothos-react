@@ -1,6 +1,8 @@
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap'
 import profilepic from '../images/weed.jpg'
+import christabelpic from '../images/Christabel.jpg'
+import jesspic from '../images/Jess.jpg'
 
 export default function AboutUs() {
     return(
@@ -10,7 +12,7 @@ export default function AboutUs() {
                 <Col></Col>
                 <Col>
                     <Card bg='secondary' text='light' style={{ width: '20rem' }}>
-                        <Card.Img variant="top" src={profilepic} />
+                        <Card.Img variant="top" src={christabelpic} />
                         <Card.Body>
                             <Card.Title>Christabel Escarez</Card.Title>
                             <Card.Subtitle>they.them</Card.Subtitle>
@@ -22,7 +24,7 @@ export default function AboutUs() {
                 </Col>
                 <Col>
                     <Card bg='secondary' text='light' style={{ width: '20rem' }}>
-                        <Card.Img variant="top" src={profilepic} />
+                        <Card.Img variant="top" src={jesspic} />
                         <Card.Body>
                             <Card.Title>Jessica Chan</Card.Title>
                             <Card.Subtitle>she.her</Card.Subtitle>
