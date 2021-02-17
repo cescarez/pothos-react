@@ -52,7 +52,7 @@ const RequestThread = ({ baseURL, maxRating, request, currentUserData, setError 
                 role = 'owner'
             }
             const wasLastSender = request.last_message.sender === currentUserData.userID
-            const anyUnreadMessages = Moment(request[`last_accessed_by_${role}`]).isBefore(request.last_message.timestamp)
+            const anyUnreadMessages = Moment(request[`last_accessed_by_${role}`]).isBefore(request.last_message.timestamp) || !request[`last_accessed_by_${role}`]
 
             return (!wasLastSender && anyUnreadMessages)
         }
