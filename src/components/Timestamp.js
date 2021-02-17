@@ -4,7 +4,7 @@ import moment from 'moment';
 const Timestamp = (props) => {
     const time = moment.utc(props.time);
     const absolute = time.format('MMMM Do YYYY, h:mm:ss a');
-    const absoluteLocal = time.format('l LT');
+    const absoluteLocal = time.format('l');
     const relative = time.fromNow();
     const inboxThreshold = moment.utc().subtract(1, 'days')
 
