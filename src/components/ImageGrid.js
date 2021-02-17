@@ -4,7 +4,7 @@ import axios from 'axios'
 // import useFirestore from '../hooks/useFirestore';
 import './Gallery.css';
 
-const ImageGrid = ({ setSelectedImg }) => {
+const ImageGrid = ({ setSelectedImg, baseURL }) => {
     // const { docs } = useFirestore('images');
     const match = useRouteMatch('/gallery/:id');
     const requestID = match.params.id;
@@ -12,7 +12,7 @@ const ImageGrid = ({ setSelectedImg }) => {
     const [photoList, setPhotoList] = useState(null);
 
     const loadPhotoList = () => {
-        axios.get('http://localhost:5000/photos-by-request/' + requestID)
+        axios.get(baseURL + '/photos-by-request/' + requestID)
             .then((response) => {
                 const apiPhotos = Object.values(response.data)
                 setPhotoList(apiPhotos);
