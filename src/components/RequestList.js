@@ -108,7 +108,7 @@ const RequestList = ({ baseURL, currentUserData, maxRating }) => {
                                 </td>
                                 <td>
                                     <Link to={requestRouterParams(request.request_id, otherUserName, userRole)}>
-                                        {Moment.parseZone(request.date_of_service).local().format('l')}
+                                        {Moment.parseZone(request.date_of_service).format('l')}
                                     </Link>
                                 </td>
                                 <td>
