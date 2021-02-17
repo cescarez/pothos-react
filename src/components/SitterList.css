@@ -21,9 +21,15 @@ table.sitter-list__table > tbody > tr > td {
   padding: 0px;
 }
 
-.profile-pic{
+.profile-container{
   width: 125px;
   height: 125px;
+  overflow: hidden;
+}
+
+.profile-pic{
+  max-width: 200px;
+  max-height: 200px;
 }
 
 .dashboard-container{

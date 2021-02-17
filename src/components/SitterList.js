@@ -61,8 +61,8 @@ const SitterList = ({ sitterList, currentUserData, maxRating }) => {
                         return(
                             <Link className='dashboard-link' to={`/users/${sitter.userID}`}>
                                 <Row className='dashboard-row' id={`sitter-card-${sitter.userID}`}>
-                                    <Col>
-                                        <Image className='profile-pic' src={sitter.avatar_url? sitter.avatar_url : pothosPic} alt='profile pic' roundedCircle/>
+                                    <Col className='profile-container'>
+                                        <Image className='profile-pic' src={sitter.avatar_url? sitter.avatar_url : pothosPic} alt='profile pic'/>
                                     </Col>
                                     <Col xs={6}>
                                         <h4>{sitter.full_name}</h4>
