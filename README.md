@@ -19,6 +19,7 @@ Pothos is the #1 plant sitting and houseplant services app. Get trusted housepla
 - Browse the full list of registered plant sitters 
   + Tip: you can view the map to find a plant sitter closest to you!
 <img src='./src/images/gifs/sitter-list.gif' height='450' alt='browse plant sitters'/>  
+
 - Select a plant sitter and send them a request.<!-- <img src='./src/images/gifs/sitter-request.gif' height='450' alt='send plant sitting request'/>   -->
 - Now that you've been connected with your potential plant sitter, it's up to them to confirm/decline the request and it's up to the two of you to coordinate the details of the plant sitting (including payment) through your inbox!
 
