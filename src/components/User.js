@@ -119,13 +119,13 @@ const User = ({baseURL, maxRating}) => {
                         <Card.Text className='mb-2'>
                             <Row className='align-items'>
                                 <Col className='text-muted text-right'>Member Since:</Col>
-                                <Col className='text-left'>{Moment(user.date_joined).format('MMMM Do, YYYY')}</Col>
+                                <Col className='text-left'>{Moment.utc(user.date_joined).format('MMMM Do, YYYY')}</Col>
                             </Row>
                             <Row>
                                 <Col className='text-right'>Sitter Rating:</Col>
                                 <Col>
                                     {user.sitter_rating ? 
-                                        <RatingStars currentRating={user.sitter_rating} maxRating={maxRating} /> 
+                                        <RatingStars currentRating={parseInt(user.sitter_rating)} maxRating={maxRating} /> 
                                     : 'N/A'}
                                 </Col>
                             </Row>
@@ -133,7 +133,7 @@ const User = ({baseURL, maxRating}) => {
                                 <Col className='text-right'>Owner Rating:</Col>
                                 <Col>
                                     {user.owner_rating ? 
-                                        <RatingStars currentRating={user.owner_rating} maxRating={maxRating} /> 
+                                        <RatingStars currentRating={parseInt(user.owner_rating)} maxRating={maxRating} /> 
                                     : 'N/A'}
                                 </Col>
                             </Row>

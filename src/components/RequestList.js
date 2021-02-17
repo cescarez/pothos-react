@@ -123,7 +123,7 @@ const RequestList = ({ baseURL, currentUserData, maxRating }) => {
                                 </td>
                                 <td>
                                     <Link to={requestRouterParams(request.request_id, otherUserName, userRole)}>
-                                        { request.owner_rating ? <RatingStars currentRating={request.owner_rating} maxRating={maxRating} /> : 'N/A'}
+                                        { request.owner_rating ? <RatingStars currentRating={parseInt(request.owner_rating)} maxRating={maxRating} /> : 'N/A'}
                                     </Link>
                                 </td>
                                 <td>

@@ -73,7 +73,7 @@ const SitterList = ({ sitterList, currentUserData, maxRating }) => {
                                     </Col>
                                     <Col>
                                         <h6>Avg Rating</h6>
-                                        { sitter.sitter_rating ? <RatingStars currentRating={sitter.sitter_rating} maxRating={maxRating} /> : 'N/A'}
+                                        { sitter.sitter_rating ? <RatingStars currentRating={parseInt(sitter.sitter_rating)} maxRating={maxRating} /> : 'N/A'}
                                     </Col>
                                     <Col>
                                         <h6>Watering Rate:</h6>
