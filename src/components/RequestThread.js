@@ -60,6 +60,9 @@ const RequestThread = ({ baseURL, maxRating, request, currentUserData, setError 
     }
 
     function showRequest() {
+        if (request.status === 'declined') {
+            return null
+        }
         return (
             <tr key={request.request_id} className={checkForUnread() ? `font-weight-bold` : null }>
                 <td className='align-middle'>
@@ -110,9 +113,8 @@ const RequestThread = ({ baseURL, maxRating, request, currentUserData, setError 
         )
     }
 
-    return (
-        showRequest()
-    )
+    return (showRequest())
+    
 }
 
 export default RequestThread;
