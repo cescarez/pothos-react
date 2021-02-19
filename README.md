@@ -73,6 +73,7 @@ Stripe | Payment
 * Request List: Styling for pending/unconfirmed requests.
 * Owner Dashboard: Pagination of list of sitters.
 * Sitter Dashboard: Map of owners that have sent requests (marker color == request status)
+* Authentication: OAuth integration
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
