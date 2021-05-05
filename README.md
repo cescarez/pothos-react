@@ -3,7 +3,7 @@
 Pothos is the #1 plant sitting and houseplant services app. Get trusted houseplant care in your neighborhood. The Pothos app was created for plant people by plant people (but not in a scary sci fi way). Through the app, get photo updates, an easy way to message sitters or manage your business, and a secure way to book and pay.
 
 ### Table of Contents
-  - [Link to Demo[(#link-to-demo)
+  - [Link to Demo](#link-to-demo)
   - [Getting Started as a Plant Owner](#getting-started-as-a-plant-owner)
   - [Getting Started as a Plant Sitter](#getting-started-as-a-plant-sitter)
   - [Technologies](#technologies)
