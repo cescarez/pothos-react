@@ -3,18 +3,15 @@
 Pothos is the #1 plant sitting and houseplant services app. Get trusted houseplant care in your neighborhood. The Pothos app was created for plant people by plant people (but not in a scary sci fi way). Through the app, get photo updates, an easy way to message sitters or manage your business, and a secure way to book and pay.
 
 ### Table of Contents
-  - [Link to Demo](#link-to-demo)
   - [Getting Started as a Plant Owner](#getting-started-as-a-plant-owner)
   - [Getting Started as a Plant Sitter](#getting-started-as-a-plant-sitter)
+  - [Link to Demo](#link-to-demo)
   - [Technologies](#technologies)
   - [Road Map](#road-map)
   - [Contributing](#contributing)
   - [License](#license)
 
 ---
-
-## Link to Demo
-Visit [bit.ly/pothosapp](https://www.youtube.com/watch?v=nuI_cBAGn38&t) to view a demo given by the Pothos developers.
 
 ## Getting Started as a Plant Owner
 
@@ -34,6 +31,11 @@ Visit [bit.ly/pothosapp](https://www.youtube.com/watch?v=nuI_cBAGn38&t) to view 
 - Browse your list of plant sitting requests and confirm or deny requests on your dashboard. 
 - Coordinate the details of a plant sitting request through chat threads in your inbox. *Each plant sitting request will create a new chat thread.*  
 <img src='./src/images/gifs/confirm-request.gif' height='450' alt='browse plant sitters'/>  
+
+---
+
+## Link to Demo
+Visit [bit.ly/pothosapp](https://www.youtube.com/watch?v=nuI_cBAGn38&t) to view a demo given by the Pothos developers.
 
 ---
 
