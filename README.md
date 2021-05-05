@@ -34,7 +34,7 @@ Pothos is the #1 plant sitting and houseplant services app. Get trusted housepla
 
 
 ## Link to Demo
-Visit [bit.ly/pothosapp](https://www.youtube.com/watch?v=nuI_cBAGn38&t) to view a demo given by the Pothos developers.
+Visit [bit.ly/pothos_demo](https://www.youtube.com/watch?v=nuI_cBAGn38&t) to view a demo given by the Pothos developers.
 
 ---
 
